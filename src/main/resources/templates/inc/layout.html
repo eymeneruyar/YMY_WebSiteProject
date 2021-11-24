@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+
+    <!------------------------------------------------------- Other CSS Vendors Folder - Start ---------------------------------------------------------->
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/vendors.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css}">
+    <!------------------------------------------------------- Other CSS Vendors Folder - End ------------------------------------------------------------>
+
+    <!------------------------------------------------------- Main CSS Folder - Start ---------------------------------------------------------->
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/forms/select/select2.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/bootstrap-extended.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/colors.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/components.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/themes/dark-layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/themes/bordered-layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/themes/semi-dark-layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/core/menu/menu-types/vertical-menu.css}">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/animate/animate.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/extensions/sweetalert2.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/plugins/extensions/ext-component-sweet-alerts.css}">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/assets/css/style.css}">
+    <!------------------------------------------------------- Main CSS Folder - End ------------------------------------------------------------>
+
+</head>
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+
+    <th:block th:replace="inc/template :: header" ></th:block>
+    <th:block th:replace="inc/template :: menu" ></th:block>
+    <th:block layout:fragment="content"></th:block>
+
+    <!---------------------------------------------------- Main Js Folder Start ----------------------------------------------------->
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/vendors.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/core/app-menu.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/core/app.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/fontawesome-free-5.15.4-web/js/all.min.js}"></script>
+
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/jszip.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/pdfmake.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/vfs_fonts.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/buttons.html5.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/buttons.print.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/tables/table-datatables-basic.js}"></script>
+
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/extensions/sweetalert2.all.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/extensions/polyfill.min.js}"></script>
+
+    <th:block layout:fragment="contentJs"></th:block>
+
+    <script>
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+    </script>
+    <!---------------------------------------------------- Main Js Folder End ------------------------------------------------------->
+
+</body>
+</html>

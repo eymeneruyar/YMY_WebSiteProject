@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+      class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    <title>Firma Ekle</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+<body>
+
+<th:block layout:fragment="content">
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- Ana ekrana aktarılmak istenen component'ler burada yazılmalıdır. -->
+
+                <!-- Basic multiple Column Form section start -->
+                <section id="multiple-column-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Firma Ekle</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="id_companySave" class="form">
+                                        <div class="row">
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyName">Firma Adı</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="far fa-building"></i></span>
+                                                        </div>
+                                                        <input id="id_companyName" type="text" class="form-control" placeholder="Firma Adı" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyOfficial">Firma Yetkilisi</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+                                                        </div>
+                                                        <input id="id_companyOfficial" type="text" class="form-control" placeholder="Firma Yetkilisi" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyPhone">Firma Tel</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">TR (+90)</span>
+                                                        </div>
+                                                        <input id="id_companyPhone" type="text" class="form-control phone-number-mask" placeholder="Firma Tel" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyEmail">Firma E-Posta</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                        </div>
+                                                        <input id="id_companyEmail" type="text" class="form-control" placeholder="Firma E-Posta" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyTaxOffice">Vergi Dairesi</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <input id="id_companyTaxOffice" type="text" class="form-control" placeholder="Vergi Dairesi" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="id_companyTaxNumber">Vergi Numarası</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <input id="id_companyTaxNumber" type="text" class="form-control" placeholder="Vergi Numarası" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-1">
+                                                <label for="id_companyCity">İl</label>
+                                                <select id="id_companyCity" class="select2 form-control form-control-lg">
+                                                    <option value="AK">İstanbul</option>
+                                                    <option value="HI">İzmir</option>
+                                                    <option value="CA">Tokat</option>
+                                                    <option value="CA">Sivas</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-1">
+                                                <label for="id_companyTown">İlçe</label>
+                                                <select id="id_companyTown" class="select2 form-control form-control-lg">
+                                                    <option value="AK">İstanbul</option>
+                                                    <option value="HI">İzmir</option>
+                                                    <option value="CA">Tokat</option>
+                                                    <option value="CA">Sivas</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Adres</span>
+                                                    </div>
+                                                    <textarea id="id_companyAddress" class="form-control" aria-label="With textarea"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <button type="submit" class="btn btn-primary mr-1">Kaydet</button>
+                                                <button type="reset" class="btn btn-outline-secondary">Temizle</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Basic Floating Label Form section end -->
+                
+                <section id="basic-datatable">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <table class="datatables-basic table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Date</th>
+                                            <th>Salary</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+
+</th:block>
+
+<th:block layout:fragment="contentJs">
+
+    <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/cleave.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-input-mask.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+    <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
+
+    <script th:src="@{/customizeJs/company.js}"></script>
+
+</th:block>
+
+</body>
+<!-- END: Body-->
+
+</html>

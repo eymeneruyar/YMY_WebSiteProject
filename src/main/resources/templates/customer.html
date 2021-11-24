@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+      class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    <title>Müşteri Ekle</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body>
+
+<th:block layout:fragment="content">
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- Ana ekrana aktarılmak istenen component'ler burada yazılmalıdır. -->
+
+                <section id="multiple-column-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Müşteri Ekle</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form">
+                                        <div class="row">
+                                            <div class="col-md-6 col-12 mb-1">
+                                                <label>Yetkili Firma</label>
+                                                <select class="select2 form-control form-control-lg">
+                                                    <option value="AK">Uludağ Oto</option>
+                                                    <option value="HI">Şen Ortaklar</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="first-name-column">Müşteri Adı</label>
+                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Müşteri Adı"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="last-name-column">Müşteri Soyadı</label>
+                                                    <input type="text" id="last-name-column" class="form-control" placeholder="Müşteri Soyadı"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="first-name-icon">Müşteri Telefon</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">(+90)</span>
+                                                        </div>
+                                                        <input type="text" class="form-control phone-number-mask" placeholder="Firma Tel" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="email-id-column">Müşteri E-Posta</label>
+                                                    <input type="email" id="email-id-column" class="form-control" name="email-id-column" placeholder="Müşteri E-Posta" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="first-name-column">Araç Marka</label>
+                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Marka"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="first-name-column">Araç Model</label>
+                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Model"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="first-name-column">Araç Plaka</label>
+                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Plaka"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Not</span>
+                                                    </div>
+                                                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <button type="reset" class="btn btn-primary mr-1">Kaydet</button>
+                                                <button type="reset" class="btn btn-outline-secondary">Temizle</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="basic-datatable">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <table class="datatables-basic table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Date</th>
+                                            <th>Salary</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+
+</th:block>
+
+<!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
+<th:block layout:fragment="contentJs">
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/cleave.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-input-mask.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+</th:block>
+<!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
+
+</body>
+<!-- END: Body-->
+
+</html>
