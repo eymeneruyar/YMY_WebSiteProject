@@ -12,6 +12,12 @@ import javax.validation.constraints.Size;
 @Entity
 public class Company extends BaseStructure{
 
+    @Column(unique = true)
+    @NotNull(message = "Firma kodu boş olamaz!")
+    @NotEmpty(message = "Firma kodu boş olamaz!")
+    @Pattern(regexp="(^$|[0-9]{10})")
+    private String code;
+
     @NotNull(message = "Firma ismi boş olamaz!")
     @NotEmpty(message = "Firma ismi boş olamaz!")
     @Size(min = 1, max = 150, message = "Firma ismi minimum 1, maksimum 150 karakter olmalıdır!")
@@ -25,7 +31,7 @@ public class Company extends BaseStructure{
     @NotNull(message = "Firma telefonu boş olamaz!")
     @NotEmpty(message = "Firma telefonu boş olamaz!")
     //@Pattern(regexp="(^$|[0-9]{20})",message = "Girilen telefon formatı (###-###-####) olmalıdır!")
-    @Column(unique = true,length = 20)
+    @Column(unique = true,length = 12)
     private String phone;
 
     @Size(max=50)

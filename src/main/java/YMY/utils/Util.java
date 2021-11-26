@@ -1,8 +1,10 @@
 package YMY.utils;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Util {
@@ -12,6 +14,12 @@ public class Util {
         return email.matches(regex);
     }
 
+    //Logger
+    public static void logger(String data,Class logClass){
+        Logger.getLogger(logClass).error(data);
+    }
+
+    //Error messages editing
     public static List<Map<String,String>> errors(BindingResult bindingResult){
 
         List<Map<String,String>> list = new ArrayList<>();
@@ -25,6 +33,14 @@ public class Util {
             list.add(map);
         });
         return list;
+    }
+
+    //Generate date
+    public static String generateDate(){
+        //String pattern = "dd-MM-yyyy HH:mm:ss";
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(new Date());
     }
 
 }

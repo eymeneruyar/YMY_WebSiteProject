@@ -15,7 +15,7 @@ public class BaseStructure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private boolean status;
+    private boolean status; //true -> Available, false -> Deleted
 
     private String date;
 

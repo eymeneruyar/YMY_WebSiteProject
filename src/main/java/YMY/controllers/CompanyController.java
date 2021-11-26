@@ -3,6 +3,7 @@ package YMY.controllers;
 import YMY.dto.CompanyDto;
 import YMY.entities.Company;
 import YMY.utils.Check;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,33 @@ public class CompanyController {
     @PostMapping("/saveOrUpdate")
     public Map<Check,Object> companySaveOrUpdate(@RequestBody @Valid Company company, BindingResult bindingResult){
         return companyDto.companySaveOrUpdate(company,bindingResult);
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    @Cacheable("companyList")
+    public Map<Check,Object> listCompany(){
+        return companyDto.listCompany();
+    }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{stId}")
+    public Map<Check,Object> deleteCompany(@PathVariable String stId){
+        return deleteCompany(stId);
+    }
+
+    @ResponseBody
+    @GetMapping("/listCities")
+    @Cacheable("citiesList")
+    public Map<Check,Object> listCities(){
+        return companyDto.listCities();
+    }
+
+    @ResponseBody
+    @GetMapping("/listTownsBySelectedCity/{stId}")
+    @Cacheable("townsList")
+    public Map<Check,Object> listTownsBySelectedCity(@PathVariable String stId){
+        return companyDto.listTownsBySelectedCity(stId);
     }
 
 }
