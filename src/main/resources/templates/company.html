@@ -37,7 +37,7 @@
                                     <h4 class="card-title">Firma Ekle</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form id="id_companySave" class="form">
+                                    <form id="id_companySaveForm" class="form">
                                         <div class="row">
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
@@ -102,19 +102,13 @@
                                             <div class="col-md-6 col-12 mb-1">
                                                 <label for="id_companyCity">İl</label>
                                                 <select id="id_companyCity" class="select2 form-control form-control-lg">
-                                                    <option value="AK">İstanbul</option>
-                                                    <option value="HI">İzmir</option>
-                                                    <option value="CA">Tokat</option>
-                                                    <option value="CA">Sivas</option>
+
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-12 mb-1">
                                                 <label for="id_companyTown">İlçe</label>
                                                 <select id="id_companyTown" class="select2 form-control form-control-lg">
-                                                    <option value="AK">İstanbul</option>
-                                                    <option value="HI">İzmir</option>
-                                                    <option value="CA">Tokat</option>
-                                                    <option value="CA">Sivas</option>
+
                                                 </select>
                                             </div>
                                             <div class="col-12">
@@ -142,20 +136,21 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <table class="datatables-basic table">
+                                <table class="datatables-basic table" id="id_companyTable">
                                     <thead>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>id</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Date</th>
-                                            <th>Salary</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Firma Kodu</th>
+                                            <th>Firma İsmi</th>
+                                            <th>Firma Yetkilisi</th>
+                                            <th>Firma Tel</th>
+                                            <th>Firma E-Posta</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Yönetim</th>
                                         </tr>
                                     </thead>
+                                    <tbody id="id_companyTable_row">
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
