@@ -17,31 +17,31 @@ $(document).ready(function() {
                         extend: 'print',
                         text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'csv',
                         text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'excel',
                         text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'pdf',
                         text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'copy',
                         text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     }
                 ],
             },
@@ -112,6 +112,7 @@ $("#id_companySaveForm").submit((event) => {
 
 
 })
+
 //-------------------------------------- Save or Update Company Information - End ----------------------------------------//
 
 //-------------------------------------- List Company Information - Start ----------------------------------------//
@@ -121,6 +122,7 @@ function listCompany(){
         type: "GET",
         dataType: "JSON",
         contentType : 'application/json; charset=utf-8',
+        async:false,
         success: function (data) {
             //console.log(data)
             createRowDataTable(data)
@@ -135,6 +137,7 @@ listCompany()
 function createRowDataTable(data){
     let html = ``
     data.result.forEach( (item) => {
+        globalArr.push(item)
         html += `<tr  role="row" class="odd">
                     <td>${item.code}</td>
                     <td>${item.name}</td>
@@ -143,15 +146,127 @@ function createRowDataTable(data){
                     <td>${item.email}</td>
                     <td>${item.date}</td>
                     <td class="text-left">
-                        <button value="${item.id}" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <button value="${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
-                        <button value="${item.id}" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
+                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                        <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
+                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
 
     } )
-    $("#id_companyTable_row").html(html)
+    $("#id_companyTableRow").html(html)
 }
 //-------------------------------------- List Company Information - End ------------------------------------------//
+
+//-------------------------------------- Delete Company Information - Start ------------------------------------------//
+function fncDelete(id){
+    Swal.fire({
+        title: 'Silme istediğinizden emin misiniz?',
+        text: "Bu işlem geri alınamayacak!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet',
+        cancelButtonText: 'Hayır',
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: './firma/delete/' + id,
+                type: 'DELETE',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if( id != null){
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Silme işlemi başarılı!",
+                            text: data.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                        resetForm()
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Hata",
+                            text: data.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Hata",
+                        text: "Silme işlemi sırasında bir hata oluştu!",
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                    });
+                    console.log(err)
+                }
+            })
+        }
+    });
+}
+//-------------------------------------- Delete Company Information - End --------------------------------------------//
+
+//-------------------------------------- Update Company Information - Start --------------------------------------------//
+function fncUpdate(id){
+    const itm = globalArr.find(item => item.id == id)
+    //console.log(itm)
+    select_id = itm.id
+
+    listTownsBySelectedCity(itm.city)
+    $("#id_companyName").val(itm.name)
+    $("#id_companyOfficial").val(itm.authorisedPerson)
+    $("#id_companyPhone").val(itm.phone)
+    $("#id_companyEmail").val(itm.email)
+    $("#id_companyTaxOffice").val(itm.taxOffice)
+    $("#id_companyTaxNumber").val(itm.taxNumber)
+    $("#id_companyCity").val(itm.city).trigger('change.select2')
+    $("#id_companyTown").val(itm.town).trigger('change.select2')
+    $("#id_companyAddress").val(itm.address)
+}
+//-------------------------------------- Update Company Information - End ----------------------------------------------//
+
+//--------------------------------------  Company Information Modal - Start ----------------------------------------------//
+function fncDetail(id){
+    //const itm = globalArr.find( item => item.id == id)
+    var out
+    $.ajax({
+        url: "./firma/detail/" + id,
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        async:false,
+        success: function (data) {
+            out = data.result
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+    //console.log(out)
+    var city = getInfoCityByCityKey(out.city)
+    $("#id_companyDetailModal").modal('toggle')
+    $("#id_companyDetailModalTitle").text(out.code + " - " + out.name)
+    $("#id_companyDetailModalName").text(out.name)
+    $("#id_companyDetailModalOfficial").text(out.authorisedPerson)
+    $("#id_companyDetailModalPhone").text(out.phone)
+    $("#id_companyDetailModalEmail").text(out.email)
+    $("#id_companyDetailModalTaxOffice").text(out.taxOffice)
+    $("#id_companyDetailModalTaxNumber").text(out.taxNumber)
+    $("#id_companyDetailModalCity").text(city.result.name)
+    $("#id_companyDetailModalTown").text(out.town)
+    $("#id_companyDetailModalAddress").text(out.address)
+
+}
+//--------------------------------------  Company Information Modal - End ------------------------------------------------//
 
 //-------------------------------------- Process of listing city and towns - Start ------------------------------------------//
 function allCities(){
@@ -170,6 +285,8 @@ function allCities(){
 
 }
 allCities()
+listTownsBySelectedCity(34)
+//$('#id_companyTown').attr("disabled", true);
 
 function listTownsBySelectedCity(id){
 
@@ -185,6 +302,24 @@ function listTownsBySelectedCity(id){
         }
     })
 
+}
+
+function getInfoCityByCityKey(id){
+    var out;
+
+    $.ajax({
+        url: "./firma/getInfoCityByCityKey/" + id,
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        async: false,
+        success: function (data) {
+            out = data
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+    return out
 }
 
 function citiesOption(data){
@@ -274,5 +409,10 @@ function resetForm(){
     select_id = 0
     listCompany()
     $("#id_companySaveForm").trigger("reset")
+    $('#id_companyCity').empty();
+    $('#id_companyTown').empty();
+    $('#id_companyCity').append('<option value="default"> Lütfen Seçim Yapınız</option>');
+    allCities()
+    //$('#id_companyTown').attr("disabled", true);
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//

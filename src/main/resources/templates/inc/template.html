@@ -67,7 +67,7 @@
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item mr-auto">
-                <a class="navbar-brand" href="">
+                <a class="navbar-brand" href="/yonetim">
                     <img src="/homePage/assets/img/logo.png" style="max-height: 32px;" alt="" class="img-fluid">
                     <h2 class="brand-text ml-1" style="font-size: 20px;
                         margin: 0;
@@ -90,7 +90,7 @@
     <div class="main-menu-content">
 
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item"><a th:classappend="${ #request.getServletPath() == '/yönetim' ? 'active' : '' }" class="d-flex align-items-center" href="/yönetim"><i class="fas fa-home"></i><span class="menu-title text-truncate">Ana Sayfa</span></a></li>
+            <li class=" nav-item"><a th:classappend="${ #request.getServletPath() == '/yonetim' ? 'active' : '' }" class="d-flex align-items-center" href="/yonetim"><i class="fas fa-home"></i><span class="menu-title text-truncate">Ana Sayfa</span></a></li>
             <li class=" nav-item"><a th:classappend="${ #request.getServletPath() == '/firma' ? 'active' : '' }" class="d-flex align-items-center" href="/firma"><i class="far fa-building"></i><span class="menu-title text-truncate">Firma Ekle</span></a></li>
             <li class=" nav-item"><a th:classappend="${ #request.getServletPath() == '/musteri' ? 'active' : '' }" class="d-flex align-items-center" href="/musteri"><i class="fas fa-user-plus"></i><span class="menu-title text-truncate">Müşteri Ekle</span></a></li>
             <li class=" nav-item"><a th:classappend="${ #request.getServletPath() == '/irsaliye' ? 'active' : '' }" class="d-flex align-items-center" href="/irsaliye"><i class="fas fa-project-diagram"></i><span class="menu-title text-truncate">İrsaliye </span></a></li>

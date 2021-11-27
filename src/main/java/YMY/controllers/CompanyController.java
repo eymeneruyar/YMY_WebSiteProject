@@ -41,7 +41,7 @@ public class CompanyController {
     @ResponseBody
     @DeleteMapping("/delete/{stId}")
     public Map<Check,Object> deleteCompany(@PathVariable String stId){
-        return deleteCompany(stId);
+        return companyDto.deleteCompany(stId);
     }
 
     @ResponseBody
@@ -56,6 +56,18 @@ public class CompanyController {
     @Cacheable("townsList")
     public Map<Check,Object> listTownsBySelectedCity(@PathVariable String stId){
         return companyDto.listTownsBySelectedCity(stId);
+    }
+
+    @ResponseBody
+    @GetMapping("/getInfoCityByCityKey/{stId}")
+    public Map<Check,Object> getInfoCityByCityKey(@PathVariable String stId){
+        return companyDto.getInfoCityByCityKey(stId);
+    }
+
+    @ResponseBody
+    @GetMapping("/detail/{stId}")
+    public Map<Check,Object> detailCompany(@PathVariable String stId){
+        return companyDto.detailCompany(stId);
     }
 
 }

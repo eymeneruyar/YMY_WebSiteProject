@@ -7,12 +7,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 public class Company extends BaseStructure{
 
-    @Column(unique = true)
     @NotNull(message = "Firma kodu boş olamaz!")
     @NotEmpty(message = "Firma kodu boş olamaz!")
     @Pattern(regexp="(^$|[0-9]{10})")
@@ -31,12 +32,12 @@ public class Company extends BaseStructure{
     @NotNull(message = "Firma telefonu boş olamaz!")
     @NotEmpty(message = "Firma telefonu boş olamaz!")
     //@Pattern(regexp="(^$|[0-9]{20})",message = "Girilen telefon formatı (###-###-####) olmalıdır!")
-    @Column(unique = true,length = 12)
+    @Column(length = 12)
     private String phone;
 
     @Size(max=50)
-    @Pattern(regexp="(^(.+)@(.+)$)")
-    @Column(unique = true,length = 50)
+    //@Pattern(regexp="(^(.+)@(.+)$)")
+    @Column(length = 50)
     private String email;
 
     @Size(max = 50, message = "Vergi dairesi maksimum 50 karakter olmalıdır!")
@@ -45,7 +46,7 @@ public class Company extends BaseStructure{
 
     @Size(max = 11, message = "Vergi dairesi numarası maksimum 11 karakter olmalıdır!")
     @Pattern(regexp="(^$|[0-9]{11})",message = "Vergi numarası 11 karakter olmalıdır!")
-    @Column(unique = true, length = 11)
+    @Column(length = 11)
     private String taxNumber;
 
     @Size(max = 50, message = "İl maksimum 50 karakter olmalıdır!")
@@ -59,5 +60,7 @@ public class Company extends BaseStructure{
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.DETACH, orphanRemoval = true)
+    private List<Customer> customers = new ArrayList<>();
 
 }

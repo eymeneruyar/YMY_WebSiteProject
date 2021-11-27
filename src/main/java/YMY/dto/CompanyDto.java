@@ -79,6 +79,7 @@ public class CompanyDto {
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Firma listeleme işlemi başarılı!");
                 hm.put(Check.result,companyRepository.findByStatusEqualsAndUserIdEqualsOrderByIdAsc(true,user.getId()));
+                //cacheService.cacheRefresh("companyList");
             }else{
                 String error = "Lütfen hesabınıza giriş yapıp tekrar deneyiniz!";
                 hm.put(Check.status,false);
@@ -152,6 +153,53 @@ public class CompanyDto {
             hm.put(Check.status,false);
             hm.put(Check.message,error);
             Util.logger(error + " " + e, Towns.class);
+            System.err.println(e);
+        }
+        return hm;
+    }
+
+    //Choose the city by selected city key no
+    public Map<Check,Object> getInfoCityByCityKey(String stId){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        try {
+            int id = Integer.parseInt(stId);
+            Optional<Cities> optionalCities = citiesRepository.findByCityKey(id);
+            if(optionalCities.isPresent()){
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Şehir bilgisi başarıyla getirildi!");
+                hm.put(Check.result,optionalCities.get());
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Verilen id değerine karşılık bir şehir bulunmamaktadır!");
+            }
+        } catch (Exception e) {
+            String error = "Şehir bilgisi getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, Cities.class);
+            System.err.println(e);
+        }
+        return hm;
+    }
+
+    public Map<Check,Object> detailCompany(String stId){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        try {
+            int id = Integer.parseInt(stId);
+            Optional<Company> optionalCompany = companyRepository.findById(id);
+            if(optionalCompany.isPresent()){
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Firma bilgisi başarıyla getirildi!");
+                hm.put(Check.result,optionalCompany.get());
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Verilen id değerine karşılık bir firma bulunmamaktadır!");
+            }
+        } catch (Exception e) {
+            String error = "Firma bilgisi getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, Company.class);
             System.err.println(e);
         }
         return hm;

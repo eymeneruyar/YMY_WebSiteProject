@@ -37,60 +37,59 @@
                                     <h4 class="card-title">Müşteri Ekle</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form class="form">
+                                    <form id="id_customerSaveForm" class="form">
                                         <div class="row">
                                             <div class="col-md-6 col-12 mb-1">
                                                 <label>Yetkili Firma</label>
-                                                <select class="select2 form-control form-control-lg">
-                                                    <option value="AK">Uludağ Oto</option>
-                                                    <option value="HI">Şen Ortaklar</option>
+                                                <select id="id_customerCompany" class="select2 form-control form-control-lg">
+
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-column">Müşteri Adı</label>
-                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Müşteri Adı"/>
+                                                    <label for="id_customerName">Müşteri Adı</label>
+                                                    <input id="id_customerName" type="text" class="form-control" placeholder="Müşteri Adı"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="last-name-column">Müşteri Soyadı</label>
-                                                    <input type="text" id="last-name-column" class="form-control" placeholder="Müşteri Soyadı"/>
+                                                    <label for="id_customerSurname">Müşteri Soyadı</label>
+                                                    <input id="id_customerSurname" type="text" class="form-control" placeholder="Müşteri Soyadı"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-icon">Müşteri Telefon</label>
+                                                    <label for="id_customerPhone">Müşteri Telefon</label>
                                                     <div class="input-group input-group-merge">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">(+90)</span>
                                                         </div>
-                                                        <input type="text" class="form-control phone-number-mask" placeholder="Firma Tel" />
+                                                        <input id="id_customerPhone" type="text" class="form-control phone-number-mask" placeholder="Firma Tel" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="email-id-column">Müşteri E-Posta</label>
-                                                    <input type="email" id="email-id-column" class="form-control" name="email-id-column" placeholder="Müşteri E-Posta" />
+                                                    <label for="id_customerEmail">Müşteri E-Posta</label>
+                                                    <input id="id_customerEmail" type="email" class="form-control" placeholder="Müşteri E-Posta" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-column">Araç Marka</label>
-                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Marka"/>
+                                                    <label for="id_customerBrand">Araç Marka</label>
+                                                    <input id="id_customerBrand" type="text" class="form-control" placeholder="Araç Marka"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-column">Araç Model</label>
-                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Model"/>
+                                                    <label for="id_customerModel">Araç Model</label>
+                                                    <input id="id_customerModel" type="text" class="form-control" placeholder="Araç Model"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-column">Araç Plaka</label>
-                                                    <input type="text" id="first-name-column" class="form-control" placeholder="Araç Plaka"/>
+                                                    <label for="id_customerPlate">Araç Plaka</label>
+                                                    <input id="id_customerPlate" type="text" class="form-control" placeholder="Araç Plaka"/>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -98,11 +97,11 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Not</span>
                                                     </div>
-                                                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                                                    <textarea id="id_customerNote" class="form-control" aria-label="With textarea"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
-                                                <button type="reset" class="btn btn-primary mr-1">Kaydet</button>
+                                                <button type="submit" class="btn btn-primary mr-1">Kaydet</button>
                                                 <button type="reset" class="btn btn-outline-secondary">Temizle</button>
                                             </div>
                                         </div>
@@ -117,20 +116,23 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <table class="datatables-basic table">
+                                <table class="datatables-basic table" id="id_customerTable">
                                     <thead>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>id</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Date</th>
-                                            <th>Salary</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Kod</th>
+                                            <th>Firma</th>
+                                            <th>Müşteri</th>
+                                            <th>Telefon</th>
+                                            <th>Marka</th>
+                                            <th>Model</th>
+                                            <th>Plaka</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Yönetim</th>
                                         </tr>
                                     </thead>
+                                    <tbody id="id_customerTableRow">
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -151,11 +153,15 @@
 
 <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
 <th:block layout:fragment="contentJs">
+
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/cleave.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-input-mask.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+
+    <script th:src="@{/customizeJs/customer.js}"></script>
+
 </th:block>
 <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
 
