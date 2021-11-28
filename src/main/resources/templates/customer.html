@@ -116,7 +116,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <table class="datatables-basic table" id="id_customerTable">
+                                <table class="datatables-basic table display nowrap" id="id_customerTable">
                                     <thead>
                                         <tr>
                                             <th>Kod</th>
@@ -143,6 +143,64 @@
         </div>
     </div>
     <!-- END: Content-->
+
+    <!-- Modal Product Detail -->
+    <div class="modal fade text-left" id="id_customerDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="id_customerDetailModalTitle">Large Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Firma Adı</label>
+                            <div   id="id_customerDetailModalCompany" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Müşteri İsmi</label>
+                            <div   id="id_customerDetailModalName" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Müşteri Soyismi</label>
+                            <div   id="id_customerDetailModalSurname" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Müşteri Telefonu</label>
+                            <div  id="id_customerDetailModalPhone" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Müşteri E-Posta</label>
+                            <div  id="id_customerDetailModalEmail" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Araç Markası</label>
+                            <div  id="id_customerDetailModalBrand" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Araç Model</label>
+                            <div  id="id_customerDetailModalModel" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Araç Plaka</label>
+                            <div  id="id_customerDetailModalPlate" class="form-text"></div>
+                        </div>
+                        <div class="col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Not</label>
+                            <div  id="id_customerDetailModalNote" class="form-text"></div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>

@@ -1,5 +1,6 @@
 package YMY.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -60,6 +61,7 @@ public class Company extends BaseStructure{
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.DETACH, orphanRemoval = true)
     private List<Customer> customers = new ArrayList<>();
 

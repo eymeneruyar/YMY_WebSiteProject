@@ -38,6 +38,24 @@ public class CustomerController {
     }
 
     @ResponseBody
+    @GetMapping("/listBySelectedCompany/{stId}")
+    public Map<Check,Object> listCustomersBySelectedCompany(@PathVariable String stId){
+        return customerDto.listCustomersBySelectedCompany(stId);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{stId}")
+    public Map<Check,Object> deleteCustomer(@PathVariable String stId){
+        return customerDto.deleteCustomer(stId);
+    }
+
+    @ResponseBody
+    @GetMapping("/detail/{stId}")
+    public Map<Check,Object> detailCustomer(@PathVariable String stId){
+        return customerDto.detailCustomer(stId);
+    }
+
+    @ResponseBody
     @GetMapping("/listAllCompany")
     @Cacheable("customerCompanyList")
     public Map<Check,Object> listAllCompany(){

@@ -34,40 +34,38 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">İş Listesi</h4>
+                                    <h4 class="card-title">İrsaliye Oluştur</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="#" class="invoice-repeater">
+                                    <form id="id_dispatchNoteSaveForm" class="invoice-repeater">
                                         <div class="row">
                                             <div class="col-md-4 col-12 mb-1">
-                                                <label>Yetkili Firma</label>
-                                                <select class="select2 form-control form-control-lg">
-                                                    <option value="AK">Uludağ Oto</option>
-                                                    <option value="HI">Şen Ortaklar</option>
+                                                <label for="id_dispatchNoteCompany">Yetkili Firma</label>
+                                                <select id="id_dispatchNoteCompany" class="select2 form-control form-control-lg">
+
                                                 </select>
                                             </div>
                                             <div class="col-md-4 col-12 mb-1">
-                                                <label>Müşteri</label>
-                                                <select class="select2 form-control form-control-lg">
-                                                    <option value="AK">Uludağ Oto</option>
-                                                    <option value="HI">Şen Ortaklar</option>
+                                                <label for="id_dispatchNoteCustomer">Müşteri</label>
+                                                <select id="id_dispatchNoteCustomer" class="select2 form-control form-control-lg">
+
                                                 </select>
                                             </div>
                                             <div class="col-md-2 col-12 mb-1">
-                                                <label for="basicSelect">KDV</label>
-                                                <select class="form-control" id="basicSelect">
+                                                <label for="id_dispatchNoteTax">KDV</label>
+                                                <select id="id_dispatchNoteTax" class="form-control">
                                                     <option>Yok</option>
                                                     <option>Dahil</option>
                                                     <option>%18</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 col-12">
-                                                <label for="">İskonto</label>
+                                                <label for="id_dispatchNoteDiscount">İskonto</label>
                                                 <div class="input-group input-group-merge">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">%</span>
                                                     </div>
-                                                    <input type="number" class="form-control phone-number-mask" placeholder="İskonto" />
+                                                    <input id="id_dispatchNoteDiscount" type="number" class="form-control phone-number-mask" placeholder="İskonto" />
                                                 </div>
                                             </div>
                                         </div>
@@ -76,29 +74,29 @@
                                                 <div class="row d-flex align-items-end">
                                                     <div class="col-md-6 col-12">
                                                         <div class="form-group">
-                                                            <label for="itemname">Yapılan İş</label>
-                                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                                                            <label for="id_dispatchNoteWork">Yapılan İş</label>
+                                                            <textarea id="id_dispatchNoteWork" class="form-control" rows="1"></textarea>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-1 col-12">
                                                         <div class="form-group">
-                                                            <label for="itemquantity">Miktar</label>
-                                                            <input type="number" class="form-control" id="itemquantity" aria-describedby="itemquantity"/>
+                                                            <label for="id_dispatchNoteQuantity">Miktar</label>
+                                                            <input id="id_dispatchNoteQuantity" type="number" class="form-control" aria-describedby="itemquantity"/>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-1 col-12">
                                                         <div class="form-group">
-                                                            <label for="itemcost">Fiyat</label>
-                                                            <input type="number" class="form-control" id="itemcost" aria-describedby="itemcost"/>
+                                                            <label for="id_dispatchNotePrice">Fiyat</label>
+                                                            <input id="id_dispatchNotePrice" type="number" class="form-control" aria-describedby="itemcost"/>
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="col-md-1 col-12">
                                                         <div class="form-group">
-                                                            <label for="staticprice">Toplam</label>
-                                                            <input type="text" readonly class="form-control-plaintext" id="staticprice" value="$32" />
+                                                            <label for="id_dispatchNoteTotal">Toplam</label>
+                                                            <input id="id_dispatchNoteTotal" type="text" readonly class="form-control-plaintext" value="$32" />
                                                         </div>
                                                     </div>
 
@@ -120,7 +118,7 @@
                                                     <i data-feather="plus" class="mr-25"></i>
                                                     <span>Satır Ekle</span>
                                                 </button>
-                                                <button type="reset" class="btn btn-success mr-1">Kaydet</button>
+                                                <button type="submit" class="btn btn-success mr-1">Kaydet</button>
                                             </div>
                                         </div>
                                     </form>
@@ -134,20 +132,20 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <table class="datatables-basic table">
+                                <table class="datatables-basic table" id="id_dispatchNoteTable">
                                     <thead>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>id</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Date</th>
-                                            <th>Salary</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Fatura Kodu</th>
+                                            <th>Yapılan İş</th>
+                                            <th>Miktar</th>
+                                            <th>Fiyat</th>
+                                            <th>Toplam</th>
+                                            <th>Yönetim</th>
                                         </tr>
                                     </thead>
+                                    <tbody id="id_dispatchNoteTableRow">
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -167,12 +165,15 @@
 
 
 <th:block layout:fragment="contentJs">
+
     <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-repeater.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+    <script th:src="@{/customizeJs/dispatchNote.js}"></script>
     <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
+
 </th:block>
 
 </body>

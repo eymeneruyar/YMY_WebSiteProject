@@ -8,5 +8,6 @@ import java.util.List;
 public interface CustomerRepository extends JpaRepository<Customer,Integer> {
 
     List<Customer> findByStatusAndUserIdOrderByIdAsc(boolean status, int userId);
+    List<Customer> findByStatusAndUserIdAndCompany_Id(boolean status, int userId, Integer id);
 
 }
