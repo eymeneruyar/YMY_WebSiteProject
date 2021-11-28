@@ -17,31 +17,31 @@ function dataTable() {
                         extend: 'print',
                         text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'csv',
                         text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'excel',
                         text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'pdf',
                         text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     },
                     {
                         extend: 'copy',
                         text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [1,2,3,4,5] }
                     }
                 ],
             }
@@ -77,3 +77,118 @@ dataTable()
 
 let select_id = 0
 let globalArr = []
+//-------------------------------------- Save or Update Dispatch Note Information - Start --------------------------------------//
+$("#id_dispatchNoteSaveForm").submit((event) => {
+
+    event.preventDefault()
+
+    const dispatchNoteCompany = $("#id_dispatchNoteCompany").val()
+    const dispatchNoteCustomer = $("#id_dispatchNoteCustomer").val()
+    const dispatchNoteVat = $("#id_dispatchNoteVat").val()
+    const dispatchNoteDiscount = $("#id_dispatchNoteDiscount").val()
+    const dispatchNoteWork = $("#id_dispatchNoteWork").val()
+    const dispatchNoteQuantity = $("#id_dispatchNoteQuantity").val()
+    const dispatchNotePrice = $("#id_dispatchNotePrice").val()
+
+    const obj = {
+        company: {id: dispatchNoteCompany},
+        customer: {id: dispatchNoteCustomer},
+        vat: dispatchNoteVat,
+        discount: dispatchNoteDiscount,
+        code: codeGenerator(),
+        workses: $('.invoice-repeater').repeaterVal()['list_data']
+    }
+
+    console.log(obj)
+
+
+})
+//-------------------------------------- Save or Update Dispatch Note Information - End ----------------------------------------//
+
+//-------------------------------------- Company List - Start ----------------------------------------//
+function fncListAllCompany(){
+
+    $.ajax({
+        url: "./irsaliye/listCompanyByUserId",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncOptionCompany(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncOptionCompany(data){
+    $("#id_dispatchNoteCompany").append('<option value="default">Lütfen bir seçim yapınız</option>')
+    data.result.forEach((item) => {
+        $("#id_dispatchNoteCompany").append('<option value="'+item.id+'">'+item.name+' </option>')
+    })
+    $('#id_dispatchNoteCustomer').attr("disabled", true);
+}
+
+fncListAllCompany()
+//-------------------------------------- Company List - End ------------------------------------------//
+
+//-------------------------------------- Customer List - Start ----------------------------------------//
+function fncListCustomerBySelectedCompany(id){
+    $.ajax({
+        url: "./irsaliye/listCustomersBySelectedCompany/" + id,
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncOptionCustomer(data)
+            //console.log(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncOptionCustomer(data){
+    $("#id_dispatchNoteCustomer").empty()
+    if(data.result.length === 0){
+        $("#id_dispatchNoteCustomer").append('<option value="default">Müşteri bulunmamaktadır.</option>')
+    }
+    data.result.forEach((item) => {
+        $("#id_dispatchNoteCustomer").append('<option value="'+item.id+'">'+item.name+' '+item.surname+' - '+item.plate+'</option>')
+    })
+    $('#id_dispatchNoteCustomer').attr("disabled", false);
+}
+
+$("#id_dispatchNoteCompany").change(function (){
+    //console.log($(this).val())
+    fncListCustomerBySelectedCompany($(this).val())
+})
+//-------------------------------------- Customer List - End ------------------------------------------//
+
+//-------------------------------------- Code Generator - Start ------------------------------------------//
+function codeGenerator() {
+    const date = new Date();
+    const time = date.getTime();
+    return time.toString().substring(3);
+}
+//-------------------------------------- Code Generator - End --------------------------------------------//
+
+//-------------------------------------- Reset Form - Start ------------------------------------------//
+function resetForm(){
+    select_id = 0
+    fncListCustomer()
+    $("#id_customerName").val(" ")
+    $("#id_customerSurname").val(" ")
+    $("#id_customerPhone").val(" ")
+    $("#id_customerEmail").val(" ")
+    $("#id_customerBrand").val(" ")
+    $("#id_customerModel").val(" ")
+    $("#id_customerPlate").val(" ")
+    $("#id_customerNote").val(" ")
+
+}
+//-------------------------------------- Reset Form - End --------------------------------------------//

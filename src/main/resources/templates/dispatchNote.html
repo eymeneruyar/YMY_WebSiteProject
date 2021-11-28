@@ -52,11 +52,11 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 col-12 mb-1">
-                                                <label for="id_dispatchNoteTax">KDV</label>
-                                                <select id="id_dispatchNoteTax" class="form-control">
-                                                    <option>Yok</option>
-                                                    <option>Dahil</option>
-                                                    <option>%18</option>
+                                                <label for="id_dispatchNoteVat">KDV</label>
+                                                <select id="id_dispatchNoteVat" class="form-control">
+                                                    <option value="Yok">Yok</option>
+                                                    <option value="Dahil">Dahil</option>
+                                                    <option value="18">%18</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 col-12">
@@ -69,27 +69,27 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div data-repeater-list="invoice">
+                                        <div data-repeater-list="list_data">
                                             <div data-repeater-item>
                                                 <div class="row d-flex align-items-end">
                                                     <div class="col-md-6 col-12">
                                                         <div class="form-group">
                                                             <label for="id_dispatchNoteWork">Yapılan İş</label>
-                                                            <textarea id="id_dispatchNoteWork" class="form-control" rows="1"></textarea>
+                                                            <textarea id="id_dispatchNoteWork" name="work" class="form-control" rows="1"></textarea>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-1 col-12">
                                                         <div class="form-group">
                                                             <label for="id_dispatchNoteQuantity">Miktar</label>
-                                                            <input id="id_dispatchNoteQuantity" type="number" class="form-control" aria-describedby="itemquantity"/>
+                                                            <input id="id_dispatchNoteQuantity" name="quantity" type="text" class="form-control" aria-describedby="itemquantity"/>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-1 col-12">
                                                         <div class="form-group">
                                                             <label for="id_dispatchNotePrice">Fiyat</label>
-                                                            <input id="id_dispatchNotePrice" type="number" class="form-control" aria-describedby="itemcost"/>
+                                                            <input id="id_dispatchNotePrice" name="price" type="text" class="form-control" aria-describedby="itemcost"/>
                                                         </div>
                                                     </div>
                                                     
