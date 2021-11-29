@@ -1,8 +1,6 @@
 package YMY.dto;
 
-import YMY.entities.Company;
 import YMY.entities.Customer;
-import YMY.entities.DispatchNote;
 import YMY.entities.User;
 import YMY.repositories.CompanyRepository;
 import YMY.repositories.CustomerRepository;

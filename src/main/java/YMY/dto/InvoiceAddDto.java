@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
-public class DispatchNoteDto {
+public class InvoiceAddDto {
 
     final CompanyRepository companyRepository;
     final CustomerRepository customerRepository;
@@ -24,7 +24,7 @@ public class DispatchNoteDto {
     final WorksRepository worksRepository;
     final UserService userService;
     final CacheService cacheService;
-    public DispatchNoteDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, WorksRepository worksRepository, UserService userService, CacheService cacheService) {
+    public InvoiceAddDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, WorksRepository worksRepository, UserService userService, CacheService cacheService) {
         this.companyRepository = companyRepository;
         this.customerRepository = customerRepository;
         this.invoiceRepository = invoiceRepository;
@@ -81,6 +81,5 @@ public class DispatchNoteDto {
         }
         return hm;
     }
-
 
 }

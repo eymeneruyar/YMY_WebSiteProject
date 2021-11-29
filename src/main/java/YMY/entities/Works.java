@@ -22,9 +22,9 @@ public class Works extends BaseStructure{
     private String quantity;
 
     @Column(length = 100)
-    @NotNull(message = "Fiyat alanı boş olamaz!")
-    @NotEmpty(message = "Fiyat alanı boş olamaz!")
-    private String price;
+    @NotNull(message = "Birim fiyat alanı boş olamaz!")
+    @NotEmpty(message = "Birim fiyat alanı boş olamaz!")
+    private String unitPrice;
 
     @Column(length = 100)
     private String total;
