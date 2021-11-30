@@ -1,13 +1,13 @@
 package YMY.controllers;
 
 import YMY.dto.InvoiceAddDto;
+import YMY.entities.Invoice;
 import YMY.utils.Check;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -25,6 +25,12 @@ public class InvoiceAddController {
     }
 
     @ResponseBody
+    @PostMapping("/saveOrUpdate")
+    public Map<Check,Object> invoiceSaveOrUpdate(@RequestBody @Valid Invoice invoice, BindingResult bindingResult){
+        return invoiceAddDto.invoiceSaveOrUpdate(invoice,bindingResult);
+    }
+
+    @ResponseBody
     @GetMapping("/listCompanyByUserId")
     public Map<Check,Object> listCompanyByUserId(){
         return invoiceAddDto.listCompanyByUserId();
@@ -34,6 +40,12 @@ public class InvoiceAddController {
     @GetMapping("/listCustomersBySelectedCompany/{stId}")
     public Map<Check,Object> listCustomersBySelectedCompany(@PathVariable String stId){
         return invoiceAddDto.listCustomersBySelectedCompany(stId);
+    }
+
+    @ResponseBody
+    @GetMapping("/generateInvoiceCode")
+    public Map<Check,Object> generateInvoiceCode(){
+        return invoiceAddDto.generateInvoiceCode();
     }
 
 }

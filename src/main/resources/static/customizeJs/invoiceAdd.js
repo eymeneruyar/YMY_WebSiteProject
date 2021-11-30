@@ -6,26 +6,40 @@ function fncSaveButton(){
 
     event.preventDefault()
 
-    const invoiceDate = $("#id_invoiceAddDate").val()
+    const invoiceCode = $("#id_invoiceAddInvoiceNo").val()
+    const invoiceBilling = $("#id_invoiceAddBillingStatus").val()
     const invoiceCompany = $("#id_invoiceAddCompany").val()
     const invoiceCustomer = $("#id_invoiceAddCustomer").val()
     const invoiceVat = $("#id_invoiceAddVat").val()
     const invoiceDiscount = $("#id_invoiceAddDiscount").val()
-    const invoiceWork = $("#id_invoiceAddWork").val()
-    const invoiceQuantity = $("#id_invoiceAddQuantity").val()
-    const invoicePrice = $("#id_invoiceAddPrice").val()
+    const invoiceNote = $("#id_invoiceAddNote").val()
 
     const obj = {
         company: {id: invoiceCompany},
         customer: {id: invoiceCustomer},
         vat: invoiceVat,
         discount: invoiceDiscount,
-        invoiceCode: codeGenerator(),
+        invoiceCode: invoiceCode,
+        billingStatus: invoiceBilling,
+        note: invoiceNote,
         workses: $('.source-item').repeaterVal()["list_data"]
     }
 
-    console.log(obj)
-
+    $.ajax({
+        url:"./fatura_ekle/saveOrUpdate",
+        type: "POST",
+        data: JSON.stringify(obj),
+        dataType: "JSON",
+        contentType: "application/json; charset=utf-8",
+        success: function (data){
+            fncSweetAlert(data)
+            //resetForm()
+            console.log(data)
+        },
+        error: function (err){
+            console.log(err)
+        }
+    })
 
 }
 //-------------------------------------- Save or Update Dispatch Note Information - End ----------------------------------------//
@@ -94,10 +108,95 @@ $("#id_invoiceAddCompany").change(function (){
 })
 //-------------------------------------- Customer List - End ------------------------------------------//
 
+//-------------------------------------- Sweet Alert Box - Start ----------------------------------------//
+function fncSweetAlert(data){
+    if(data.status == true && data.result == null){
+        Swal.fire({
+            title: 'Başarılı!',
+            text: "Dönen veri boş, lütfen işleminizi kontrol ediniz!",
+            icon: "success",
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }else if(data.status == true && data.result != null){
+        Swal.fire({
+            title: 'Başarılı!',
+            text: data.message,
+            icon: "success",
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }else{
+        if (!jQuery.isEmptyObject(data.error)) {
+            //console.log(data.errors)
+            Swal.fire({
+                title: 'Hata!',
+                text: data.error[0].defaultMessage,
+                icon: "error",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }else{
+            Swal.fire({
+                title: 'Hata!',
+                text: data.message,
+                icon: "error",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }
+    }
+}
+//-------------------------------------- Sweet Alert Box - End ------------------------------------------//
+
 //-------------------------------------- Code Generator - Start ------------------------------------------//
 function codeGenerator(){
-    const date = new Date();
-    const code = "SN36" + date.getFullYear() + (date.getMonth()+1)
-    return code.toString()
+    var output
+    $.ajax({
+        url: "./fatura_ekle/generateInvoiceCode",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        async:false,
+        success: function (data) {
+            console.log(data)
+            output = data.result
+            $("#id_invoiceAddInvoiceNo").val(data.result)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+    return output
 }
+codeGenerator()
 //-------------------------------------- Code Generator - End --------------------------------------------//
+
+//-------------------------------------- Reset Form - Start ------------------------------------------//
+function resetForm(){
+    select_id = 0
+    //fncListCustomer()
+    $("#id_invoiceAddInvoiceNo").val(codeGenerator())
+
+    $("#id_invoiceAddCompany").empty()
+    fncListAllCompany()
+
+    $("#id_invoiceAddCustomer").empty()
+    $('#id_invoiceAddCustomer').attr("disabled", true);
+
+    $("#id_invoiceAddDiscount").val("")
+    $("#id_invoiceAddNote").val("")
+
+    //$('.source-item').repeaterVal()
+
+}
+//-------------------------------------- Reset Form - End --------------------------------------------//
+
