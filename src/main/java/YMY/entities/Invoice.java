@@ -21,15 +21,13 @@ public class Invoice extends BaseStructure{
 
     @Column(length = 5)
     @NotNull(message = "KDV alanı boş olamaz!")
-    @NotEmpty(message = "KDV alanı boş olamaz!")
     @Comment("KDV")
-    private String vat;
+    private Integer vat;
 
     @Column(length = 5)
     @NotNull(message = "İskonto alanı boş olamaz!")
-    @NotEmpty(message = "İskonto alanı boş olamaz!")
     @Comment("İskonto")
-    private String discount;
+    private Integer discount;
 
     @Comment("Fatura kesim tarihi")
     private String billingDate;
@@ -39,15 +37,15 @@ public class Invoice extends BaseStructure{
 
     @Column(length = 10)
     @Comment("Borç")
-    private String debt; //Borç
+    private Float debt; //Borç
 
     @Column(length = 10)
     @Comment("Ödenen miktar")
-    private String paid; //Ödenen
+    private Float paid; //Ödenen
 
     @Column(length = 10)
     @Comment("Kalan borç")
-    private String remainingDebt; //Kalan Borç
+    private Float remainingDebt; //Kalan Borç
 
     @Comment("Fatura ödenme durumu: true = Ödenmiş, false = ödenmemiş")
     private boolean paidStatus;

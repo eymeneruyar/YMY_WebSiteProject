@@ -50,29 +50,30 @@ public class InvoiceAddDto {
                 if(user.getId() != null){
                     //Works save process
                     invoice.getWorkses().forEach(it ->{
-                        int quantity = Integer.parseInt(it.getQuantity());
-                        float unitPrice = Float.parseFloat(it.getUnitPrice());
-                        float total = (float) quantity * unitPrice;
+                        Integer quantity = it.getQuantity();
+                        Float unitPrice = it.getUnitPrice();
+                        Float total = quantity * unitPrice;
                         result.add(total);
                         it.setStatus(true);
                         it.setDate(Util.generateDate());
                         it.setUserId(user.getId());
-                        it.setTotal(String.valueOf(total));
+                        it.setTotal(total);
                     });
                     //Works save process
                     debt = (float) result.stream().mapToDouble(Float::floatValue).sum();
-                    discount = Float.parseFloat(invoice.getDiscount());
+                    discount = invoice.getDiscount();
+                    kdv = invoice.getVat();
                     //Düzenlenmesi gerek
-                    if(invoice.getVat() == "18" && discount > 0){
+                    if(kdv == 18 && discount > 0){
                         debt = debt - (debt*(discount/100));
-                        debt = (float) (debt + (debt * 0.18));
+                        debt = debt + (debt * (kdv/100));
                         System.out.println("KDV ve iskonto var: " + debt);
                     }
-                    else if(invoice.getVat() == "18" && discount <= 0){
-                        debt = (float) (debt + (debt * 0.18));
+                    else if(kdv == 18 && discount <= 0){
+                        debt = debt + (debt * (kdv/100));
                         System.out.println("KDV var ama iskonto yok: " + debt);
                     }
-                    else if(invoice.getVat() == "0" && discount > 0){
+                    else if(kdv == 0 && discount > 0){
                         debt = debt - (debt*(discount/100));
                         System.out.println("KDV yok ama iskonto var: " + debt);
                     }
@@ -81,9 +82,9 @@ public class InvoiceAddDto {
                     invoice.setStatus(true);
                     invoice.setPaidStatus(false);
                     invoice.setDate(Util.generateDate());
-                    invoice.setDebt(String.valueOf(debt));
-                    invoice.setPaid("0");
-                    invoice.setRemainingDebt("0");
+                    invoice.setDebt(debt);
+                    invoice.setPaid(0f);
+                    invoice.setRemainingDebt(0f);
                     invoiceRepository.saveAndFlush(invoice);
                     hm.put(Check.status,true);
                     hm.put(Check.message,"Fatura kayıt işlemi başarıyla tamamlandı!");

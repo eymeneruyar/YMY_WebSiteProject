@@ -17,20 +17,18 @@ public class Works extends BaseStructure{
     @Comment("Yapılan iş")
     private String work;
 
-    @Column(length = 100)
+    @Column(length = 5)
     @NotNull(message = "Miktar alanı boş olamaz!")
-    @NotEmpty(message = "Miktar alanı boş olamaz!")
     @Comment("Yapılan işin miktar")
-    private String quantity;
+    private Integer quantity;
 
-    @Column(length = 100)
+    @Column(length = 16)
     @NotNull(message = "Birim fiyat alanı boş olamaz!")
-    @NotEmpty(message = "Birim fiyat alanı boş olamaz!")
     @Comment("Yapılan işin birim fiyatı")
-    private String unitPrice;
+    private Float unitPrice;
 
-    @Column(length = 100)
+    @Column(length = 16)
     @Comment("miktar * birim fiyat")
-    private String total;
+    private Float total;
 
 }
