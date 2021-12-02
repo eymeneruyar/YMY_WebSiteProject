@@ -105,6 +105,79 @@ public class InvoiceAddDto {
         return hm;
     }
 
+    //Listing invoice (Start of Month - Today)
+    public Map<Check,Object> listInvoiceThisMonth(){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String startDate = "";
+        String endDate = "";
+        try {
+            if(user.getId() != null){
+                String[] date = Util.generateDate().split("-");
+                startDate = date[0] + "-" + date[1] + "-" + "01";
+                endDate = Util.generateDate();
+                hm.put(Check.status,true);
+                hm.put(Check.message,"İş emirleri başarılı bir şekilde listelendi!");
+                hm.put(Check.result,invoiceRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenOrderByInvoiceCodeDesc(true,user.getId(),startDate,endDate));
+            }else{
+                String error = "Lütfen hesabınıza giriş yapıp tekrar deneyiniz!";
+                hm.put(Check.status,false);
+                hm.put(Check.message,error);
+                Util.logger(error, Invoice.class);
+            }
+        } catch (Exception e) {
+            String error = "İş emirleri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, Invoice.class);
+        }
+        return hm;
+    }
+
+    //Listing invoice (Date range - Company - Billing Status)
+    public Map<Check,Object> listFilteredInvoice(String date,String companyId,String billingStatus){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String[] dateArr = date.replaceAll(" to ",",").split(",");
+        String startDate = dateArr[0];
+        String endDate = dateArr[1];
+        try {
+            Integer id = Integer.parseInt(companyId);
+            Integer billingStatusId = Integer.parseInt(billingStatus);
+            Optional<Company> optionalCompany = companyRepository.findById(id);
+            if(user.getId() != null){
+                if(optionalCompany.isPresent()){
+                    hm.put(Check.status,true);
+                    hm.put(Check.message,"İş emirleri başarılı bir şekilde listelendi!");
+                    if(billingStatusId == 0){ //Fatura Kesilmeyecek
+                        hm.put(Check.result,invoiceRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenAndCompany_IdEqualsAndBillingStatusEqualsOrderByInvoiceCodeDesc(true,user.getId(),startDate,endDate,id,billingStatus));
+                    }else if(billingStatusId == 1){ //Fatura kesilecek
+                        hm.put(Check.result,invoiceRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenAndCompany_IdEqualsAndBillingStatusEqualsOrderByInvoiceCodeDesc(true,user.getId(),startDate,endDate,id,billingStatus));
+                    }else if(billingStatusId == 2){ //Tümü
+                        hm.put(Check.result,invoiceRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenAndCompany_IdEqualsOrderByInvoiceCodeDesc(true,user.getId(),startDate,endDate,id));
+                    }else{
+                        hm.put(Check.result,null);
+                    }
+                }else{
+                    String error = "Seçilen firma bulunamadı!";
+                    hm.put(Check.status,false);
+                    hm.put(Check.message,error);
+                }
+            }else{
+                String error = "Lütfen hesabınıza giriş yapıp tekrar deneyiniz!";
+                hm.put(Check.status,false);
+                hm.put(Check.message,error);
+                Util.logger(error, Invoice.class);
+            }
+        } catch (Exception e) {
+            String error = "İş emirleri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, Invoice.class);
+        }
+        return hm;
+    }
+
     //Listing company by user in system
     public Map<Check,Object> listCompanyByUserId(){
         Map<Check,Object> hm = new LinkedHashMap<>();
@@ -164,16 +237,16 @@ public class InvoiceAddDto {
         try {
             if(user.getId() != null){
                 String[] date = Util.generateDate().split("-");
-                startDate = "01" + "-" + date[1] + "-" + date[2];
+                startDate = date[0] + "-" + date[1] + "-" + "01";
                 endDate = Util.generateDate();
                 System.out.println("Start Data: " + startDate);
                 System.out.println("End Date: " + endDate);
-                long workNumber = invoiceRepository.countByDateBetweenAndStatusEqualsAndUserIdEqualsAndDateContains(startDate,endDate,true,user.getId(),date[1]);
+                long workNumber = invoiceRepository.countByStatusEqualsAndUserIdEqualsAndDateBetween(true,user.getId(),startDate,endDate);
                 System.out.println("Work number: " + workNumber);
                 if(String.valueOf(workNumber).length() == 1){
-                    code = "SN36" + date[2] + date[1] + "0" + (workNumber+1); //İş sayısı 10'dan küçükse başına 0 ekleyerek yazar.
+                    code = "SN36" + date[0] + date[1] + "0" + (workNumber+1); //İş sayısı 10'dan küçükse başına 0 ekleyerek yazar.
                 }else {
-                    code = "SN36" + date[2] + date[1] + (workNumber+1); //İş sayısı 10'dan büyükse direk yazar.
+                    code = "SN36" + date[0] + date[1] + (workNumber+1); //İş sayısı 10'dan büyükse direk yazar.
                 }
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Fatura kodu başarılı bir şekilde oluşturuldu!");

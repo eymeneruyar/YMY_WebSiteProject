@@ -31,6 +31,18 @@ public class InvoiceAddController {
     }
 
     @ResponseBody
+    @GetMapping("/listInvoiceThisMonth")
+    public Map<Check,Object> listInvoiceThisMonth(){
+        return invoiceAddDto.listInvoiceThisMonth();
+    }
+
+    @ResponseBody
+    @GetMapping("/listFilteredInvoice/{date}/{companyId}/{billingStatus}")
+    public Map<Check,Object> listFilteredInvoice(@PathVariable String date,@PathVariable String companyId,@PathVariable String billingStatus){
+        return invoiceAddDto.listFilteredInvoice(date,companyId,billingStatus);
+    }
+
+    @ResponseBody
     @GetMapping("/listCompanyByUserId")
     public Map<Check,Object> listCompanyByUserId(){
         return invoiceAddDto.listCompanyByUserId();

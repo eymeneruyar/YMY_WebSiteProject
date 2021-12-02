@@ -38,7 +38,7 @@ public class Util {
     //Generate date
     public static String generateDate(){
         //String pattern = "dd-MM-yyyy HH:mm:ss";
-        String pattern = "dd-MM-yyyy";
+        String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         return simpleDateFormat.format(new Date());
     }

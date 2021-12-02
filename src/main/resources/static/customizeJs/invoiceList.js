@@ -76,3 +76,55 @@ function dataTable() {
 }
 dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
+
+let select_id = 0
+let globalArr = []
+//-------------------------------------- List of Invoice (Start of Month - Today) - Start ----------------------------------------//
+function fncListInvoiceThisMonth(){
+    var out
+    $.ajax({
+        url: "./fatura_ekle/listInvoiceThisMonth",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        async:false,
+        success: function (data) {
+            console.log(data)
+            out = data
+            if($.fn.DataTable.isDataTable("#id_customerTable")){
+                $("#id_customerTable").DataTable().destroy()
+            }
+            fncCreateRowDataTable(data)
+            dataTable()
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+    return out
+}
+fncListInvoiceThisMonth()
+function fncCreateRowDataTable(data){
+    let html = ``
+    data.result.forEach( item => {
+        globalArr.push(item)
+        formatDate =  fncConvertDate(item.date)
+        html += `<tr  role="row" class="odd">
+                    <td>${item.invoiceCode}</td>
+                    <td>${item.company.name}</td>
+                    <td>${item.customer.name} ${item.customer.surname}</td>
+                    <td>${item.plate}</td>
+                    <td>${item.billingStatus}</td>
+                    <td>${item.debt}</td>
+                    <td>${item.paid}</td>
+                    <td>${formatDate}</td>
+                    <td class="text-left">
+                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                        <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
+                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                    </td>`
+    })
+    $("#id_invoiceAddTableRow").html(html)
+}
+//-------------------------------------- List of Invoice (Start of Month - Today) - End ------------------------------------------//
+

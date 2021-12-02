@@ -138,13 +138,14 @@ function createRowDataTable(data){
     let html = ``
     data.result.forEach( (item) => {
         globalArr.push(item)
+        formatDate =  fncConvertDate(item.date)
         html += `<tr  role="row" class="odd">
                     <td>${item.code}</td>
                     <td>${item.name}</td>
                     <td>${item.authorisedPerson}</td>
                     <td>${item.phone}</td>
                     <td>${item.email}</td>
-                    <td>${item.date}</td>
+                    <td>${formatDate}</td>
                     <td class="text-left">
                         <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                         <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
@@ -416,3 +417,10 @@ function resetForm(){
     //$('#id_companyTown').attr("disabled", true);
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//
+
+//-------------------------------------- Date Convert - Start ------------------------------------------//
+function fncConvertDate(date){
+    let arr = date.split("-")
+    return arr[2] + "-" + arr[1] + "-" + arr[0]
+}
+//-------------------------------------- Date Convert - End --------------------------------------------//

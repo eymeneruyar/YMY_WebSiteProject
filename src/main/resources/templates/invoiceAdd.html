@@ -38,10 +38,10 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs justify-content-center" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#invoiceCreate" aria-controls="home-center" role="tab" aria-selected="false">Fatura Oluştur</a>
+                                            <a class="nav-link active" data-toggle="tab" href="#invoiceCreate" aria-controls="home-center" role="tab" aria-selected="false">İş Emri Oluştur</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#invoiceList" aria-controls="service-center" role="tab" aria-selected="true">Fatura Listesi</a>
+                                            <a class="nav-link" data-toggle="tab" href="#invoiceList" aria-controls="service-center" role="tab" aria-selected="true">İş Emri Listesi</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -248,67 +248,62 @@
                     <div class="tab-pane" id="invoiceList" aria-labelledby="service-tab-center" role="tabpanel">
 
                         <div class="row">
-
-                        </div>
-
-                        <section id="basic-datatable">
-                            <div class="row">
-                                <div class="col-md-9 col-12">
-                                    <div class="card">
-                                        <table class="datatables-basic table display nowrap" id="id_invoiceAddTable">
-                                            <thead>
-                                            <tr>
-                                                <th>İş Emri No</th>
-                                                <th>Firma</th>
-                                                <th>Müşteri</th>
-                                                <th>Plaka</th>
-                                                <th>Fatura Kesim</th>
-                                                <th>Toplam Tutar</th>
-                                                <th>Ödenen Miktar</th>
-                                                <th>Kayıt Tarihi</th>
-                                                <th>Yönetim</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="id_invoiceAddTableRow">
-
-                                            </tbody>
-                                        </table>
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header border-bottom p-1">
+                                        <h2>Filtrele</h2>
                                     </div>
-                                </div>
-                                <div class="col-md-3 col-12">
-                                    <div class="card">
-                                        <div class="card-header border-bottom p-1">
-                                            <h2>Filtrele</h2>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label for="fp-range">Tarih</label>
-                                            <input type="text" id="fp-range" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Firma</label>
-                                            <select id="id_invoiceListFilterCompany" class="select2 form-control">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 col-12 mb-1">
+                                                <label for="id_invoiceListFilterDate">Tarih</label>
+                                                <input type="text" id="id_invoiceListFilterDate" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
+                                            </div>
+                                            <div class="col-md-4 col-12 mb-1">
+                                                <label>Firma</label>
+                                                <select id="id_invoiceListFilterCompany" class="select2 form-control">
 
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Müşteri</label>
-                                            <select id="id_invoiceListFilterCustomer" class="select2 form-control">
-
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Fatura Kesim</label>
-                                            <select class="form-control mb-1" id="selectDefault">
-                                                <option selected="">Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-12 mb-1">
+                                                <label for="id_invoiceListFilterBillingStatus">Fatura Kesim</label>
+                                                <select class="form-control mb-1" id="id_invoiceListFilterBillingStatus">
+                                                    <option value="2" selected>Tümü</option>
+                                                    <option value="1">Evet</option>
+                                                    <option value="0">Hayır</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </section>
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <table class="datatables-basic table display nowrap" id="id_invoiceAddTable">
+                                        <thead>
+                                        <tr>
+                                            <th>İş Emri No</th>
+                                            <th>Firma</th>
+                                            <th>Müşteri</th>
+                                            <th>Plaka</th>
+                                            <th>Fatura Kesim</th>
+                                            <th>Toplam Tutar</th>
+                                            <th>Ödenen Miktar</th>
+                                            <th>Borç</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Yönetim</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="id_invoiceAddTableRow">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -330,9 +325,12 @@
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/extensions/moment.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/app-invoice.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.date.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.time.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/pickers/form-pickers.js}"></script>
-    <script th:src="@{/customizeJs/invoiceList.js}"></script>
+    <!-- <script th:src="@{/customizeJs/invoiceList.js}"></script> -->
     <script th:src="@{/customizeJs/invoiceAdd.js}"></script>
 
 </th:block>
