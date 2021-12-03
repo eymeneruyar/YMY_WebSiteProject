@@ -77,6 +77,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Address and Contact ends -->
 
                                 <!-- Invoice Description starts -->
                                 <div class="table-responsive">
@@ -132,7 +133,7 @@
                                                 </div>
                                                 <hr class="my-50" />
                                                 <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Toplam:</p>
+                                                    <p class="invoice-total-title">Ödenecek Tutar:</p>
                                                     <p class="invoice-total-amount" th:text="${invoice.debt} + ' ' + '₺'"></p>
                                                 </div>
                                             </div>
@@ -164,8 +165,8 @@
                                     <a href="/fatura_ekle" class="btn btn-primary btn-block mb-75">
                                         Yeni Kayıt
                                     </a>
-                                    <button class="btn btn-outline-secondary btn-block btn-download-invoice mb-75">Download</button>
-                                    <a class="btn btn-outline-secondary btn-block mb-75" media="print" href="invoicePrint.html" target="_blank">
+                                    <button class="btn btn-outline-secondary btn-block btn-download-invoice mb-75">Excel Aktar</button>
+                                    <a class="btn btn-outline-secondary btn-block mb-75" media="print" th:href="${'/fatura_yazdir' + '/' + invoice.id}" target="_blank">
                                         Yazdır
                                     </a>
                                     <a class="btn btn-outline-secondary btn-block mb-75" href="./invoice.html"> Düzenle </a>
