@@ -50,6 +50,7 @@ public class CompanyDto {
                     hm.put(Check.message,"Firma kayıt işlemi başarıyla tamamlandı!");
                     hm.put(Check.result,company);
                     cacheService.cacheRefresh("companyList"); //Refresh cache
+                    cacheService.cacheRefresh("invoiceAddListCompanyByUserId"); //Refresh cache
                 }
             }else{
                 hm.put(Check.status,false);

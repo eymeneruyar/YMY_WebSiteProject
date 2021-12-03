@@ -44,6 +44,7 @@ public class CustomerDto {
                     hm.put(Check.message,"Müşteri kayıt işlemi başarıyla tamamlandı!");
                     hm.put(Check.result,customer);
                     cacheService.cacheRefresh("customerList"); //Refresh cache
+                    cacheService.cacheRefresh("invoiceAddListCustomersBySelectedCompany"); //Refresh cache
                 }
             }else{
                 hm.put(Check.status,false);

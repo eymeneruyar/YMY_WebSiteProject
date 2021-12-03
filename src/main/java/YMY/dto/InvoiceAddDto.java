@@ -89,7 +89,8 @@ public class InvoiceAddDto {
                     hm.put(Check.status,true);
                     hm.put(Check.message,"Fatura kayıt işlemi başarıyla tamamlandı!");
                     hm.put(Check.result,invoice);
-                    //cacheService.cacheRefresh("customerList"); //Refresh cache
+                    cacheService.cacheRefresh("invoiceAddListInvoiceThisMonth"); //Refresh cache
+                    cacheService.cacheRefresh("invoiceAddlistFilteredInvoice"); //Refresh cache
                 }
             }else{
                 hm.put(Check.status,false);
@@ -174,6 +175,36 @@ public class InvoiceAddDto {
             hm.put(Check.status,false);
             hm.put(Check.message,error);
             Util.logger(error + " " + e, Invoice.class);
+        }
+        return hm;
+    }
+
+    //Delete invoice by selected id
+    public Map<Check,Object> deleteInvoice(String stId){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        try {
+            Integer id = Integer.parseInt(stId);
+            Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
+            if(optionalInvoice.isPresent()){
+                Invoice invoice = optionalInvoice.get();
+                invoice.setStatus(false);
+                invoice.getWorkses().forEach(item -> {
+                    item.setStatus(false);
+                });
+                invoiceRepository.saveAndFlush(invoice);
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Fatura silme işlemi başarıyla gerçekleştirildi!");
+                cacheService.cacheRefresh("invoiceAddListInvoiceThisMonth"); //Refresh cache
+                cacheService.cacheRefresh("invoiceAddlistFilteredInvoice"); //Refresh cache
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Silinmek istenen fatura bulunamadı!");
+            }
+        } catch (Exception e) {
+            String error = "Silme işlemi sırasında bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,Invoice.class);
         }
         return hm;
     }

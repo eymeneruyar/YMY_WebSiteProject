@@ -6,7 +6,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Fatura - SN*****</title>
+    <title th:text="'İş Emri' + ' - ' + ${invoice.invoiceCode}"></title>
     <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
@@ -43,24 +43,20 @@
                                         <div>
                                             <div class="logo-wrapper">
                                                 <img src="/homePage/assets/img/logo.png" style="max-height: 32px;" alt="" class="img-fluid">
-                                                <h3 class="text-primary invoice-logo" style="color: #a9262c !important;">Yarbaç</h3>
+                                                <h3 class="text-primary invoice-logo" style="color: black !important;">Yarbaç</h3>
                                             </div>
-                                            <p class="card-text mb-25">Office 149, 450 South Brand Brooklyn</p>
-                                            <p class="card-text mb-25">San Diego County, CA 91905, USA</p>
-                                            <p class="card-text mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p>
+                                            <p class="card-text mb-25">Sanayi Sitesi 23. Blok</p>
+                                            <p class="card-text mb-25">Yeniyurt Mah. Gürcan Özbek Cad.</p>
+                                            <p class="card-text mb-0">7. Sokak, No: 8, Tokat/Merkez</p>
                                         </div>
                                         <div class="mt-md-0 mt-2">
                                             <h4 class="invoice-title">
-                                                Invoice
-                                                <span class="invoice-number">#3492</span>
+                                                İş Emri Numarası:
+                                                <span class="invoice-number" th:text="${invoice.invoiceCode}"></span>
                                             </h4>
                                             <div class="invoice-date-wrapper">
-                                                <p class="invoice-date-title">Date Issued:</p>
-                                                <p class="invoice-date">25/08/2020</p>
-                                            </div>
-                                            <div class="invoice-date-wrapper">
-                                                <p class="invoice-date-title">Due Date:</p>
-                                                <p class="invoice-date">29/08/2020</p>
+                                                <p class="invoice-date-title">İş Giriş Tarihi:</p>
+                                                <p class="invoice-date" th:text="${date}"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -73,86 +69,39 @@
                                 <div class="card-body invoice-padding pt-0">
                                     <div class="row invoice-spacing">
                                         <div class="col-xl-8 p-0">
-                                            <h6 class="mb-2">Invoice To:</h6>
-                                            <h6 class="mb-25">Thomas shelby</h6>
-                                            <p class="card-text mb-25">Shelby Company Limited</p>
-                                            <p class="card-text mb-25">Small Heath, B10 0HF, UK</p>
-                                            <p class="card-text mb-25">718-986-6062</p>
-                                            <p class="card-text mb-0">peakyFBlinders@gmail.com</p>
-                                        </div>
-                                        <div class="col-xl-4 p-0 mt-xl-0 mt-2">
-                                            <h6 class="mb-2">Payment Details:</h6>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="pr-1">Total Due:</td>
-                                                        <td><span class="font-weight-bold">$12,110.55</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pr-1">Bank name:</td>
-                                                        <td>American Bank</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pr-1">Country:</td>
-                                                        <td>United States</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pr-1">IBAN:</td>
-                                                        <td>ETD95476213874685</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pr-1">SWIFT code:</td>
-                                                        <td>BR91905</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <h6 class="mb-25" th:text="'Müşteri: ' + ${invoice.customer.name} + ' ' + ${invoice.customer.surname}"></h6>
+                                            <p class="card-text mb-25" th:text="'Tel: ' + ${invoice.customer.phone}"></p>
+                                            <p th:if="(${invoice.customer.email} != null) and (${invoice.customer.email} != '')" class="card-text mb-0" th:text="'E-Posta: ' + ${invoice.customer.email}"></p>
+                                            <p th:if="(${invoice.customer.brand} != null and ${invoice.customer.brand} != '') and (${invoice.customer.model} != null and ${invoice.customer.model} != '')" class="card-text mb-0" th:text="'Marka/Model: ' + ${invoice.customer.brand} + ' ' + ${invoice.customer.model}"></p>
+                                            <p class="card-text mb-0" th:text="'Plaka: ' + ${invoice.customer.plate}"></p>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Address and Contact ends -->
 
                                 <!-- Invoice Description starts -->
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th class="py-1">Task description</th>
-                                                <th class="py-1">Rate</th>
-                                                <th class="py-1">Hours</th>
-                                                <th class="py-1">Total</th>
+                                                <th class="py-1">Yapılan İş</th>
+                                                <th class="py-1">Miktar</th>
+                                                <th class="py-1">Birim Fiyat</th>
+                                                <th class="py-1">Toplam</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr th:each="item : ${invoice.getWorkses()}">
                                                 <td class="py-1">
-                                                    <p class="card-text font-weight-bold mb-25">Native App Development</p>
-                                                    <p class="card-text text-nowrap">
-                                                        Developed a full stack native app using React Native, Bootstrap & Python
-                                                    </p>
+                                                    <p class="card-text text-nowrap" th:text="${item.work}"></p>
                                                 </td>
                                                 <td class="py-1">
-                                                    <span class="font-weight-bold">$60.00</span>
+                                                    <span class="font-weight-bold" th:text="${item.quantity}"></span>
                                                 </td>
                                                 <td class="py-1">
-                                                    <span class="font-weight-bold">30</span>
+                                                    <span class="font-weight-bold" th:text="${item.unitPrice} + ' ' + '₺'"></span>
                                                 </td>
                                                 <td class="py-1">
-                                                    <span class="font-weight-bold">$1,800.00</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="border-bottom">
-                                                <td class="py-1">
-                                                    <p class="card-text font-weight-bold mb-25">Ui Kit Design</p>
-                                                    <p class="card-text text-nowrap">Designed a UI kit for native app using Sketch, Figma & Adobe XD</p>
-                                                </td>
-                                                <td class="py-1">
-                                                    <span class="font-weight-bold">$60.00</span>
-                                                </td>
-                                                <td class="py-1">
-                                                    <span class="font-weight-bold">20</span>
-                                                </td>
-                                                <td class="py-1">
-                                                    <span class="font-weight-bold">$1200.00</span>
+                                                    <span class="font-weight-bold" th:text="${item.total} + ' ' + '₺'"></span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -161,29 +110,30 @@
 
                                 <div class="card-body invoice-padding pb-0">
                                     <div class="row invoice-sales-total-wrapper">
-                                        <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3">
-                                            <p class="card-text mb-0">
-                                                <span class="font-weight-bold">Salesperson:</span> <span class="ml-75">Alfie Solomons</span>
-                                            </p>
-                                        </div>
+                                        <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3"></div>
                                         <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
                                             <div class="invoice-total-wrapper">
                                                 <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Subtotal:</p>
-                                                    <p class="invoice-total-amount">$1800</p>
+                                                    <p class="invoice-total-title">Toplam:</p>
+                                                    <p class="invoice-total-amount" th:text="${total} + ' ' + '₺'"></p>
                                                 </div>
                                                 <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Discount:</p>
-                                                    <p class="invoice-total-amount">$28</p>
-                                                </div>
-                                                <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Tax:</p>
-                                                    <p class="invoice-total-amount">21%</p>
+                                                    <p class="invoice-total-title">İskonto:</p>
+                                                    <p class="invoice-total-amount" th:text="${discount} + ' ' + '₺'"></p>
                                                 </div>
                                                 <hr class="my-50" />
                                                 <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Total:</p>
-                                                    <p class="invoice-total-amount">$1690</p>
+                                                    <p class="invoice-total-title">Ara Toplam:</p>
+                                                    <p class="invoice-total-amount" th:text=" ${subTotal} + ' ' + '₺'"></p>
+                                                </div>
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">KDV:</p>
+                                                    <p class="invoice-total-amount" th:text="${kdv} + ' ' + '₺'"></p>
+                                                </div>
+                                                <hr class="my-50" />
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Toplam:</p>
+                                                    <p class="invoice-total-amount" th:text="${invoice.debt} + ' ' + '₺'"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,9 +147,8 @@
                                 <div class="card-body invoice-padding pt-0">
                                     <div class="row">
                                         <div class="col-12">
-                                            <span class="font-weight-bold">Note:</span>
-                                            <span>It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance
-                                                projects. Thank You!</span>
+                                            <span class="font-weight-bold">Not:</span>
+                                            <span th:if="(${invoice.note} != null) and (${invoice.note} != '')" th:text="${invoice.note}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,14 +161,14 @@
                         <div class="col-xl-3 col-md-4 col-12 invoice-actions mt-md-0 mt-2">
                             <div class="card">
                                 <div class="card-body">
-                                    <button class="btn btn-primary btn-block mb-75" data-toggle="modal" data-target="#send-invoice-sidebar">
-                                        Send Invoice
-                                    </button>
+                                    <a href="/fatura_ekle" class="btn btn-primary btn-block mb-75">
+                                        Yeni Kayıt
+                                    </a>
                                     <button class="btn btn-outline-secondary btn-block btn-download-invoice mb-75">Download</button>
                                     <a class="btn btn-outline-secondary btn-block mb-75" media="print" href="invoicePrint.html" target="_blank">
-                                        Print
+                                        Yazdır
                                     </a>
-                                    <a class="btn btn-outline-secondary btn-block mb-75" href="./invoice.html"> Edit </a>
+                                    <a class="btn btn-outline-secondary btn-block mb-75" href="./invoice.html"> Düzenle </a>
                                     <button class="btn btn-success btn-block" data-toggle="modal" data-target="#add-payment-sidebar">
                                         Add Payment
                                     </button>

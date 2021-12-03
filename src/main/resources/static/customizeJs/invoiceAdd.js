@@ -172,7 +172,7 @@ function fncCreateRowDataTable(data){
                     <td class="text-left">
                         <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                         <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                        <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
                     </td>`
     })
     $("#id_invoiceAddTableRow").html(html)
@@ -199,9 +199,9 @@ $("#id_invoiceListFilterBillingStatus").change(function (){
     const date = $("#id_invoiceListFilterDate").val()
     const companyId = $('#id_invoiceListFilterCompany').val()
     const billingStatus = $('#id_invoiceListFilterBillingStatus').val()
-    console.log(date)
-    console.log(companyId)
-    console.log(billingStatus)
+    //console.log(date)
+    //console.log(companyId)
+    //console.log(billingStatus)
     if(date != null && companyId != null && billingStatus != null){
         fncListInvoiceFilteredDateCompanyBillingStatus(date,companyId,billingStatus)
     }
@@ -231,6 +231,66 @@ function fncListInvoiceFilteredDateCompanyBillingStatus(date,companyId,billingSt
     return output
 }
 //-------------------------------------- Filter Process - End ------------------------------------------//
+
+//-------------------------------------- Delete Invoice - Start ------------------------------------------//
+function fncDelete(id){
+    Swal.fire({
+        title: 'Silme istediğinizden emin misiniz?',
+        text: "Bu işlem geri alınamayacak!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet',
+        cancelButtonText: 'Hayır',
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: './fatura_ekle/deleteInvoice/' + id,
+                type: 'DELETE',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if( id != null){
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Silme işlemi başarılı!",
+                            text: data.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                        resetForm()
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Hata",
+                            text: data.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Hata",
+                        text: "Silme işlemi sırasında bir hata oluştu!",
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                    });
+                    console.log(err)
+                }
+            })
+        }
+    });
+}
+//-------------------------------------- Delete Invoice - End --------------------------------------------//
 
 //-------------------------------------- Company List - Start ----------------------------------------//
 function fncListAllCompany(){
@@ -393,6 +453,16 @@ function resetForm(){
 
     $("#id_invoiceAddDiscount").val("")
     $("#id_invoiceAddNote").val("")
+
+    //Filtreleme seçenekleri dolu ise
+    const date = $("#id_invoiceListFilterDate").val()
+    const companyId = $('#id_invoiceListFilterCompany').val()
+    const billingStatus = $('#id_invoiceListFilterBillingStatus').val()
+    if(date != null && companyId != null && billingStatus != null){
+        fncListInvoiceFilteredDateCompanyBillingStatus(date,companyId,billingStatus)
+    }else{ //Filtreleme seçenekleri boş ise
+        fncListInvoiceThisMonth()
+    }
 
     //$('.source-item').repeaterVal()
 
