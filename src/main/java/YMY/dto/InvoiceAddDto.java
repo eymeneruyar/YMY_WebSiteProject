@@ -63,7 +63,7 @@ public class InvoiceAddDto {
                     debt = (float) result.stream().mapToDouble(Float::floatValue).sum();
                     discount = invoice.getDiscount();
                     kdv = invoice.getVat();
-                    //Düzenlenmesi gerek
+                    //Ödenecek miktarın hesaplanması - Start
                     if(kdv == 18 && discount > 0){
                         debt = debt - (debt*(discount/100));
                         debt = debt + (debt * (kdv/100));
@@ -77,7 +77,7 @@ public class InvoiceAddDto {
                         debt = debt - (debt*(discount/100));
                         System.out.println("KDV yok ama iskonto var: " + debt);
                     }
-                    //Düzenlenmesi gerek
+                    //Ödenecek miktarın hesaplanması - End
                     invoice.setUserId(user.getId());
                     invoice.setStatus(true);
                     invoice.setPaidStatus(false);

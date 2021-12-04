@@ -1,6 +1,6 @@
 //-------------------------------------- Data Table Configuration - Start --------------------------------------//
 function dataTable() {
-    $("#id_customerTable").DataTable( {
+    $("#id_invoiceEditTable").DataTable( {
 
         order: [[2, 'desc']],
         dom:
@@ -46,25 +46,9 @@ function dataTable() {
                 ],
             }
         ],
-        /*data: out.result,
-        columns:[
-            {data: 'code'},
-            {data: 'company.name'},
-            {data: 'name'},
-            {data: 'phone'},
-            {data: 'brand'},
-            {data: 'model'},
-            {data: 'plate'},
-            {data: 'date'},
-            {data: null, wrap: true, "render": function (item){
-                    return '<div> <button onclick="fncDelete('+item.id+')" type="button" class="btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>\n' +
-                        '<button onclick="fncUpdate('+item.id+')" type="button" class="btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>\n' +
-                        '<button onclick="fncDetail('+item.id+')" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button> </div>'
-            }}
-        ],*/
         language: {
             search: 'Ara',
-            searchPlaceholder: 'Müşteri Ara',
+            searchPlaceholder: 'İş Ara',
             paginate: {
                 // remove previous & next text from pagination
                 previous: '&nbsp;',
@@ -72,58 +56,56 @@ function dataTable() {
             }
         }
     } );
-    $('div.head-label').html('<h2 class="mb-0">Kayıtlı Müşteriler</h2>');
+    $('div.head-label').html('<h2 class="mb-0">İş Listesi</h2>');
 }
 dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
 
-let select_id = 0
+let arr = window.location.pathname.split("/")
+let invoice_id = arr[2]
+let work_id = 0
 let globalArr = []
-//-------------------------------------- Save or Update Customer Information - Start --------------------------------------//
-$("#id_customerSaveForm").submit( (event) => {
+
+//-------------------------------------- Save or Update Works Information - Start --------------------------------------//
+$("#id_invoiceEditSaveForm").submit( (event) => {
 
     event.preventDefault()
 
-    const customerCompany = $("#id_customerCompany").val()
-    const customerName = $("#id_customerName").val()
-    const customerSurname = $("#id_customerSurname").val()
-    const customerPhone = $("#id_customerPhone").val()
-    const customerEmail = $("#id_customerEmail").val()
-    const customerBrand = $("#id_customerBrand").val()
-    const customerModel = $("#id_customerModel").val()
-    const customerPlate = $("#id_customerPlate").val()
-    const customerNote = $("#id_customerNote").val()
+    const invoiceEditBillingStatus = $("#id_invoiceEditBillingStatus").val()
+    const invoiceEditDiscount = $("#id_invoiceEditDiscount").val()
+    const invoiceEditVat = $("#id_invoiceEditVat").val()
+    const invoiceEditWork = $("#id_invoiceEditWork").val()
+    const invoiceEditQuantity = $("#id_invoiceEditQuantity").val()
+    const invoiceEditUnitPrice = $("#id_invoiceEditUnitPrice").val()
 
     const obj = {
-        code: codeGenerator(),
-        company: {
-            id: customerCompany
-        },
-        name: customerName,
-        surname: customerSurname,
-        phone: customerPhone,
-        email: customerEmail,
-        brand: customerBrand,
-        model: customerModel,
-        plate: customerPlate,
-        note: customerNote
+        id: invoice_id,
+        invoiceCode: fncListWorks().result.invoiceCode,
+        billingStatus: invoiceEditBillingStatus,
+        discount: invoiceEditDiscount,
+        vat: invoiceEditVat,
+        workses: [
+            {
+                id: work_id,
+                work: invoiceEditWork,
+                quantity: invoiceEditQuantity,
+                unitPrice: invoiceEditUnitPrice
+            }
+        ]
     }
 
     console.log(obj)
 
-    if(select_id != 0){
-        obj["id"] = select_id
-    }
-
     $.ajax({
-        url:"./musteri/saveOrUpdate",
-        type: "POST",
+        url:"./update",
+        type: "PUT",
         data: JSON.stringify(obj),
         dataType: "JSON",
         contentType: "application/json; charset=utf-8",
         success: function (data){
             fncSweetAlert(data)
             resetForm()
+            console.log(data)
         },
         error: function (err){
             console.log(err)
@@ -131,25 +113,24 @@ $("#id_customerSaveForm").submit( (event) => {
     })
 
 })
-//-------------------------------------- Save or Update Customer Information - End ----------------------------------------//
+//-------------------------------------- Save or Update Works Information - End ----------------------------------------//
 
-//-------------------------------------- List of customer - Start ----------------------------------------//
-var out
-function fncListCustomer(){
-    let id = $("#id_customerCompany").val()
-
+//-------------------------------------- List of works - Start ----------------------------------------//
+function fncListWorks(){
+    var output
     $.ajax({
-        url: "./musteri/listBySelectedCompany/" + id,
+        url: "./listWorks/" + invoice_id,
         type: "GET",
         dataType: "JSON",
         contentType : 'application/json; charset=utf-8',
         async:false,
         success: function (data) {
-            console.log(data)
-            out = data
-            if($.fn.DataTable.isDataTable("#id_customerTable")){
-                $("#id_customerTable").DataTable().destroy()
+            //console.log(data)
+            output = data
+            if($.fn.DataTable.isDataTable("#id_invoiceEditTable")){
+                $("#id_invoiceEditTable").DataTable().destroy()
             }
+            globalArr = [] //Important!!, must be remove otherwise can give false result
             fncCreateRowDataTable(data)
             dataTable()
         },
@@ -157,37 +138,40 @@ function fncListCustomer(){
             console.log(err)
         }
     })
-    return out
+    return output
 }
-//fncListCustomer()
-
+fncListWorks()
 function fncCreateRowDataTable(data){
     let html = ``
-    data.result.forEach( item => {
+    let plate = data.result.customer.plate
+    let discount = data.result.discount
+    let vat = data.result.vat
+    let billingStatus = data.result.billingStatus
+    if(billingStatus != null && billingStatus === "1"){
+        billingStatus = "Evet"
+    }else if(billingStatus != null && billingStatus === "0"){
+        billingStatus = "Hayır"
+    }
+    data.result.workses.forEach( item => {
         globalArr.push(item)
-        formatDate =  fncConvertDate(item.date)
-        html += `<tr  role="row" class="odd">
-                    <td>${item.code}</td>
-                    <td>${item.company.name}</td>
-                    <td>${item.name} ${item.surname}</td>
-                    <td>${item.phone}</td>
-                    <td>${item.brand}</td>
-                    <td>${item.model}</td>
-                    <td>${item.plate}</td>
-                    <td>${formatDate}</td>
+        if(item.status == true){
+            html += `<tr  role="row" class="odd">
+                    <td>${plate}</td>
+                    <td>${item.work}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.unitPrice}</td>
+                    <td>%${discount}</td>
+                    <td>%${vat}</td>
+                    <td>${billingStatus}</td>
                     <td class="text-left">
                         <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                         <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
+        }
     })
-    $("#id_customerTableRow").html(html)
+    $("#id_invoiceEditTableRow").html(html)
 }
-
-$("#id_customerCompany").change(function (){
-    fncListCustomer()
-})
-//-------------------------------------- List of customer - End ------------------------------------------//
+//-------------------------------------- List of works - End ------------------------------------------//
 
 //-------------------------------------- Delete customer - Start ------------------------------------------//
 function fncDelete(id){
@@ -206,7 +190,7 @@ function fncDelete(id){
     }).then(function (result) {
         if (result.value) {
             $.ajax({
-                url: './musteri/delete/' + id,
+                url: './delete/' + id,
                 type: 'DELETE',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
@@ -251,82 +235,36 @@ function fncDelete(id){
 
 //-------------------------------------- Update Customer Information - Start --------------------------------------------//
 function fncUpdate(id){
-    const itm = globalArr.find(item => item.id == id)
-    //console.log(itm)
-    select_id = itm.id
-    $("#id_customerCompany").val(itm.company.id).trigger("change.select2")
-    $("#id_customerName").val(itm.name)
-    $("#id_customerSurname").val(itm.surname)
-    $("#id_customerPhone").val(itm.phone)
-    $("#id_customerEmail").val(itm.email)
-    $("#id_customerBrand").val(itm.brand)
-    $("#id_customerModel").val(itm.model)
-    $("#id_customerPlate").val(itm.plate)
-    $("#id_customerNote").val(itm.note)
+    const itm_invoice = fncListWorks().result
+    const itm_work = globalArr.find(item => item.id == id)
+    //console.log("Globalarr--------------------")
+    //console.log(globalArr)
+    //console.log("itm_work---------------------")
+    //console.log(itm_work)
+    //console.log("itm_invoice-------------------")
+    //console.log(itm_invoice)
+    work_id = itm_work.id
+    $("#id_invoiceEditBillingStatus").val(itm_invoice.billingStatus).trigger("change.select2")
+    $("#id_invoiceEditDiscount").val(itm_invoice.discount)
+    $("#id_invoiceEditVat").val(itm_invoice.vat).trigger("change.select2")
+    $("#id_invoiceEditWork").val(itm_work.work)
+    $("#id_invoiceEditQuantity").val(itm_work.quantity)
+    $("#id_invoiceEditUnitPrice").val(itm_work.unitPrice)
 }
 //-------------------------------------- Update Customer Information - End ----------------------------------------------//
 
-//-------------------------------------- Customer Information Detail - Start ----------------------------------------------//
-function fncDetail(id){
-    const itm = fncDetailCustomerById(id)
-    $("#id_customerDetailModal").modal('toggle')
-    $("#id_customerDetailModalTitle").text(itm.code + " - " + itm.name + " " + itm.surname)
-    $("#id_customerDetailModalCompany").text(itm.company.name)
-    $("#id_customerDetailModalName").text(itm.name)
-    $("#id_customerDetailModalSurname").text(itm.surname)
-    $("#id_customerDetailModalPhone").text(itm.phone)
-    $("#id_customerDetailModalEmail").text(itm.email)
-    $("#id_customerDetailModalBrand").text(itm.brand)
-    $("#id_customerDetailModalModel").text(itm.model)
-    $("#id_customerDetailModalPlate").text(itm.plate)
-    $("#id_customerDetailModalNote").text(itm.note)
+//-------------------------------------- Reset Form - Start ------------------------------------------//
+function resetForm(){
+    work_id = 0
+    fncListWorks()
+    $("#id_invoiceEditBillingStatus").val(0)
+    $("#id_invoiceEditDiscount").val("")
+    $("#id_invoiceEditVat").val(0)
+    $("#id_invoiceEditWork").val("")
+    $("#id_invoiceEditQuantity").val("")
+    $("#id_invoiceEditUnitPrice").val("")
 }
-
-function fncDetailCustomerById(id){
-    var output
-    $.ajax({
-        url: "./musteri/detail/" + id,
-        type: 'GET',
-        contentType: 'application/json; charset=utf-8',
-        async:false,
-        success: function (data) {
-            output = data.result
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
-    return output
-}
-//-------------------------------------- Customer Information Detail - End ------------------------------------------------//
-
-//-------------------------------------- Company List - Start ----------------------------------------//
-function fncListAllCompany(){
-
-    $.ajax({
-        url: "./musteri/listAllCompany",
-        type: "GET",
-        dataType: "JSON",
-        contentType : 'application/json; charset=utf-8',
-        //async:false,
-        success: function (data) {
-            fncOptionCompany(data)
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
-
-}
-
-function fncOptionCompany(data){
-    data.result.forEach((item) => {
-        $("#id_customerCompany").append('<option value="'+item.id+'">'+item.name+' </option>')
-    })
-}
-
-fncListAllCompany()
-//-------------------------------------- Company List - End ------------------------------------------//
+//-------------------------------------- Reset Form - End --------------------------------------------//
 
 //-------------------------------------- Sweet Alert Box - Start ----------------------------------------//
 function fncSweetAlert(data){
@@ -376,31 +314,6 @@ function fncSweetAlert(data){
     }
 }
 //-------------------------------------- Sweet Alert Box - End ------------------------------------------//
-
-
-//-------------------------------------- Code Generator - Start ------------------------------------------//
-function codeGenerator() {
-    const date = new Date();
-    const time = date.getTime();
-    return time.toString().substring(3);
-}
-//-------------------------------------- Code Generator - End --------------------------------------------//
-
-//-------------------------------------- Reset Form - Start ------------------------------------------//
-function resetForm(){
-    select_id = 0
-    fncListCustomer()
-    $("#id_customerName").val(" ")
-    $("#id_customerSurname").val(" ")
-    $("#id_customerPhone").val(" ")
-    $("#id_customerEmail").val(" ")
-    $("#id_customerBrand").val(" ")
-    $("#id_customerModel").val(" ")
-    $("#id_customerPlate").val(" ")
-    $("#id_customerNote").val(" ")
-
-}
-//-------------------------------------- Reset Form - End --------------------------------------------//
 
 //-------------------------------------- Date Convert - Start ------------------------------------------//
 function fncConvertDate(date){

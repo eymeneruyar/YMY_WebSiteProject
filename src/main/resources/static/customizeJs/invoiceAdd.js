@@ -160,7 +160,7 @@ function fncCreateRowDataTable(data){
             billingStatus = "Tümü"
         }
         html += `<tr  role="row" class="odd">
-                    <td>${item.invoiceCode}</td>
+                    <td><a href="/fatura_duzenle/${item.id}">${item.invoiceCode}</a></td>
                     <td>${item.company.name}</td>
                     <td>${item.customer.name} ${item.customer.surname}</td>
                     <td>${item.customer.plate}</td>
@@ -171,7 +171,7 @@ function fncCreateRowDataTable(data){
                     <td>${formatDate}</td>
                     <td class="text-left">
                         <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
+                        <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
                         <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
                     </td>`
     })

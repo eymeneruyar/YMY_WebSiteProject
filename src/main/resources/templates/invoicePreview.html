@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+      class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr"><!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title th:text="'İş Emri' + ' - ' + ${invoice.invoiceCode}"></title>
+    <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+
+    <!------------------------------------------------------- Other CSS Vendors Folder - Start ---------------------------------------------------------->
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/plugins/forms/pickers/form-flat-pickr.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/pages/app-invoice.css}">
+    <!------------------------------------------------------- Other CSS Vendors Folder - End ------------------------------------------------------------>
+
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+<body>
+
+
+<th:block layout:fragment="content">
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- Ana ekrana aktarılmak istenen component'ler burada yazılmalıdır. -->
+
+                <section class="invoice-preview-wrapper">
+                    <div class="row invoice-preview">
+                        <!-- Invoice -->
+                        <div class="col-xl-9 col-md-8 col-12">
+                            <div class="card invoice-preview-card">
+                                <div class="card-body invoice-padding pb-0">
+                                    <!-- Header starts -->
+                                    <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0">
+                                        <div>
+                                            <div class="logo-wrapper">
+                                                <img src="/homePage/assets/img/logo.png" style="max-height: 32px;" alt="" class="img-fluid">
+                                                <h3 class="text-primary invoice-logo" style="color: black !important;">Yarbaç</h3>
+                                            </div>
+                                            <p class="card-text mb-25">Sanayi Sitesi 23. Blok</p>
+                                            <p class="card-text mb-25">Yeniyurt Mah. Gürcan Özbek Cad.</p>
+                                            <p class="card-text mb-0">7. Sokak, No: 8, Tokat/Merkez</p>
+                                        </div>
+                                        <div class="mt-md-0 mt-2">
+                                            <h4 class="invoice-title">
+                                                İş Emri Numarası:
+                                                <span class="invoice-number" th:text="${invoice.invoiceCode}"></span>
+                                            </h4>
+                                            <div class="invoice-date-wrapper">
+                                                <p class="invoice-date-title">İş Giriş Tarihi:</p>
+                                                <p class="invoice-date" th:text="${date}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Header ends -->
+                                </div>
+
+                                <hr class="invoice-spacing" />
+
+                                <!-- Address and Contact starts -->
+                                <div class="card-body invoice-padding pt-0">
+                                    <div class="row invoice-spacing">
+                                        <div class="col-xl-8 p-0">
+                                            <h6 class="mb-25" th:text="'Müşteri: ' + ${invoice.customer.name} + ' ' + ${invoice.customer.surname}"></h6>
+                                            <p class="card-text mb-25" th:text="'Tel: ' + ${invoice.customer.phone}"></p>
+                                            <p th:if="(${invoice.customer.email} != null) and (${invoice.customer.email} != '')" class="card-text mb-0" th:text="'E-Posta: ' + ${invoice.customer.email}"></p>
+                                            <p th:if="(${invoice.customer.brand} != null and ${invoice.customer.brand} != '') and (${invoice.customer.model} != null and ${invoice.customer.model} != '')" class="card-text mb-0" th:text="'Marka/Model: ' + ${invoice.customer.brand} + ' ' + ${invoice.customer.model}"></p>
+                                            <p class="card-text mb-0" th:text="'Plaka: ' + ${invoice.customer.plate}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Address and Contact ends -->
+
+                                <!-- Invoice Description starts -->
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="py-1">Yapılan İş</th>
+                                                <th class="py-1">Miktar</th>
+                                                <th class="py-1">Birim Fiyat</th>
+                                                <th class="py-1">Toplam</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item : ${invoice.getWorkses()}">
+                                                <td class="py-1">
+                                                    <p class="card-text text-nowrap" th:text="${item.work}"></p>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold" th:text="${item.quantity}"></span>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold" th:text="${item.unitPrice} + ' ' + '₺'"></span>
+                                                </td>
+                                                <td class="py-1">
+                                                    <span class="font-weight-bold" th:text="${item.total} + ' ' + '₺'"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="card-body invoice-padding pb-0">
+                                    <div class="row invoice-sales-total-wrapper">
+                                        <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3"></div>
+                                        <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
+                                            <div class="invoice-total-wrapper" style="max-width: 15rem">
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Toplam:</p>
+                                                    <p class="invoice-total-amount" th:text="${total} + ' ' + '₺'"></p>
+                                                </div>
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">İskonto:</p>
+                                                    <p class="invoice-total-amount" th:text="${discount} + ' ' + '₺'"></p>
+                                                </div>
+                                                <hr class="my-50" />
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Ara Toplam:</p>
+                                                    <p class="invoice-total-amount" th:text=" ${subTotal} + ' ' + '₺'"></p>
+                                                </div>
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">KDV:</p>
+                                                    <p class="invoice-total-amount" th:text="${kdv} + ' ' + '₺'"></p>
+                                                </div>
+                                                <hr class="my-50" />
+                                                <div class="invoice-total-item">
+                                                    <p class="invoice-total-title">Ödenecek Tutar:</p>
+                                                    <p class="invoice-total-amount" th:text="${invoice.debt} + ' ' + '₺'"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Invoice Description ends -->
+
+                                <hr class="invoice-spacing" />
+
+                                <!-- Invoice Note starts -->
+                                <div class="card-body invoice-padding pt-0">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="font-weight-bold">Not:</span>
+                                            <span th:if="(${invoice.note} != null) and (${invoice.note} != '')" th:text="${invoice.note}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Invoice Note ends -->
+                            </div>
+                        </div>
+                        <!-- /Invoice -->
+
+                        <!-- Invoice Actions -->
+                        <div class="col-xl-3 col-md-4 col-12 invoice-actions mt-md-0 mt-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <a href="/fatura_ekle" class="btn btn-primary btn-block mb-75">
+                                        Yeni Kayıt
+                                    </a>
+                                    <button class="btn btn-outline-secondary btn-block btn-download-invoice mb-75">Excel Aktar</button>
+                                    <a class="btn btn-outline-secondary btn-block mb-75" media="print" th:href="${'/fatura_yazdir' + '/' + invoice.id}" target="_blank">
+                                        Yazdır
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-block mb-75" href="invoicePreview.html"> Düzenle </a>
+                                    <button class="btn btn-success btn-block" data-toggle="modal" data-target="#add-payment-sidebar">
+                                        Ödeme Yap
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Invoice Actions -->
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+
+</th:block>
+
+<th:block layout:fragment="contentJS">
+    <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/app-invoice.js}"></script>
+    <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
+</th:block>
+
+</body>
+<!-- END: Body-->
+
+</html>
