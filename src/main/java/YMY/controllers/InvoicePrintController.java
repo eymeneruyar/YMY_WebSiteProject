@@ -1,16 +1,21 @@
 package YMY.controllers;
 
+import YMY.dto.InvoicePrintDto;
 import YMY.entities.Invoice;
 import YMY.repositories.InvoiceRepository;
+import YMY.utils.Check;
 import YMY.utils.Util;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -18,8 +23,10 @@ import java.util.Optional;
 public class InvoicePrintController {
 
     final InvoiceRepository invoiceRepository;
-    public InvoicePrintController(InvoiceRepository invoiceRepository) {
+    final InvoicePrintDto invoicePrintDto;
+    public InvoicePrintController(InvoiceRepository invoiceRepository, InvoicePrintDto invoicePrintDto) {
         this.invoiceRepository = invoiceRepository;
+        this.invoicePrintDto = invoicePrintDto;
     }
 
     @GetMapping("/{stId}")
@@ -60,6 +67,17 @@ public class InvoicePrintController {
             return "redirect:/yonetim";
         }
         return "invoicePrint";
+    }
+
+    /*@GetMapping("/exportToExcel/{stId}")
+    public void exportToExcel(@PathVariable String stId, HttpServletResponse response){
+        invoicePrintDto.exportToExcel(stId,response);
+    }*/
+
+    @ResponseBody
+    @GetMapping("/exportToExcel/{stId}")
+    public Map<Check,Object> exportToExcel(@PathVariable String stId,HttpServletResponse response){
+        return invoicePrintDto.exportToExcel(stId,response);
     }
 
 }

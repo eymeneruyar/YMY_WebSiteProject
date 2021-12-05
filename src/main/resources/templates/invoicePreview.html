@@ -165,11 +165,11 @@
                                     <a href="/fatura_ekle" class="btn btn-primary btn-block mb-75">
                                         Yeni Kayıt
                                     </a>
-                                    <button class="btn btn-outline-secondary btn-block btn-download-invoice mb-75">Excel Aktar</button>
+                                    <a class="btn btn-outline-secondary btn-block btn-download-invoice mb-75" th:href="${'/fatura_yazdir' + '/' + 'exportToExcel' + '/' + invoice.id}">Excel Aktar</a>
                                     <a class="btn btn-outline-secondary btn-block mb-75" media="print" th:href="${'/fatura_yazdir' + '/' + invoice.id}" target="_blank">
                                         Yazdır
                                     </a>
-                                    <a class="btn btn-outline-secondary btn-block mb-75" href="invoicePreview.html"> Düzenle </a>
+                                    <a class="btn btn-outline-secondary btn-block mb-75" th:href="${'/fatura_duzenle' + '/' + invoice.id}"> Düzenle </a>
                                     <button class="btn btn-success btn-block" data-toggle="modal" data-target="#add-payment-sidebar">
                                         Ödeme Yap
                                     </button>
