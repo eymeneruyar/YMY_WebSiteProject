@@ -56,7 +56,7 @@ public class InvoicePrintDto {
     }
 
     private void writeDataLines(Invoice invoice){
-        int rowCount = 14; //Excel'de 15. satırı temsil eder. Yapılan işler buradan itibaren konumlandırılır.
+        int rowCount = 17; //Excel'de 15. satırı temsil eder. Yapılan işler buradan itibaren konumlandırılır.
         List<Works> worksList = invoice.getWorkses();
         Cities cities = citiesRepository.findByCityKey(Integer.parseInt(invoice.getCompany().getCity())).get();
         float result = 0;
@@ -117,11 +117,11 @@ public class InvoicePrintDto {
         createCell(row7,0,invoice.getCompany().getTown() + "/" + cities.getName(),style3); //Şirket ilçe/il yazdırılması
         createCell(row9,0,"Müş.V.D        :  " + invoice.getCompany().getTaxOffice(),style); // Müş.V.D başlığı
         //createCell(row9,1,invoice.getCompany().getTaxOffice(),style); // Müş.V.D değeri
-        createCell(row9,4,"Düz. Tarih          :",style2); // Düz Tarih başlığı
-        createCell(row10,4,"İrs. Tarih            :",style2); // İrs Tarih başlığı
+        createCell(row9,4,"Düz. Tarih          :",style); // Düz Tarih başlığı
+        createCell(row10,4,"İrs. Tarih            :",style); // İrs Tarih başlığı
         createCell(row11,0,"Vergi/Tc.No   :  " + invoice.getCompany().getTaxNumber(),style); // Vergi/Tc.No: başlığı
         //createCell(row11,1,invoice.getCompany().getTaxNumber(),style); // Vergi/Tc.No: değeri
-        createCell(row11,4,"İrs. No                 :",style2); // İrs No: başlığı
+        createCell(row11,4,"İrs. No                 :",style); // İrs No: başlığı
 
         for (Works works : worksList) {
             Row row = sheet.createRow(rowCount++);

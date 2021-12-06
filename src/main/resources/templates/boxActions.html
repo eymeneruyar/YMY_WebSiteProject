@@ -29,134 +29,125 @@
             <div class="content-body">
                 <!-- Ana ekrana aktarılmak istenen component'ler burada yazılmalıdır. -->
 
-                <div class="row">
-                    <div class="col-md-6 col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Kasaya Para Girişi</h4>
-                            </div>
-                            <div class="card-body">
-                                <form class="form">
-                                    <div class="row">
-                                        <div class="col-12 mb-1">
-                                            <label>Yetkili Firma</label>
-                                            <select class="select2 form-control form-control-lg">
-                                                <option value="AK">Uludağ Oto</option>
-                                                <option value="HI">Şen Ortaklar</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Müşteri</label>
-                                            <select class="select2 form-control form-control-lg">
-                                                <option value="AK">Uludağ Oto</option>
-                                                <option value="HI">Şen Ortaklar</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Fiş Numarası</label>
-                                            <select class="select2 form-control form-control-lg">
-                                                <option value="AK">Uludağ Oto</option>
-                                                <option value="HI">Şen Ortaklar</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlTextarea1">Açıklama</label>
-                                                <textarea class="form-control" id="exampleFrmControlTextarea1" rows="2" ></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>İşlem Tarihi</label>
-                                                <input id="transactinDateOut" class="form-control" disabled></input>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="last-name-column">Tutar</label>
-                                                <input type="number" id="last-name-clumn" class="form-control" placeholder="Tutar Giriniz"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Ödeme Yöntemi</label>
-                                            <select class="select2 form-control form-control-lg">
-                                                <option value="1">Kredi Kartı</option>
-                                                <option value="2">Banka Kartı</option>
-                                                <option value="3">Havale/EFT</option>
-                                                <option value="4">Nakit</option>
-                                                <option value="5">Vadeli</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <button type="submit" class="btn btn-primary mr-1">Kaydet</button>
-                                            <button type="reset" class="btn btn-outline-secondary">Temizle</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Kasadan Para Çıkışı</h4>
-                            </div>
-                            <div class="card-body">
-                                <form class="form">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="last-name-column">Başlık</label>
-                                                <input type="text" id="last-name-column" class="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlTextarea1">Açıklama</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" ></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>İşlem Tarihi</label>
-                                                <input id="transactionDateOut" class="form-control" disabled></input>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="last-name-column">Tutar</label>
-                                                <input type="number" id="last-name-colun" class="form-control" placeholder="Tutar Giriniz"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-1">
-                                            <label>Ödeme Yöntemi</label>
-                                            <select class="select2 form-control form-control-lg">
-                                                <option value="1">Kredi Kartı</option>
-                                                <option value="2">Banka Kartı</option>
-                                                <option value="3">Havale/EFT</option>
-                                                <option value="4">Nakit</option>
-                                                <option value="5">Vadeli</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <button type="submit" class="btn btn-primary mr-1">Kaydet</button>
-                                            <button type="reset" class="btn btn-outline-secondary">Temizle</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <section id="basic-datatable">
-                    <div class="row">
+                <section id="nav-tabs-aligned">
+                    <div class="row match-height">
+                        <!-- Centered Aligned Tabs starts -->
                         <div class="col-12">
                             <div class="card">
-                                <table class="datatables-basic table">
-                                    <thead>
+                                <div class="card-body">
+                                    <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#boxActionsAdd" aria-controls="home-center" role="tab" aria-selected="false">Ödeme İşlemleri</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#boxActionsList" aria-controls="service-center" role="tab" aria-selected="true">Ödeme Listesi</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Centered Aligned Tabs ends -->
+                    </div>
+                </section>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="boxActionsAdd" aria-labelledby="home-tab-center" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Ödeme İşlemleri</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form" id="id_boxActionsSaveForm">
+                                            <div class="row">
+                                                <div class="col-md-3 col-12">
+                                                    <label for="id_boxActionsDescription">Kasa Tanımı</label>
+                                                    <select class="form-control mb-1" id="id_boxActionsDescription">
+                                                        <option value=1>Giriş</option>
+                                                        <option value=0>Çıkış</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <label for="id_boxActionsCompany">Yetkili Firma</label>
+                                                    <select class="select2 form-control form-control-lg" id="id_boxActionsCompany">
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <label>Müşteri</label>
+                                                    <select class="select2 form-control form-control-lg" id="id_boxActionsCustomer">
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <label>Fiş Numarası</label>
+                                                    <select class="select2 form-control form-control-lg" id="id_boxActionsInvoiceCode">
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <div class="form-group">
+                                                        <label for="id_boxActionsTitle">Başlık</label>
+                                                        <input type="text" id="id_boxActionsTitle" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-12 mb-1">
+                                                    <label for="id_boxActionsPaymentMethod">Ödeme Yöntemi</label>
+                                                    <select class="select2 form-control form-control-lg" id="id_boxActionsPaymentMethod">
+                                                        <option value="1">Kredi Kartı</option>
+                                                        <option value="2">Banka Kartı</option>
+                                                        <option value="3">Havale/EFT</option>
+                                                        <option value="4">Nakit</option>
+                                                        <option value="5">Vadeli</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <div class="form-group">
+                                                        <label for="id_boxActionsAmount">Tutar</label>
+                                                        <input type="number" id="id_boxActionsAmount" class="form-control" placeholder="Tutar Giriniz"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    <div class="form-group">
+                                                        <label for="id_boxActionsTransactionDate">İşlem Tarihi</label>
+                                                        <input id="id_boxActionsTransactionDate" class="form-control" disabled></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="id_boxActionsNote">Açıklama</label>
+                                                        <textarea class="form-control" id="id_boxActionsNote" rows="2" ></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-2">
+                                                    <button type="submit" class="btn btn-primary mr-1">Kaydet</button>
+                                                    <button type="reset" class="btn btn-outline-secondary">Temizle</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="boxActionsList" aria-labelledby="service-tab-center" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2>Filtrele</h2>
+                                    </div>
+                                    <div class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card">
+                                    <table class="datatables-basic table" id="id_boxActionsTable">
+                                        <thead>
                                         <tr>
                                             <th></th>
                                             <th></th>
@@ -168,13 +159,16 @@
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
-                                    </thead>
-                                </table>
+                                        </thead>
+                                        <tbody id="id_boxActionsTableRow">
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
-
+                </div>
             </div>
         </div>
     </div>
@@ -195,7 +189,7 @@
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-input-mask.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
-
+    <script th:src="@{/customizeJs/boxActions.js}"></script>
     <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
 
 </th:block>
