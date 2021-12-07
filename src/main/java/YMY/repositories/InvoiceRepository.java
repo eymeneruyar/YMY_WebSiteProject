@@ -2,6 +2,8 @@ package YMY.repositories;
 
 import YMY.entities.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -18,6 +20,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndCustomer_IdEqualsOrderByIdDesc(boolean status, int userId, Integer id);
 
+    //Girilen tutar değerine göre kalan borcun, ödenen miktarın ve paid satus'ün güncellenmesi
+    @Procedure(name = "ProcUpdateInvoiceDebtAndPaidStatus")
+    void ProcUpdateInvoiceDebtAndPaidStatus(@Param("amount") float amount,@Param("status") boolean status,@Param("userId") int userId,@Param("invoiceId") int invoiceId);
 
 
 }

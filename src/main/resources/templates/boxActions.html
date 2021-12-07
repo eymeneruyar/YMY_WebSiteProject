@@ -13,6 +13,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/plugins/forms/pickers/form-flat-pickr.css}">
+
 </head>
 <!-- END: Head-->
 
@@ -64,6 +66,7 @@
                                                 <div class="col-md-3 col-12">
                                                     <label for="id_boxActionsDescription">Kasa Tanımı</label>
                                                     <select class="form-control mb-1" id="id_boxActionsDescription">
+                                                        <option value=null>Lütfen bir seçim yapınız</option>
                                                         <option value=1>Giriş</option>
                                                         <option value=0>Çıkış</option>
                                                     </select>
@@ -95,11 +98,12 @@
                                                 <div class="col-md-3 col-12 mb-1">
                                                     <label for="id_boxActionsPaymentMethod">Ödeme Yöntemi</label>
                                                     <select class="select2 form-control form-control-lg" id="id_boxActionsPaymentMethod">
-                                                        <option value="1">Kredi Kartı</option>
-                                                        <option value="2">Banka Kartı</option>
-                                                        <option value="3">Havale/EFT</option>
-                                                        <option value="4">Nakit</option>
-                                                        <option value="5">Vadeli</option>
+                                                        <option value=null>Lütfen bir seçim yapınız</option>
+                                                        <option value="Kredi Kartı">Kredi Kartı</option>
+                                                        <option value="Banka Kartı">Banka Kartı</option>
+                                                        <option value="Havale/EFT">Havale/EFT</option>
+                                                        <option value="Nakit">Nakit</option>
+                                                        <option value="Vadeli">Vadeli</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 col-12">
@@ -111,7 +115,7 @@
                                                 <div class="col-md-3 col-12">
                                                     <div class="form-group">
                                                         <label for="id_boxActionsTransactionDate">İşlem Tarihi</label>
-                                                        <input id="id_boxActionsTransactionDate" class="form-control" disabled></input>
+                                                        <input type="text" id="id_boxActionsTransactionDate" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -140,7 +144,32 @@
                                         <h2>Filtrele</h2>
                                     </div>
                                     <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3 col-12">
+                                                <label for="id_boxActionsFilterDescription">Kasa Tanımı</label>
+                                                <select class="form-control mb-1" id="id_boxActionsFilterDescription">
+                                                    <option value=2>Tümü</option>
+                                                    <option value=1>Giriş</option>
+                                                    <option value=0>Çıkış</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-12 mb-1">
+                                                <label for="id_boxActionsFilterDate">Tarih</label>
+                                                <input type="text" id="id_boxActionsFilterDate" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
+                                            </div>
+                                            <div class="col-md-3 col-12">
+                                                <label for="id_boxActionsFilterCompany">Yetkili Firma</label>
+                                                <select class="select2 form-control form-control-lg" id="id_boxActionsFilterCompany">
 
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-12">
+                                                <label for="id_boxActionsFilterCustomer">Müşteri</label>
+                                                <select class="select2 form-control form-control-lg" id="id_boxActionsFilterCustomer">
+
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -189,6 +218,11 @@
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-input-mask.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.date.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.time.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/pickers/form-pickers.js}"></script>
     <script th:src="@{/customizeJs/boxActions.js}"></script>
     <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
 

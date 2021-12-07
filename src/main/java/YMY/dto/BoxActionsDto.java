@@ -1,9 +1,7 @@
 package YMY.dto;
 
-import YMY.entities.Company;
-import YMY.entities.Customer;
-import YMY.entities.Invoice;
-import YMY.entities.User;
+import YMY.entities.*;
+import YMY.repositories.BoxActionsRepository;
 import YMY.repositories.CompanyRepository;
 import YMY.repositories.CustomerRepository;
 import YMY.repositories.InvoiceRepository;
@@ -11,6 +9,7 @@ import YMY.services.UserService;
 import YMY.utils.Check;
 import YMY.utils.Util;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,13 +21,50 @@ public class BoxActionsDto {
     final CompanyRepository companyRepository;
     final CustomerRepository customerRepository;
     final InvoiceRepository invoiceRepository;
+    final BoxActionsRepository boxActionsRepository;
     final UserService userService;
 
-    public BoxActionsDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, UserService userService) {
+    public BoxActionsDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, BoxActionsRepository boxActionsRepository, UserService userService) {
         this.companyRepository = companyRepository;
         this.customerRepository = customerRepository;
         this.invoiceRepository = invoiceRepository;
+        this.boxActionsRepository = boxActionsRepository;
         this.userService = userService;
+    }
+
+    //Save payment process
+    public Map<Check,Object> save(BoxActions boxActions, BindingResult bindingResult){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        try {
+            if(!bindingResult.hasErrors()){
+                if(user.getId() != null){
+                    //Faturanın bir miktarı ödenmiş ise
+                    if(boxActionsRepository.existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true,user.getId(),boxActions.getInvoice().getId())){
+
+                    }else{ //Yeni ödeme işlemi ise
+                        boxActions.setUserId(user.getId());
+                        boxActions.setStatus(true);
+                        boxActions.setDate(Util.generateDate());
+                        boxActionsRepository.saveAndFlush(boxActions);
+                        hm.put(Check.status,true);
+                        hm.put(Check.message,"Ödeme kayıt işlemi başarıyla tamamlandı!");
+                        hm.put(Check.result,boxActions);
+                    }
+
+                }
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Ödeme kayıt işlemi sırasında bir hata oluştu!");
+                hm.put(Check.error,bindingResult.getAllErrors());
+            }
+        } catch (Exception e) {
+            String error = "Ödeme işlemi sırasında bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,BoxActions.class);
+        }
+        return hm;
     }
 
     //List of companies

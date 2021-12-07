@@ -60,3 +60,156 @@ function dataTable() {
 }
 dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
+
+
+//-------------------------------------- Açılıştaki Select Durumları - Start ----------------------------------------//
+$('#id_boxActionsCompany').attr("disabled", true);
+$('#id_boxActionsCustomer').attr("disabled", true);
+$('#id_boxActionsInvoiceCode').attr("disabled", true);
+//-------------------------------------- Açılıştaki Select Durumları - End ------------------------------------------//
+
+//-------------------------------------- Box description Select Change - Start ----------------------------------------//
+$("#id_boxActionsDescription").change(function (){
+    if($(this).val() == 1){
+        fncListCompany()
+        $('#id_boxActionsCompany').attr("disabled", false);
+    }
+})
+//-------------------------------------- Box description Select Change - End ------------------------------------------//
+
+//-------------------------------------- Company Select Change - Start ----------------------------------------//
+$("#id_boxActionsCompany").change(function (){
+    fncListOfCustomerBySelectedCompany($(this).val())
+    $('#id_boxActionsCustomer').attr("disabled", false);
+})
+//-------------------------------------- Company Select Change - End ------------------------------------------//
+
+//-------------------------------------- Customer Select Change - Start ----------------------------------------//
+$("#id_boxActionsCustomer").change(function (){
+    fncListOfInvoiceCodeBySelectedCustomer($(this).val())
+    $('#id_boxActionsInvoiceCode').attr("disabled", false);
+})
+//-------------------------------------- Customer Select Change - End ------------------------------------------//
+
+//-------------------------------------- List of company, customers, and invoice code - Start ----------------------------------------//
+function fncListCompany(){
+    $.ajax({
+        url: "./kasa_haraketleri/listCompany",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncOptionCompany(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncListOfCustomerBySelectedCompany(companyId){
+    $.ajax({
+        url: "./kasa_haraketleri/listOfCustomerBySelectedCompany/" + companyId,
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncOptionCustomer(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncListOfInvoiceCodeBySelectedCustomer(customerId){
+    $.ajax({
+        url: "./kasa_haraketleri/listOfInvoiceCodeBySelectedCustomer/" + customerId,
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncOptionInvoiceCode(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncOptionCompany(data){
+    $("#id_boxActionsCompany").empty()
+    $("#id_boxActionsCompany").append('<option value=null>Lütfen bir seçim yapınız</option>')
+    data.result.forEach(item => {
+        $("#id_boxActionsCompany").append('<option value="'+item.id+'">'+item.name+' </option>')
+    })
+}
+
+function fncOptionCustomer(data){
+    $("#id_boxActionsCustomer").empty()
+    $("#id_boxActionsCustomer").append('<option value=null>Lütfen bir seçim yapınız</option>')
+    data.result.forEach(item => {
+        $("#id_boxActionsCustomer").append('<option value="'+item.id+'">'+item.plate+' - '+item.name+' '+item.surname+'</option>')
+    })
+}
+
+function fncOptionInvoiceCode(data){
+    $("#id_boxActionsInvoiceCode").empty()
+    $("#id_boxActionsInvoiceCode").append('<option value=null>Lütfen bir seçim yapınız</option>')
+    data.result.forEach(item => {
+        $("#id_boxActionsInvoiceCode").append('<option value="'+item.id+'">'+item.invoiceCode+'</option>')
+    })
+}
+//-------------------------------------- List of company, customers, and invoice code - End ------------------------------------------//
+
+//-------------------------------------- Sweet Alert Box - Start ----------------------------------------//
+function fncSweetAlert(data){
+    if(data.status == true && data.result == null){
+        Swal.fire({
+            title: 'Başarılı!',
+            text: "Dönen veri boş, lütfen işleminizi kontrol ediniz!",
+            icon: "success",
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }else if(data.status == true && data.result != null){
+        Swal.fire({
+            title: 'Başarılı!',
+            text: data.message,
+            icon: "success",
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }else{
+        if (!jQuery.isEmptyObject(data.error)) {
+            //console.log(data.errors)
+            Swal.fire({
+                title: 'Hata!',
+                text: data.error[0].defaultMessage,
+                icon: "error",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }else{
+            Swal.fire({
+                title: 'Hata!',
+                text: data.message,
+                icon: "error",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }
+    }
+}
+//-------------------------------------- Sweet Alert Box - End ------------------------------------------//

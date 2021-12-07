@@ -1,13 +1,13 @@
 package YMY.controllers;
 
 import YMY.dto.BoxActionsDto;
+import YMY.entities.BoxActions;
 import YMY.utils.Check;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -22,6 +22,12 @@ public class BoxActionsController {
     @GetMapping("")
     public String boxActions(){
         return "boxActions";
+    }
+
+    @ResponseBody
+    @GetMapping("/save/{descStId}")
+    public Map<Check,Object> save(@RequestBody @Valid BoxActions boxActions,BindingResult bindingResult){
+        return boxActionsDto.save(boxActions,bindingResult);
     }
 
     @ResponseBody

@@ -84,7 +84,7 @@ public class InvoiceAddDto {
                     invoice.setDate(Util.generateDate());
                     invoice.setDebt(debt);
                     invoice.setPaid(0f);
-                    invoice.setRemainingDebt(0f);
+                    invoice.setRemainingDebt(debt);
                     invoiceRepository.saveAndFlush(invoice);
                     hm.put(Check.status,true);
                     hm.put(Check.message,"Fatura kayıt işlemi başarıyla tamamlandı!");
