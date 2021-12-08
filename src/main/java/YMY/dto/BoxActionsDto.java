@@ -11,6 +11,7 @@ import YMY.utils.Util;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -41,14 +42,37 @@ public class BoxActionsDto {
                 if(user.getId() != null){
                     //Faturanın bir miktarı ödenmiş ise
                     if(boxActionsRepository.existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true,user.getId(),boxActions.getInvoice().getId())){
-
+                        Optional<BoxActions> optionalBoxActions = boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true, user.getId(), boxActions.getInvoice().getId());
+                        if(optionalBoxActions.isPresent()){
+                            BoxActions ba = optionalBoxActions.get(); //Tabloda ödemesi olan
+                            float amount = boxActions.getAmount();
+                            float totalPaid = ba.getInvoice().getPaid() + amount;
+                            float debt = ba.getInvoice().getDebt();
+                            if(totalPaid <= debt){
+                                ba.setAmount(totalPaid);
+                                boxActionsRepository.saveAndFlush(ba);
+                                invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
+                                invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
+                                hm.put(Check.status,true);
+                                hm.put(Check.message,"Ödeme (mevcut) kayıt işlemi başarıyla tamamlandı!");
+                                hm.put(Check.result,ba);
+                            }else{
+                                hm.put(Check.status,false);
+                                hm.put(Check.message,"Toplam ödenen miktar kayıtlı borcu aşmaktadır!");
+                            }
+                        }else{
+                            hm.put(Check.status,false);
+                            hm.put(Check.message,"Önceki ödeme işlemi bulunamadı!");
+                        }
                     }else{ //Yeni ödeme işlemi ise
                         boxActions.setUserId(user.getId());
                         boxActions.setStatus(true);
                         boxActions.setDate(Util.generateDate());
+                        invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
+                        invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
                         boxActionsRepository.saveAndFlush(boxActions);
                         hm.put(Check.status,true);
-                        hm.put(Check.message,"Ödeme kayıt işlemi başarıyla tamamlandı!");
+                        hm.put(Check.message,"Ödeme (ilk) kayıt işlemi başarıyla tamamlandı!");
                         hm.put(Check.result,boxActions);
                     }
 
@@ -62,7 +86,34 @@ public class BoxActionsDto {
             String error = "Ödeme işlemi sırasında bir hata oluştu!";
             hm.put(Check.status,false);
             hm.put(Check.message,error);
-            Util.logger(error + " " + e,BoxActions.class);
+            Util.logger(error + " " + e,BoxActionsDto.class);
+        }
+        return hm;
+    }
+
+    //List of box actions (Start of month - Today)
+    public Map<Check,Object> listBoxActionsPaydayToToday(){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String startDate = "";
+        String endDate = "";
+        try {
+            if(user.getId() != null){
+                String[] date = Util.generateDate().split("-");
+                startDate = date[0] + "-" + date[1] + "-" + "01";
+                endDate = Util.generateDate();
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Firmalar başarılı bir şekilde listelendi!");
+                hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenOrderByIdDesc(true,user.getId(),startDate,endDate));
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapıp tekrar deneyin!");
+            }
+        } catch (Exception e) {
+            String error = "Kasa hareketleri listelenirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, BoxActions.class);
         }
         return hm;
     }

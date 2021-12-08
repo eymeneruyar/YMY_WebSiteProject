@@ -65,7 +65,7 @@ public class Invoice extends BaseStructure{
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "ınvoice_id")
     private List<Works> workses = new ArrayList<>();
 

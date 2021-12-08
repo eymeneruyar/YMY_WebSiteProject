@@ -2,8 +2,11 @@ package YMY.repositories;
 
 import YMY.entities.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,9 +23,16 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndCustomer_IdEqualsOrderByIdDesc(boolean status, int userId, Integer id);
 
-    //Girilen tutar değerine göre kalan borcun, ödenen miktarın ve paid satus'ün güncellenmesi
-    @Procedure(name = "ProcUpdateInvoiceDebtAndPaidStatus")
-    void ProcUpdateInvoiceDebtAndPaidStatus(@Param("amount") float amount,@Param("status") boolean status,@Param("userId") int userId,@Param("invoiceId") int invoiceId);
+    //Girilen tutar değerine göre kalan borcun, ödenen miktarın  güncellenmesi
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update invoice set remaining_debt = remaining_debt - :amount_in, paid = paid + :amount_in where user_id = :user_id_in and id = :invoice_id_in and status = :status_in and remaining_debt >= 0 and paid <= debt and :amount_in <= remaining_debt;",nativeQuery = true)
+    void updateRemainingDebtAndPaid(@Param("amount_in") float amount_in,@Param("status_in") boolean status_in,@Param("user_id_in") int user_id_in,@Param("invoice_id_in")int invoice_id_in);
 
+    //Remaining_debt ve paid verilerine göre paid satus'ün güncellenmesi
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update invoice set paid_status = true where user_id = :user_id_in and id = :invoice_id_in and status = :status_in and remaining_debt = 0 and paid = debt;",nativeQuery = true)
+    void updatePaidStatus(@Param("status_in") boolean status_in,@Param("user_id_in") int user_id_in,@Param("invoice_id_in")int invoice_id_in);
 
 }

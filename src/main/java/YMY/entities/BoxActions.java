@@ -43,15 +43,15 @@ public class BoxActions extends BaseStructure{
     @Column(columnDefinition = "TEXT",length = 500)
     private String note;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 

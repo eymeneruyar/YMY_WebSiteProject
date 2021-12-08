@@ -25,9 +25,15 @@ public class BoxActionsController {
     }
 
     @ResponseBody
-    @GetMapping("/save/{descStId}")
+    @GetMapping("/save")
     public Map<Check,Object> save(@RequestBody @Valid BoxActions boxActions,BindingResult bindingResult){
         return boxActionsDto.save(boxActions,bindingResult);
+    }
+
+    @ResponseBody
+    @GetMapping("/listBoxActionsPaydayToToday")
+    public Map<Check,Object> listBoxActionsPaydayToToday(){
+        return boxActionsDto.listBoxActionsPaydayToToday();
     }
 
     @ResponseBody

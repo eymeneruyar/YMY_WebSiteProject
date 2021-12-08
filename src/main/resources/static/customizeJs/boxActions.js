@@ -61,6 +61,8 @@ function dataTable() {
 dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
 
+let select_id = 0
+let globalArr = []
 
 //-------------------------------------- Açılıştaki Select Durumları - Start ----------------------------------------//
 $('#id_boxActionsCompany').attr("disabled", true);
@@ -90,6 +92,58 @@ $("#id_boxActionsCustomer").change(function (){
     $('#id_boxActionsInvoiceCode').attr("disabled", false);
 })
 //-------------------------------------- Customer Select Change - End ------------------------------------------//
+
+//-------------------------------------- Create Row Datatable - Start ----------------------------------------//
+function fncCreateRowDataTable(data){
+    let html = ``
+    let billingStatus = ""
+    data.result.forEach( item => {
+        globalArr.push(item)
+        formatDate =  fncConvertDate(item.date)
+        if(item.billingStatus != null && item.billingStatus === "1"){
+            billingStatus = "Evet"
+        }else if(item.billingStatus != null && item.billingStatus === "0"){
+            billingStatus = "Hayır"
+        }else{
+            billingStatus = "Tümü"
+        }
+        html += `<tr  role="row" class="odd">
+                    <td><a href="/fatura_duzenle/${item.id}">${item.invoiceCode}</a></td>
+                    <td>${item.company.name}</td>
+                    <td>${item.customer.name} ${item.customer.surname}</td>
+                    <td>${item.customer.plate}</td>
+                    <td>${billingStatus}</td>
+                    <td>${item.debt}</td>
+                    <td>${item.paid}</td>
+                    <td>${item.remainingDebt}</td>
+                    <td>${formatDate}</td>
+                    <td class="text-left">
+                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                        <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
+                        <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
+                    </td>`
+    })
+    $("#id_boxActionsTableRow").html(html)
+}
+//-------------------------------------- Create Row Datatable - End ----------------------------------------//
+
+//-------------------------------------- List of box actions payday to today - Start ----------------------------------------//
+function fncListBoxActionsPaydayToToday(){
+    $.ajax({
+        url: "./kasa_haraketleri/listBoxActionsPaydayToToday",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+//-------------------------------------- List of box actions payday to today - End ------------------------------------------//
 
 //-------------------------------------- List of company, customers, and invoice code - Start ----------------------------------------//
 function fncListCompany(){
@@ -213,3 +267,40 @@ function fncSweetAlert(data){
     }
 }
 //-------------------------------------- Sweet Alert Box - End ------------------------------------------//
+
+//-------------------------------------- Reset Form - Start ------------------------------------------//
+function resetForm(){
+    select_id = 0
+    //fncListCustomer()
+    $("#id_invoiceAddInvoiceNo").val(codeGenerator())
+
+    $("#id_invoiceAddCompany").empty()
+    fncListAllCompany()
+
+    $("#id_invoiceAddCustomer").empty()
+    $('#id_invoiceAddCustomer').attr("disabled", true);
+
+    $("#id_invoiceAddDiscount").val("")
+    $("#id_invoiceAddNote").val("")
+
+    //Filtreleme seçenekleri dolu ise
+    const date = $("#id_invoiceListFilterDate").val()
+    const companyId = $('#id_invoiceListFilterCompany').val()
+    const billingStatus = $('#id_invoiceListFilterBillingStatus').val()
+    if(date != null && companyId != null && billingStatus != null){
+        fncListInvoiceFilteredDateCompanyBillingStatus(date,companyId,billingStatus)
+    }else{ //Filtreleme seçenekleri boş ise
+        fncListInvoiceThisMonth()
+    }
+
+    //$('.source-item').repeaterVal()
+
+}
+//-------------------------------------- Reset Form - End --------------------------------------------//
+
+//-------------------------------------- Date Convert - Start ------------------------------------------//
+function fncConvertDate(date){
+    let arr = date.split("-")
+    return arr[2] + "-" + arr[1] + "-" + arr[0]
+}
+//-------------------------------------- Date Convert - End --------------------------------------------//
