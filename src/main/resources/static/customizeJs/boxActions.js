@@ -17,31 +17,31 @@ function dataTable() {
                         extend: 'print',
                         text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7,8] }
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
                     },
                     {
                         extend: 'csv',
                         text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7,8] }
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
                     },
                     {
                         extend: 'excel',
                         text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7,8] }
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
                     },
                     {
                         extend: 'pdf',
                         text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7,8] }
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
                     },
                     {
                         extend: 'copy',
                         text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [1,2,3,4,5,6,7,8] }
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
                     }
                 ],
             }
@@ -63,6 +63,52 @@ dataTable()
 
 let select_id = 0
 let globalArr = []
+
+//-------------------------------------- Save Box Actions Input/Output - Start --------------------------------------//
+$("#id_boxActionsSaveForm").submit((event) => {
+    event.preventDefault()
+
+    const baDescription = $("#id_boxActionsDescription").val()
+    const baCompany = $("#id_boxActionsCompany").val()
+    const baCustomer = $("#id_boxActionsCustomer").val()
+    const baInvoiceCode = $("#id_boxActionsInvoiceCode").val()
+    const baTitle = $("#id_boxActionsTitle").val()
+    const baPaymentMethod = $("#id_boxActionsPaymentMethod").val()
+    const baAmount = $("#id_boxActionsAmount").val()
+    const baTransactionDate = $("#id_boxActionsTransactionDate").val()
+    const baNote = $("#id_boxActionsNote").val()
+
+    const obj = {
+        description: baDescription,
+        company: {id:baCompany},
+        customer: {id:baCustomer},
+        invoice: {id:baInvoiceCode},
+        title: baTitle,
+        paymentMethod: baPaymentMethod,
+        amount: baAmount,
+        transactionDate: baTransactionDate,
+        note: baNote
+    }
+
+    console.log(obj)
+
+    $.ajax({
+        url:"./kasa_haraketleri/save",
+        type: "POST",
+        data: JSON.stringify(obj),
+        dataType: "JSON",
+        contentType: "application/json; charset=utf-8",
+        success: function (data){
+            fncSweetAlert(data)
+            //resetForm()
+        },
+        error: function (err){
+            console.log(err)
+        }
+    })
+
+})
+//-------------------------------------- Save Box Actions Input/Output - End ----------------------------------------//
 
 //-------------------------------------- Açılıştaki Select Durumları - Start ----------------------------------------//
 $('#id_boxActionsCompany').attr("disabled", true);
@@ -99,29 +145,39 @@ function fncCreateRowDataTable(data){
     let billingStatus = ""
     data.result.forEach( item => {
         globalArr.push(item)
-        formatDate =  fncConvertDate(item.date)
-        if(item.billingStatus != null && item.billingStatus === "1"){
-            billingStatus = "Evet"
-        }else if(item.billingStatus != null && item.billingStatus === "0"){
-            billingStatus = "Hayır"
-        }else{
-            billingStatus = "Tümü"
-        }
-        html += `<tr  role="row" class="odd">
-                    <td><a href="/fatura_duzenle/${item.id}">${item.invoiceCode}</a></td>
-                    <td>${item.company.name}</td>
-                    <td>${item.customer.name} ${item.customer.surname}</td>
-                    <td>${item.customer.plate}</td>
-                    <td>${billingStatus}</td>
-                    <td>${item.debt}</td>
-                    <td>${item.paid}</td>
-                    <td>${item.remainingDebt}</td>
+        formatDate =  fncConvertDate(item.transactionDate)
+        if(item.description == 0){ //Kasa çıkış
+            html += `<tr style="background-color: #fae8e8;" role="row" class="odd">
+                    <td>${item.description == 0 ? "Çıkış" : "Giriş"}</td>
+                    <td></td>
+                    <td></td>
+                    <td>${item.title}</td>
+                    <td>${item.note.substring(0,10)}...</td>
+                    <td>${item.paymentMethod}</td>
+                    <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
                         <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                         <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
                         <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
                     </td>`
+        }else{ //Kasa giriş
+            html += `<tr style="background-color: #e3f6e3;" role="row" class="odd">
+                    <td>${item.description == 1 ? "Giriş" : "Çıkış"}</td>
+                    <td>${item.company.name}</td>
+                    <td>${item.customer.plate}</td>
+                    <td>${item.title}</td>
+                    <td>${item.note.substring(0,10)}...</td>
+                    <td>${item.paymentMethod}</td>
+                    <td>${item.amount}</td>
+                    <td>${formatDate}</td>
+                    <td class="text-left">
+                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                        <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
+                        <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
+                    </td>`
+        }
+
     })
     $("#id_boxActionsTableRow").html(html)
 }
@@ -136,13 +192,19 @@ function fncListBoxActionsPaydayToToday(){
         contentType : 'application/json; charset=utf-8',
         //async:false,
         success: function (data) {
-
+            console.log(data)
+            if($.fn.DataTable.isDataTable("#id_boxActionsTable")){
+                $("#id_boxActionsTable").DataTable().destroy()
+            }
+            fncCreateRowDataTable(data)
+            dataTable()
         },
         error: function (err) {
             console.log(err)
         }
     })
 }
+fncListBoxActionsPaydayToToday()
 //-------------------------------------- List of box actions payday to today - End ------------------------------------------//
 
 //-------------------------------------- List of company, customers, and invoice code - Start ----------------------------------------//
@@ -214,7 +276,7 @@ function fncOptionInvoiceCode(data){
     $("#id_boxActionsInvoiceCode").empty()
     $("#id_boxActionsInvoiceCode").append('<option value=null>Lütfen bir seçim yapınız</option>')
     data.result.forEach(item => {
-        $("#id_boxActionsInvoiceCode").append('<option value="'+item.id+'">'+item.invoiceCode+'</option>')
+        $("#id_boxActionsInvoiceCode").append('<option value="'+item.id+'">'+item.invoiceCode+' - '+item.remainingDebt+'</option>')
     })
 }
 //-------------------------------------- List of company, customers, and invoice code - End ------------------------------------------//

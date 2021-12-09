@@ -40,42 +40,53 @@ public class BoxActionsDto {
         try {
             if(!bindingResult.hasErrors()){
                 if(user.getId() != null){
-                    //Faturanın bir miktarı ödenmiş ise
-                    if(boxActionsRepository.existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true,user.getId(),boxActions.getInvoice().getId())){
-                        Optional<BoxActions> optionalBoxActions = boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true, user.getId(), boxActions.getInvoice().getId());
-                        if(optionalBoxActions.isPresent()){
-                            BoxActions ba = optionalBoxActions.get(); //Tabloda ödemesi olan
-                            float amount = boxActions.getAmount();
-                            float totalPaid = ba.getInvoice().getPaid() + amount;
-                            float debt = ba.getInvoice().getDebt();
-                            if(totalPaid <= debt){
-                                ba.setAmount(totalPaid);
-                                boxActionsRepository.saveAndFlush(ba);
-                                invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
-                                invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
-                                hm.put(Check.status,true);
-                                hm.put(Check.message,"Ödeme (mevcut) kayıt işlemi başarıyla tamamlandı!");
-                                hm.put(Check.result,ba);
+                    //Kasa girişi ise
+                    if(boxActions.getDescription() == 1 && boxActions.getInvoice() != null && boxActions.getCompany() != null && boxActions.getCustomer() != null){
+                        //Faturanın bir miktarı ödenmiş ise
+                        if(boxActionsRepository.existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true,user.getId(),boxActions.getInvoice().getId())){
+                            Optional<BoxActions> optionalBoxActions = boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(true, user.getId(), boxActions.getInvoice().getId());
+                            if(optionalBoxActions.isPresent()){
+                                BoxActions ba = optionalBoxActions.get(); //Tabloda ödemesi olan
+                                float amount = boxActions.getAmount();
+                                float totalPaid = ba.getInvoice().getPaid() + amount;
+                                float debt = ba.getInvoice().getDebt();
+                                if(totalPaid <= debt){
+                                    ba.setAmount(totalPaid);
+                                    boxActionsRepository.saveAndFlush(ba);
+                                    invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
+                                    invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
+                                    hm.put(Check.status,true);
+                                    hm.put(Check.message,"Ödeme (mevcut) kayıt işlemi başarıyla tamamlandı!");
+                                    hm.put(Check.result,ba);
+                                }else{
+                                    hm.put(Check.status,false);
+                                    hm.put(Check.message,"Toplam ödenen miktar kayıtlı borcu aşmaktadır!");
+                                }
                             }else{
                                 hm.put(Check.status,false);
-                                hm.put(Check.message,"Toplam ödenen miktar kayıtlı borcu aşmaktadır!");
+                                hm.put(Check.message,"Önceki ödeme işlemi bulunamadı!");
                             }
-                        }else{
-                            hm.put(Check.status,false);
-                            hm.put(Check.message,"Önceki ödeme işlemi bulunamadı!");
+                        }else{ //Yeni ödeme işlemi ise
+                            boxActions.setUserId(user.getId());
+                            boxActions.setStatus(true);
+                            boxActions.setDate(Util.generateDate());
+                            invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
+                            invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
+                            boxActionsRepository.saveAndFlush(boxActions);
+                            hm.put(Check.status,true);
+                            hm.put(Check.message,"Kasa girişi ödeme (ilk) kayıt işlemi başarıyla tamamlandı!");
+                            hm.put(Check.result,boxActions);
                         }
-                    }else{ //Yeni ödeme işlemi ise
+                    }else{
+                        //Kasa çıkış işlemi
                         boxActions.setUserId(user.getId());
                         boxActions.setStatus(true);
                         boxActions.setDate(Util.generateDate());
-                        invoiceRepository.updateRemainingDebtAndPaid(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
-                        invoiceRepository.updatePaidStatus(true,user.getId(),boxActions.getInvoice().getId());
                         boxActionsRepository.saveAndFlush(boxActions);
                         hm.put(Check.status,true);
-                        hm.put(Check.message,"Ödeme (ilk) kayıt işlemi başarıyla tamamlandı!");
+                        hm.put(Check.message,"Kasa çıkışı ödeme kayıt işlemi başarıyla tamamlandı!");
                         hm.put(Check.result,boxActions);
                     }
-
                 }
             }else{
                 hm.put(Check.status,false);

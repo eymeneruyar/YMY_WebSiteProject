@@ -25,7 +25,7 @@ public class BoxActionsController {
     }
 
     @ResponseBody
-    @GetMapping("/save")
+    @PostMapping("/save")
     public Map<Check,Object> save(@RequestBody @Valid BoxActions boxActions,BindingResult bindingResult){
         return boxActionsDto.save(boxActions,bindingResult);
     }
