@@ -157,9 +157,8 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
-                        <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
+                        <button onclick="" type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
+                        <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
         }else{ //Kasa giriş
             html += `<tr style="background-color: #e3f6e3;" role="row" class="odd">
@@ -172,9 +171,8 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <a href="/fatura_duzenle/${item.id}"  type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></a>
-                        <a href="/fatura/${item.id}" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></a>
+                        <button onclick=""  type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
+                        <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
         }
 
@@ -196,6 +194,7 @@ function fncListBoxActionsPaydayToToday(){
             if($.fn.DataTable.isDataTable("#id_boxActionsTable")){
                 $("#id_boxActionsTable").DataTable().destroy()
             }
+            globalArr = [] //Important!!, must be remove otherwise can give false result
             fncCreateRowDataTable(data)
             dataTable()
         },
@@ -280,6 +279,127 @@ function fncOptionInvoiceCode(data){
     })
 }
 //-------------------------------------- List of company, customers, and invoice code - End ------------------------------------------//
+
+//-------------------------------------- Detail of payment process - Start ------------------------------------------//
+function fncDetail(id){
+    const itm = globalArr.find(item => item.id == id)
+    $("#id_boxActionsDetailModal").modal('toggle')
+    $("#id_boxActionsDetailModalDescription").text(itm.description == 0 ? "Çıkış" : "Giriş")
+    if(itm.description == 0){
+        $("#id_boxActionsDetailModalTitle").text("Çıkış - " + itm.title)
+        $("#id_boxActionsDetailModalCompany").text("------------")
+        $("#id_boxActionsDetailModalCustomer").text("------------")
+        $("#id_boxActionsDetailModalInvoiceCode").text("------------")
+    }else if(itm.description == 1){
+        $("#id_boxActionsDetailModalTitle").text("Giriş - " + itm.title)
+        $("#id_boxActionsDetailModalCompany").text(itm.company.name)
+        $("#id_boxActionsDetailModalCustomer").text(itm.customer.name + " " + itm.customer.surname)
+        $("#id_boxActionsDetailModalInvoiceCode").text(itm.invoice.invoiceCode)
+    }
+    $("#id_boxActionsDetailModalTitle2").text(itm.title)
+    $("#id_boxActionsDetailModalPaymentMethod").text(itm.paymentMethod)
+    $("#id_boxActionsDetailModalAmount").text(itm.amount)
+    $("#id_boxActionsDetailModalTransactionDate").text(itm.transactionDate)
+    $("#id_boxActionsDetailModalNote").text(itm.note)
+}
+//-------------------------------------- Detail of payment process - End --------------------------------------------//
+
+//-------------------------------------- Filter Section - Start ------------------------------------------//
+$('#id_boxActionsFilterCompany').attr("disabled", true);
+$('#id_boxActionsFilterDescription').change(function () {
+    if($(this).val() == 1){
+        $('#id_boxActionsFilterCompany').attr("disabled", false);
+        fncFilterListCompany()
+    }else{
+        $('#id_boxActionsFilterCompany').attr("disabled", true);
+        $('#id_boxActionsFilterCompany').empty()
+    }
+})
+
+function fncFilterListCompany(){
+    $.ajax({
+        url: "./kasa_haraketleri/listCompany",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncFilterOptionCompany(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function fncFilterOptionCompany(data){
+    $("#id_boxActionsFilterCompany").empty()
+    $("#id_boxActionsFilterCompany").append('<option value=null>Lütfen bir seçim yapınız</option>')
+    data.result.forEach(item => {
+        $("#id_boxActionsFilterCompany").append('<option value="'+item.id+'">'+item.name+' </option>')
+    })
+}
+
+function fncFilterApply(){
+
+    var filterDesc = $('#id_boxActionsFilterDescription').val()
+    var filterDate = $('#id_boxActionsFilterDate').val()
+    var filterCompany = $('#id_boxActionsFilterCompany').val()
+
+    //console.log(filterDesc)
+    //console.log(filterDate)
+    //console.log(filterCompany)
+
+    //Filtered data by selected description of box and date
+    if(filterDesc != null && (filterDate != null && filterDate != "") && filterCompany == null){
+        $.ajax({
+            url: "./kasa_haraketleri/listBoxActionsByDescriptionAndDate/" + filterDesc + '/' + filterDate,
+            type: "GET",
+            dataType: "JSON",
+            contentType : 'application/json; charset=utf-8',
+            //async:false,
+            success: function (data) {
+                if($.fn.DataTable.isDataTable("#id_boxActionsTable")){
+                    $("#id_boxActionsTable").DataTable().destroy()
+                }
+                fncCreateRowDataTable(data)
+                dataTable()            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    }else if(filterDesc != null && filterDate != null && filterCompany != null){
+        $.ajax({
+            url: "./kasa_haraketleri/listBoxActionsByDescriptionAndDateAndCompany/" + filterDesc + '/' + filterDate + '/' + filterCompany,
+            type: "GET",
+            dataType: "JSON",
+            contentType : 'application/json; charset=utf-8',
+            //async:false,
+            success: function (data) {
+                if($.fn.DataTable.isDataTable("#id_boxActionsTable")){
+                    $("#id_boxActionsTable").DataTable().destroy()
+                }
+                fncCreateRowDataTable(data)
+                dataTable()            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    }else{
+        Swal.fire({
+            title: 'Uyarı!',
+            text: "Filtreleme yapmak için kasa tanımı ve tarih alanları seçilmelidir!",
+            icon: "warning",
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }
+
+}
+
+//-------------------------------------- Filter Section - End --------------------------------------------//
 
 //-------------------------------------- Sweet Alert Box - Start ----------------------------------------//
 function fncSweetAlert(data){

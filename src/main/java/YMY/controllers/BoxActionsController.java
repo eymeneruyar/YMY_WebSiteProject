@@ -37,6 +37,18 @@ public class BoxActionsController {
     }
 
     @ResponseBody
+    @GetMapping("/listBoxActionsByDescriptionAndDate/{description}/{date}")
+    public Map<Check,Object> listBoxActionsByDescriptionAndDate(@PathVariable String description,@PathVariable String date){
+        return boxActionsDto.listBoxActionsByDescriptionAndDate(description,date);
+    }
+
+    @ResponseBody
+    @GetMapping("/listBoxActionsByDescriptionAndDateAndCompany/{description}/{date}/{company}")
+    public Map<Check,Object> listBoxActionsByDescriptionAndDateAndCompany(@PathVariable String description,@PathVariable String date,@PathVariable String company){
+        return boxActionsDto.listBoxActionsByDescriptionAndDateAndCompany(description,date,company);
+    }
+
+    @ResponseBody
     @GetMapping("/listCompany")
     public Map<Check,Object> listCompany(){
         return boxActionsDto.listCompany();

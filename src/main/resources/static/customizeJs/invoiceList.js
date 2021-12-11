@@ -119,9 +119,9 @@ function fncCreateRowDataTable(data){
                     <td>${item.paid}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                        <button onclick="fncDelete(${item.id})" type="button" class="btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                        <button onclick="fncUpdate(${item.id})" type="button" class="btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
+                        <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
     })
     $("#id_invoiceAddTableRow").html(html)

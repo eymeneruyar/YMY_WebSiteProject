@@ -10,6 +10,7 @@ import YMY.utils.Check;
 import YMY.utils.Util;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.swing.*;
 import java.util.LinkedHashMap;
@@ -122,6 +123,70 @@ public class BoxActionsDto {
             }
         } catch (Exception e) {
             String error = "Kasa hareketleri listelenirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, BoxActions.class);
+        }
+        return hm;
+    }
+
+    //List of box actions by selected description, start and end date
+    public Map<Check,Object> listBoxActionsByDescriptionAndDate(String description,String date){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String[] dateArr = date.replaceAll(" to ",",").split(",");
+        String startDate = dateArr[0];
+        String endDate = dateArr[1];
+        try{
+            int descId = Integer.parseInt(description);
+            if(user.getId() != null){
+                if(descId == 0 || descId == 1){
+                    hm.put(Check.status,true);
+                    hm.put(Check.message,"Kasa işlemleri (giriş veya çıkış) başarılı bir şekilde listelendi!");
+                    hm.put(Check.result,boxActionsRepository.findByUserIdEqualsAndStatusEqualsAndDescriptionEqualsAndTransactionDateBetween(user.getId(),true,descId,startDate,endDate));
+                }else{
+                    hm.put(Check.status,true);
+                    hm.put(Check.message,"Kasa işlemleri (tümü) başarılı bir şekilde listelendi!");
+                    hm.put(Check.result,boxActionsRepository.findByUserIdEqualsAndStatusEqualsAndTransactionDateBetween(user.getId(),true,startDate,endDate));
+                }
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapıp tekrar deneyin!");
+            }
+        }catch (Exception e){
+            String error = "Kasa işlemleri (kasa tanımı ve tarihe göre) listelenirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, BoxActions.class);
+        }
+        return hm;
+    }
+
+    //List of box actions by description,date and company
+    public Map<Check,Object> listBoxActionsByDescriptionAndDateAndCompany(String description,String date,String company){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String[] dateArr = date.replaceAll(" to ",",").split(",");
+        String startDate = dateArr[0];
+        String endDate = dateArr[1];
+        try {
+            int descId = Integer.parseInt(description);
+            int companyId = Integer.parseInt(company);
+            if(user.getId() != null){
+                if(descId == 1){ // Kasa tanımı giriş ise
+                    hm.put(Check.status,true);
+                    hm.put(Check.message,"Kasa işlemleri (giriş) başarılı bir şekilde listelendi!");
+                    hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetweenAndCompany_IdEquals(true, user.getId(),descId,startDate,endDate,companyId));
+                }else{
+                    hm.put(Check.status,false);
+                    hm.put(Check.message,"Yalnızca kasa tanımı Giriş olan ifadeler firma ile birlikte filtrelenebilir!");
+                }
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapıp tekrar deneyin!");
+            }
+        } catch (Exception e) {
+            String error = "Kasa işlemleri (kasa tanımı, tarih ve firmaya göre) listelenirken bir hata oluştu!";
             hm.put(Check.status,false);
             hm.put(Check.message,error);
             Util.logger(error + " " + e, BoxActions.class);

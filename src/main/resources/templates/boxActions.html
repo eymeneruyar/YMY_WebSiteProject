@@ -145,29 +145,28 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-3 col-12">
+                                            <div class="col-md-4 col-12">
                                                 <label for="id_boxActionsFilterDescription">Kasa Tanımı</label>
                                                 <select class="form-control mb-1" id="id_boxActionsFilterDescription">
+                                                    <option value=null>Lütfen bir seçim yapınız</option>
                                                     <option value=2>Tümü</option>
                                                     <option value=1>Giriş</option>
                                                     <option value=0>Çıkış</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3 col-12 mb-1">
+                                            <div class="col-md-4 col-12 mb-1">
                                                 <label for="id_boxActionsFilterDate">Tarih</label>
                                                 <input type="text" id="id_boxActionsFilterDate" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
                                             </div>
-                                            <div class="col-md-3 col-12">
+                                            <div class="col-md-4 col-12">
                                                 <label for="id_boxActionsFilterCompany">Yetkili Firma</label>
                                                 <select class="select2 form-control form-control-lg" id="id_boxActionsFilterCompany">
 
                                                 </select>
                                             </div>
-                                            <div class="col-md-3 col-12">
-                                                <label for="id_boxActionsFilterCustomer">Müşteri</label>
-                                                <select class="select2 form-control form-control-lg" id="id_boxActionsFilterCustomer">
-
-                                                </select>
+                                            <div class="col-12 mt-2">
+                                                <button onclick="fncFilterApply()" type="button" class="btn btn-primary mr-1">Uygula</button>
+                                                <button type="button" class="btn btn-outline-secondary">Temizle</button>
                                             </div>
                                         </div>
                                     </div>
@@ -202,6 +201,64 @@
         </div>
     </div>
     <!-- END: Content-->
+
+    <!-- Modal Product Detail -->
+    <div class="modal fade text-left" id="id_boxActionsDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="id_boxActionsDetailModalTitle"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Kasa Tanımı</label>
+                            <div id="id_boxActionsDetailModalDescription" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Firma</label>
+                            <div   id="id_boxActionsDetailModalCompany" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Müşteri</label>
+                            <div   id="id_boxActionsDetailModalCustomer" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">İş Emri No</label>
+                            <div  id="id_boxActionsDetailModalInvoiceCode" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Başlık</label>
+                            <div  id="id_boxActionsDetailModalTitle2" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Ödeme Yöntemi</label>
+                            <div  id="id_boxActionsDetailModalPaymentMethod" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Tutar</label>
+                            <div  id="id_boxActionsDetailModalAmount" class="form-text"></div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">İşlem Tarihi</label>
+                            <div  id="id_boxActionsDetailModalTransactionDate" class="form-text"></div>
+                        </div>
+                        <div class="col-12">
+                            <label style="color: black; text-decoration-line: underline;" class="form-label">Açıklama</label>
+                            <div  id="id_boxActionsDetailModalNote" class="form-text"></div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>

@@ -17,7 +17,14 @@ public interface BoxActionsRepository extends JpaRepository<BoxActions,Integer> 
     //List of box actions by payday to today
     List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDateBetweenOrderByIdDesc(boolean status, int userId, String dateStart, String dateEnd);
 
+    //List of box actions by description (giriş ve çıkış) and date
+    List<BoxActions> findByUserIdEqualsAndStatusEqualsAndDescriptionEqualsAndTransactionDateBetween(int userId, boolean status, Integer description, String transactionDateStart, String transactionDateEnd);
 
+    //List of box actions by description (tümü) and date
+    List<BoxActions> findByUserIdEqualsAndStatusEqualsAndTransactionDateBetween(int userId, boolean status, String transactionDateStart, String transactionDateEnd);
+
+    //List of box actions by description,date and company
+    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetweenAndCompany_IdEquals(boolean status, int userId, Integer description, String transactionDateStart, String transactionDateEnd, Integer id);
 
 
 
