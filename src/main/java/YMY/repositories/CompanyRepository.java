@@ -9,4 +9,7 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
 
     List<Company> findByStatusEqualsAndUserIdEqualsOrderByIdAsc(boolean status, int userId);
 
+    //Number of company
+    int countByStatusEqualsAndUserIdEquals(boolean status, int userId);
+
 }

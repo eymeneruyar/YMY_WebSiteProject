@@ -100,7 +100,7 @@ $("#id_boxActionsSaveForm").submit((event) => {
         contentType: "application/json; charset=utf-8",
         success: function (data){
             fncSweetAlert(data)
-            //resetForm()
+            resetForm()
         },
         error: function (err){
             console.log(err)
@@ -157,7 +157,7 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="" type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
+                        <button onclick="fncUndo(${item.id})" type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
                         <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
         }else{ //Kasa giriş
@@ -171,7 +171,7 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick=""  type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
+                        <button onclick="fncUndo(${item.id})"  type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
                         <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
                     </td>`
         }
@@ -303,6 +303,41 @@ function fncDetail(id){
     $("#id_boxActionsDetailModalNote").text(itm.note)
 }
 //-------------------------------------- Detail of payment process - End --------------------------------------------//
+
+//-------------------------------------- Get back of payment process - Start --------------------------------------------//
+function fncUndo(id){
+
+    Swal.fire({
+        title: 'Ödeme işlemini geri almak istediğinizden emin misiniz?',
+        //text: "Bu işlem geri alınamayacak!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet',
+        cancelButtonText: 'Hayır',
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result){
+        if(result.value){
+            $.ajax({
+                url: "./kasa_haraketleri/undoBoxActions/" + id,
+                type: "PUT",
+                dataType: "JSON",
+                contentType : 'application/json; charset=utf-8',
+                //async:false,
+                success: function (data) {
+                    resetForm()
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+    })
+}
+//-------------------------------------- Get back of payment process - End ----------------------------------------------//
 
 //-------------------------------------- Filter Section - Start ------------------------------------------//
 $('#id_boxActionsFilterCompany').attr("disabled", true);
@@ -452,30 +487,32 @@ function fncSweetAlert(data){
 
 //-------------------------------------- Reset Form - Start ------------------------------------------//
 function resetForm(){
-    select_id = 0
-    //fncListCustomer()
-    $("#id_invoiceAddInvoiceNo").val(codeGenerator())
 
-    $("#id_invoiceAddCompany").empty()
-    fncListAllCompany()
+    $("#id_boxActionsDescription").val(null)
+    $("#id_boxActionsCompany").empty()
+    $('#id_boxActionsCompany').attr("disabled", true);
 
-    $("#id_invoiceAddCustomer").empty()
-    $('#id_invoiceAddCustomer').attr("disabled", true);
+    $("#id_boxActionsCustomer").empty()
+    $('#id_boxActionsCustomer').attr("disabled", true);
 
-    $("#id_invoiceAddDiscount").val("")
-    $("#id_invoiceAddNote").val("")
+    $("#id_boxActionsInvoiceCode").empty()
+    $('#id_boxActionsInvoiceCode').attr("disabled", true);
+
+    $("#id_boxActionsTitle").val("")
+    $("#id_boxActionsPaymentMethod").val(null)
+    $("#id_boxActionsAmount").val("")
+    $("#id_boxActionsTransactionDate").val("")
+    $("#id_boxActionsNote").val("")
 
     //Filtreleme seçenekleri dolu ise
-    const date = $("#id_invoiceListFilterDate").val()
-    const companyId = $('#id_invoiceListFilterCompany').val()
-    const billingStatus = $('#id_invoiceListFilterBillingStatus').val()
-    if(date != null && companyId != null && billingStatus != null){
-        fncListInvoiceFilteredDateCompanyBillingStatus(date,companyId,billingStatus)
+    const desc = $("#id_boxActionsFilterDescription").val()
+    const date = $('#id_boxActionsFilterDate').val()
+    const companyId = $('#id_boxActionsFilterCompany').val()
+    if(date != null && companyId != null && desc != null){
+        fncFilterApply()
     }else{ //Filtreleme seçenekleri boş ise
-        fncListInvoiceThisMonth()
+        fncListBoxActionsPaydayToToday()
     }
-
-    //$('.source-item').repeaterVal()
 
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//

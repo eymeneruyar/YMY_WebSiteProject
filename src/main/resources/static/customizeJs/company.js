@@ -160,7 +160,7 @@ function createRowDataTable(data){
 //-------------------------------------- Delete Company Information - Start ------------------------------------------//
 function fncDelete(id){
     Swal.fire({
-        title: 'Silme istediğinizden emin misiniz?',
+        title: 'Silmek istediğinizden emin misiniz?',
         text: "Bu işlem geri alınamayacak!",
         icon: 'warning',
         showCancelButton: true,

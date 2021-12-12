@@ -103,6 +103,44 @@ public class BoxActionsDto {
         return hm;
     }
 
+    //Get back of payment process
+    public Map<Check,Object> undoBoxActions(String stId){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        try {
+            int id = Integer.parseInt(stId);
+            Optional<BoxActions> optionalBoxActions = boxActionsRepository.findById(id);
+            if(user.getId() != null){
+                if(optionalBoxActions.isPresent()){
+                    BoxActions boxActions = optionalBoxActions.get();
+                    if(boxActions.getDescription() == 0){ //Kasa çıkışı ise
+                        boxActions.setStatus(false);
+                        boxActionsRepository.saveAndFlush(boxActions);
+                        hm.put(Check.status,true);
+                        hm.put(Check.message,"Kasa çıkış işleminiz başarıyla geri alındı!");
+                    }else{ //Kasa girişi ise
+                        invoiceRepository.undoPayment(boxActions.getAmount(),true, user.getId(),boxActions.getInvoice().getId());
+                        boxActionsRepository.updateStatusBoxActions(boxActions.getId(), user.getId());
+                        hm.put(Check.status,true);
+                        hm.put(Check.message,"Kasa giriş işleminiz başarıyla geri alındı!");
+                    }
+                }else{
+                    hm.put(Check.status,false);
+                    hm.put(Check.message,"Ödeme işlemi bulunamadı!");
+                }
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapıp tekrar deneyin!");
+            }
+        } catch (Exception e) {
+            String error = "Kasa hareketleri listelenirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e, BoxActions.class);
+        }
+        return hm;
+    }
+
     //List of box actions (Start of month - Today)
     public Map<Check,Object> listBoxActionsPaydayToToday(){
         Map<Check,Object> hm = new LinkedHashMap<>();
@@ -115,7 +153,7 @@ public class BoxActionsDto {
                 startDate = date[0] + "-" + date[1] + "-" + "01";
                 endDate = Util.generateDate();
                 hm.put(Check.status,true);
-                hm.put(Check.message,"Firmalar başarılı bir şekilde listelendi!");
+                hm.put(Check.message,"Bu ayki kasa hareketleri başarılı bir şekilde listelendi!");
                 hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDateBetweenOrderByIdDesc(true,user.getId(),startDate,endDate));
             }else{
                 hm.put(Check.status,false);

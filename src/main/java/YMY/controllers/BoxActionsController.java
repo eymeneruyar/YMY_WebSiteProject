@@ -31,6 +31,12 @@ public class BoxActionsController {
     }
 
     @ResponseBody
+    @PutMapping("/undoBoxActions/{stId}")
+    public Map<Check,Object> undoBoxActions(@PathVariable String stId){
+        return boxActionsDto.undoBoxActions(stId);
+    }
+
+    @ResponseBody
     @GetMapping("/listBoxActionsPaydayToToday")
     public Map<Check,Object> listBoxActionsPaydayToToday(){
         return boxActionsDto.listBoxActionsPaydayToToday();

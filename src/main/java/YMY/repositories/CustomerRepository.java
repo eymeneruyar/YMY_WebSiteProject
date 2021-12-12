@@ -10,4 +10,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     List<Customer> findByStatusAndUserIdOrderByIdAsc(boolean status, int userId);
     List<Customer> findByStatusAndUserIdAndCompany_Id(boolean status, int userId, Integer id);
 
+    //Number of total customers
+    int countByStatusEqualsAndUserIdEquals(boolean status, int userId);
+
+
 }

@@ -464,8 +464,6 @@ function resetForm(){
         fncListInvoiceThisMonth()
     }
 
-    //$('.source-item').repeaterVal()
-
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//
 

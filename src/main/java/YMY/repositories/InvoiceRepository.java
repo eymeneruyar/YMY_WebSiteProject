@@ -23,6 +23,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndCustomer_IdEqualsOrderByIdDesc(boolean status, int userId, Integer id);
 
+    //Number of total work
+    int countByStatusEqualsAndUserId(boolean status, int userId);
+
     //Girilen tutar değerine göre kalan borcun, ödenen miktarın  güncellenmesi
     @Transactional
     @Modifying(clearAutomatically = true)
@@ -34,5 +37,11 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update invoice set paid_status = true where user_id = :user_id_in and id = :invoice_id_in and status = :status_in and remaining_debt = 0 and paid = debt;",nativeQuery = true)
     void updatePaidStatus(@Param("status_in") boolean status_in,@Param("user_id_in") int user_id_in,@Param("invoice_id_in")int invoice_id_in);
+
+    //Yapılan bir ödeme işleminin geri alınması
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update invoice SET paid = paid - :amount, paid_status = false, remaining_debt = remaining_debt + :amount where status = :status and user_id = :userId and id = :invoiceId and paid >= 0 and remaining_debt <= invoice.debt and remaining_debt >= 0;", nativeQuery = true)
+    void undoPayment(@Param("amount") float amount, @Param("status") boolean status,@Param("userId") int userId, @Param("invoiceId") int invoiceId);
 
 }

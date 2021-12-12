@@ -44,7 +44,7 @@
                                     <div class="col-6">
                                         <h4 class="card-title mb-1">Aylık Kazanç</h4>
                                         <div class="font-small-2">Net Kar</div>
-                                        <h5 class="mb-1">$4055.56</h5>
+                                        <h5 class="mb-1" id="id_dashboardEarningChartProfit">$4055.56</h5>
                                         <p class="card-text text-muted font-small-2">
                                             <span class="font-weight-bolder">68.2%</span><span> more earnings than last month.</span>
                                         </p>
@@ -63,9 +63,6 @@
                         <div class="card card-statistics">
                             <div class="card-header">
                                 <h4 class="card-title">İstatistikler</h4>
-                                <div class="d-flex align-items-center">
-                                    <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
-                                </div>
                             </div>
                             <div class="card-body statistics-body">
                                 <div class="row">
@@ -77,7 +74,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body my-auto">
-                                                <h4 class="font-weight-bolder mb-0">230k</h4>
+                                                <h4 class="font-weight-bolder mb-0" id="id_dashboardGeneralStatisticsCompany"></h4>
                                                 <p class="card-text font-small-3 mb-0">Firma Sayısı</p>
                                             </div>
                                         </div>
@@ -90,7 +87,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body my-auto">
-                                                <h4 class="font-weight-bolder mb-0">8.549k</h4>
+                                                <h4 class="font-weight-bolder mb-0" id="id_dashboardGeneralStatisticsCustomer"></h4>
                                                 <p class="card-text font-small-3 mb-0">Müşteriler</p>
                                             </div>
                                         </div>
@@ -103,7 +100,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body my-auto">
-                                                <h4 class="font-weight-bolder mb-0">1.423k</h4>
+                                                <h4 class="font-weight-bolder mb-0" id="id_dashboardGeneralStatisticsWork"></h4>
                                                 <p class="card-text font-small-3 mb-0">İş Girişi</p>
                                             </div>
                                         </div>
@@ -116,7 +113,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-body my-auto">
-                                                <h4 class="font-weight-bolder mb-0">$9745</h4>
+                                                <h4 class="font-weight-bolder mb-0" id="id_dashboardGeneralStatisticsRevenue"></h4>
                                                 <p class="card-text font-small-3 mb-0">Kazanç</p>
                                             </div>
                                         </div>
@@ -258,7 +255,8 @@
 <th:block layout:fragment="contentJs">
     <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
     <script th:src="@{/dashboardPage/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-    <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/dashboard-ecommerce.js}"></script>
+    <!-- <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/dashboard-ecommerce.js}"></script> -->
+    <script th:src="@{/customizeJs/dashboard.js}"></script>
     <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
 </th:block>
 
