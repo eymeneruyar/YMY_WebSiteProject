@@ -8,6 +8,7 @@ import YMY.utils.Check;
 import YMY.utils.Util;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -105,6 +106,87 @@ public class DashboardDto {
             }
         }catch (Exception e){
             String error = "Genel istatistik bilgileri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,DashboardDto.class);
+        }
+        return hm;
+    }
+
+    //Debtor Companies
+    public Map<Check,Object> listDebtorCompanies(){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        try{
+            if(user.getId() != null){
+                //Invoice repo kısmında seçilen şirkete ait ödenmemiş faturaları getiren sorgu yazıldı.
+                //Company tarafından gelen şirketleri çift döngü yapılarak her firmaya ait toplam borç miktarı hesaplanacak
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Borçlu firma bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.result,null);
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
+            }
+        }catch (Exception e){
+            String error = "Borçlu firma bilgileri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,DashboardDto.class);
+        }
+        return hm;
+    }
+
+    //Debtor customers
+    public Map<Check,Object> listDebtorCustomers(){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        try{
+            if(user.getId() != null){
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Borçlu müşteri bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.result,invoiceRepository.findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsOrderByIdDesc(true, user.getId(), false));
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
+            }
+        }catch (Exception e){
+            String error = "Borçlu müşteri bilgileri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,DashboardDto.class);
+        }
+        return hm;
+    }
+
+    //Monthly Goal Overview
+    public Map<Check,Object> infoMonthlyGoalOverview(){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        DecimalFormat df = new DecimalFormat();
+        Map<Check,Object> infoMontlyEarning = infoMontlyEarning();
+        Map<String,Object> goalOverview = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        float profit = 0;
+        float percentage = 0;
+        try{
+            if(user.getId() != null){
+                Map<String,Object> map = (Map<String, Object>) infoMontlyEarning.get(Check.result);
+                profit = (float) map.get("profit");
+                percentage = (profit/Util.monthlyGoal) * 100;
+                df.setMinimumFractionDigits(2);
+                goalOverview.put("monthlyGoal",Util.monthlyGoal);
+                goalOverview.put("profit",profit);
+                goalOverview.put("percentage",df.format(percentage));
+
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Aylık hedef bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.result,goalOverview);
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
+            }
+        }catch (Exception e){
+            String error = "Aylık hedef bilgileri getirilirken bir hata oluştu!";
             hm.put(Check.status,false);
             hm.put(Check.message,error);
             Util.logger(error + " " + e,DashboardDto.class);

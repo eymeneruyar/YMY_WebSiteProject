@@ -23,6 +23,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndCustomer_IdEqualsOrderByIdDesc(boolean status, int userId, Integer id);
 
+    //List of debtor customers
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsOrderByIdDesc(boolean status, int userId, boolean paidStatus);
+
+    //List of invoice by company id
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsAndCompany_IdEquals(boolean status, int userId, boolean paidStatus, Integer id);
+
     //Number of total work
     int countByStatusEqualsAndUserId(boolean status, int userId);
 

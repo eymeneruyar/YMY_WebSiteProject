@@ -35,4 +35,22 @@ public class DashboardController {
         return dashboardDto.infoGeneralStatistics();
     }
 
+    @ResponseBody
+    @GetMapping("/listDebtorCompanies")
+    public Map<Check,Object> listDebtorCompanies(){
+        return dashboardDto.listDebtorCompanies();
+    }
+
+    @ResponseBody
+    @GetMapping("/listDebtorCustomers")
+    public Map<Check,Object> listDebtorCustomers(){
+        return dashboardDto.listDebtorCustomers();
+    }
+
+    @ResponseBody
+    @GetMapping("/infoMonthlyGoalOverview")
+    public Map<Check,Object> infoMonthlyGoalOverview(){
+        return dashboardDto.infoMonthlyGoalOverview();
+    }
+
 }

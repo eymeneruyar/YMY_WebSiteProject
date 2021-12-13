@@ -1,3 +1,129 @@
+//---------------------------------- Data tables Definitions - Start ----------------------------------//
+function dataTableCompany(){
+    $("#id_dashboardTableCompany").DataTable( {
+
+        order: [[2, 'desc']],
+        dom:
+            '<"card-header border-bottom p-1"<"head-label-company"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+        displayLength: 3,
+        "bInfo": false, //Closed show total data
+        "bLengthChange": false, //Closed show entries
+        buttons: [
+            {
+                extend: 'collection',
+                className: 'btn btn-outline-secondary dropdown-toggle mr-2',
+                text: feather.icons['share'].toSvg({ class: 'font-small-4 mr-50' }) + 'Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                    },
+                    {
+                        extend: 'csv',
+                        text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                    },
+                    {
+                        extend: 'excel',
+                        text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                    },
+                    {
+                        extend: 'copy',
+                        text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                    }
+                ],
+            }
+        ],
+        language: {
+            search: 'Ara',
+            searchPlaceholder: 'Ara',
+            paginate: {
+                // remove previous & next text from pagination
+                previous: '&nbsp;',
+                next: '&nbsp;'
+            }
+        }
+    } );
+    $('div.head-label-company').html('<h2 class="mb-0">Firma Borçları</h2>');
+}
+dataTableCompany()
+
+function dataTableCustomer(){
+    $("#id_dashboardTableCustomer").DataTable( {
+
+        order: [[2, 'desc']],
+        dom:
+            '<"card-header border-bottom p-1"<"head-label-customer"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+        displayLength: 3,
+        "bInfo": false, //Closed show total data
+        "bLengthChange": false, //Closed show entries
+        buttons: [
+            {
+                extend: 'collection',
+                className: 'btn btn-outline-secondary dropdown-toggle mr-2',
+                text: feather.icons['share'].toSvg({ class: 'font-small-4 mr-50' }) + 'Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4] }
+                    },
+                    {
+                        extend: 'csv',
+                        text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4] }
+                    },
+                    {
+                        extend: 'excel',
+                        text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4] }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4] }
+                    },
+                    {
+                        extend: 'copy',
+                        text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
+                        className: 'dropdown-item',
+                        exportOptions: { columns: [0,1,2,3,4] }
+                    }
+                ],
+            }
+        ],
+        language: {
+            search: 'Ara',
+            searchPlaceholder: 'Ödeme Ara',
+            paginate: {
+                // remove previous & next text from pagination
+                previous: '&nbsp;',
+                next: '&nbsp;'
+            }
+        }
+    } );
+    $('div.head-label-customer').html('<h2 class="mb-0">Borçlu Müşteriler</h2>');
+}
+dataTableCustomer()
+//---------------------------------- Data tables Definitions - End ------------------------------------//
+
 //---------------------------------- Earning Chart - Start ----------------------------------//
 function fncInfoMontlyEarning(){
     var output
@@ -144,5 +270,160 @@ function fncInfoGeneralStatistics(){
 fncInfoGeneralStatistics()
 //---------------------------------- General Statistics Card - End --------------------------------------//
 
+//---------------------------------- Debtor Customers List - Start --------------------------------------//
+function fncListDebtorCustomer(){
+    $.ajax({
+        url: "./yonetim/listDebtorCustomers",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            if($.fn.DataTable.isDataTable("#id_dashboardTableCustomer")){
+                $("#id_dashboardTableCustomer").DataTable().destroy()
+            }
+            fncCreateRowDataTableCustomer(data)
+            dataTableCustomer()
+            //console.log(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+fncListDebtorCustomer()
+
+function fncCreateRowDataTableCustomer(data){
+    let html = ``
+    data.result.forEach(item => {
+        html += `<tr style="background-color: #e3f6e3;" role="row" class="odd">
+                    <td><a href="/fatura/${item.id}">${item.invoiceCode}</a></td>
+                    <td>${item.company.name}</td>
+                    <td>${item.customer.plate}</td>
+                    <td>${item.customer.phone}</td>
+                    <td>${item.remainingDebt}</td>
+                    <td class="text-left">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/kasa_haraketleri">
+                                    <i class="far fa-credit-card"></i>
+                                    <span>Ödeme Yap</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0);">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Detay</span>
+                                </a>
+                            </div>
+                        </div>
+                    </td>`
+    })
+    $('#id_dashboardTableRowCustomer').html(html)
+}
+//---------------------------------- Debtor Customers List - End ----------------------------------------//
+
 //---------------------------------- Monthly Goal Overview Chart - Start --------------------------------------//
+function fncInfoMonthlyGoalOverview(){
+    var output
+    $.ajax({
+        url: "./yonetim/infoMonthlyGoalOverview",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        async:false,
+        success: function (data) {
+            output = data
+            //console.log(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+    return output
+}
+
+function fncDrawMonthlyGoalOverviewChart(){
+
+    var $goalStrokeColor2 = '#51e5a8';
+    var $strokeColor = '#ebe9f1';
+    var $textHeadingColor = '#5e5873';
+    var $goalOverviewChart = document.querySelector('#goal-overview-radial-bar-chart');
+    var goalOverviewChartOptions;
+    var goalOverviewChart;
+
+    var data = fncInfoMonthlyGoalOverview()
+
+    $('#id_dashboardMonthlyGoalOverviewFinished').text(data.result.profit + ' ₺')
+    $('#id_dashboardMonthlyGoalOverviewGoal').text(data.result.monthlyGoal + ' ₺')
+
+
+    goalOverviewChartOptions = {
+        chart: {
+            height: 245,
+            type: 'radialBar',
+            sparkline: {
+                enabled: true
+            },
+            dropShadow: {
+                enabled: true,
+                blur: 3,
+                left: 1,
+                top: 1,
+                opacity: 0.1
+            }
+        },
+        colors: [$goalStrokeColor2],
+        plotOptions: {
+            radialBar: {
+                offsetY: -10,
+                startAngle: -150,
+                endAngle: 150,
+                hollow: {
+                    size: '77%'
+                },
+                track: {
+                    background: $strokeColor,
+                    strokeWidth: '50%'
+                },
+                dataLabels: {
+                    name: {
+                        show: false
+                    },
+                    value: {
+                        color: $textHeadingColor,
+                        fontSize: '2.86rem',
+                        fontWeight: '600'
+                    }
+                }
+            }
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 0.5,
+                gradientToColors: [window.colors.solid.success],
+                inverseColors: true,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 100]
+            }
+        },
+        series: [data.result.percentage],
+        stroke: {
+            lineCap: 'round'
+        },
+        grid: {
+            padding: {
+                bottom: 30
+            }
+        }
+    };
+    goalOverviewChart = new ApexCharts($goalOverviewChart, goalOverviewChartOptions);
+    goalOverviewChart.render();
+}
+fncDrawMonthlyGoalOverviewChart()
 //---------------------------------- Monthly Goal Overview Chart - End ----------------------------------------//
