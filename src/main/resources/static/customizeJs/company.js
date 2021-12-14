@@ -1,5 +1,5 @@
 //-------------------------------------- Data Table Configuration - Start --------------------------------------//
-$(document).ready(function() {
+function dataTable() {
     $("#id_companyTable").DataTable( {
 
         order: [[2, 'desc']],
@@ -56,7 +56,8 @@ $(document).ready(function() {
         }
     } );
     $('div.head-label').html('<h2 class="mb-0">Kayıtlı Firmalar</h2>');
-} );
+}
+dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
 
 let select_id = 0
@@ -125,7 +126,11 @@ function listCompany(){
         async:false,
         success: function (data) {
             //console.log(data)
+            if($.fn.DataTable.isDataTable("#id_companyTable")){
+                $("#id_companyTable").DataTable().destroy()
+            }
             createRowDataTable(data)
+            dataTable()
         },
         error: function (err) {
             console.log(err)

@@ -1,11 +1,13 @@
 package YMY.dto;
 
-import YMY.entities.BoxActions;
-import YMY.entities.User;
+import YMY.entities.*;
 import YMY.repositories.*;
 import YMY.services.UserService;
 import YMY.utils.Check;
 import YMY.utils.Util;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -116,14 +118,29 @@ public class DashboardDto {
     //Debtor Companies
     public Map<Check,Object> listDebtorCompanies(){
         Map<Check,Object> hm = new LinkedHashMap<>();
+        Map<Object,Object> result = new LinkedHashMap<>();
         User user = userService.userInfo();
         try{
             if(user.getId() != null){
                 //Invoice repo kısmında seçilen şirkete ait ödenmemiş faturaları getiren sorgu yazıldı.
                 //Company tarafından gelen şirketleri çift döngü yapılarak her firmaya ait toplam borç miktarı hesaplanacak
+                List<Company> companyList = companyRepository.findByStatusEqualsAndUserIdEqualsOrderByIdAsc(true,user.getId());
+                for (int i = 0; i < companyList.size(); i++) {
+                    List<Invoice> invoiceList = invoiceRepository.findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsAndCompany_IdEquals(true,user.getId(),false,companyList.get(i).getId());
+                    float total = 0;
+                    if(invoiceList.size() > 0){
+                        for (int j = 0; j < invoiceList.size(); j++) {
+                            total += invoiceList.get(j).getRemainingDebt();
+                        }
+                        result.put(companyList.get(i).getId(),total);
+                    }else{
+                        result.put(companyList.get(i).getId(),0);
+                    }
+                }
+                result.put("companyList",companyList);
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Borçlu firma bilgileri başarılı bir şekilde getirildi!");
-                hm.put(Check.result,null);
+                hm.put(Check.result,result);
             }else{
                 hm.put(Check.status,false);
                 hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
@@ -152,6 +169,34 @@ public class DashboardDto {
             }
         }catch (Exception e){
             String error = "Borçlu müşteri bilgileri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,DashboardDto.class);
+        }
+        return hm;
+    }
+
+    //Agenda Note Card
+    public Map<Check,Object> infoAgendaNoteCard(String stPageNo){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        Map<Object,Object> result = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        try{
+            if(user.getId() != null){
+                int pageNo = Integer.parseInt(stPageNo);
+                Pageable pageable = PageRequest.of(pageNo,1);
+                Page<Agenda> agendaPage = agendaRepository.findByStatusEqualsAndUserIdEqualsAndReminderDateEqualsOrderByIdDesc(true, user.getId(), Util.generateDate(),pageable);
+                result.put("totalPage",agendaPage.getTotalPages());
+                result.put("agendaList",agendaPage.getContent());
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Kişiye ait günlük not bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.result,result);
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
+            }
+        }catch (Exception e){
+            String error = "Kişiye ait günlük not bilgileri getirilirken bir hata oluştu!";
             hm.put(Check.status,false);
             hm.put(Check.message,error);
             Util.logger(error + " " + e,DashboardDto.class);

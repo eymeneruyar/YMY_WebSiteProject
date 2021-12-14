@@ -1,3 +1,12 @@
+//--------------------------------------- Definition of Days and Months - Start ---------------------------------------//
+const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+]
+
+const days_shorted = ['Pzr', 'Pzrts', 'Sal', 'Çarş', 'Perş', 'Cum', 'Cmrts']
+const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+//--------------------------------------- Definition of Days and Months - End -----------------------------------------//
+
 //---------------------------------- Data tables Definitions - Start ----------------------------------//
 function dataTableCompany(){
     $("#id_dashboardTableCompany").DataTable( {
@@ -18,31 +27,31 @@ function dataTableCompany(){
                         extend: 'print',
                         text: feather.icons['printer'].toSvg({ class: 'font-small-4 mr-50' }) + 'Yazdır',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [0,1,2,3,4] }
                     },
                     {
                         extend: 'csv',
                         text: feather.icons['file-text'].toSvg({ class: 'font-small-4 mr-50' }) + 'Csv',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [0,1,2,3,4] }
                     },
                     {
                         extend: 'excel',
                         text: feather.icons['file'].toSvg({ class: 'font-small-4 mr-50' }) + 'Excel',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [0,1,2,3,4] }
                     },
                     {
                         extend: 'pdf',
                         text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 mr-50' }) + 'Pdf',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [0,1,2,3,4] }
                     },
                     {
                         extend: 'copy',
                         text: feather.icons['copy'].toSvg({ class: 'font-small-4 mr-50' }) + 'Kopyala',
                         className: 'dropdown-item',
-                        exportOptions: { columns: [0,1,2,3,4,5,6,7] }
+                        exportOptions: { columns: [0,1,2,3,4] }
                     }
                 ],
             }
@@ -270,6 +279,63 @@ function fncInfoGeneralStatistics(){
 fncInfoGeneralStatistics()
 //---------------------------------- General Statistics Card - End --------------------------------------//
 
+//---------------------------------- Debtor Companies List - Start --------------------------------------//
+function fncListDebtorCompanies(){
+    $.ajax({
+        url: "./yonetim/listDebtorCompanies",
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            if($.fn.DataTable.isDataTable("#id_dashboardTableCompany")){
+                $("#id_dashboardTableCompany").DataTable().destroy()
+            }
+            fncCreateRowDataTableCompany(data)
+            dataTableCompany()
+            //console.log(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+fncListDebtorCompanies()
+
+function fncCreateRowDataTableCompany(data){
+    let html = ``
+    let totalDebt = 0
+    //console.log(data)
+    data.result.companyList.forEach(item => {
+        totalDebt = data.result[item.id]
+        html += `<tr role="row" class="odd">
+                    <td><a href="/fatura/${item.id}">${item.name}</a></td>
+                    <td>${item.authorisedPerson}</td>
+                    <td>${item.phone}</td>
+                    <td>${totalDebt}</td>
+                    <td>${item.date}</td>
+                    <td class="text-left">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/kasa_haraketleri">
+                                    <i class="far fa-credit-card"></i>
+                                    <span>Ödeme Yap</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0);">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Detay</span>
+                                </a>
+                            </div>
+                        </div>
+                    </td>`
+    })
+    $('#id_dashboardTableRowCompany').html(html)
+}
+//---------------------------------- Debtor Companies List - End ----------------------------------------//
+
 //---------------------------------- Debtor Customers List - Start --------------------------------------//
 function fncListDebtorCustomer(){
     $.ajax({
@@ -296,7 +362,7 @@ fncListDebtorCustomer()
 function fncCreateRowDataTableCustomer(data){
     let html = ``
     data.result.forEach(item => {
-        html += `<tr style="background-color: #e3f6e3;" role="row" class="odd">
+        html += `<tr role="row" class="odd">
                     <td><a href="/fatura/${item.id}">${item.invoiceCode}</a></td>
                     <td>${item.company.name}</td>
                     <td>${item.customer.plate}</td>
@@ -323,6 +389,95 @@ function fncCreateRowDataTableCustomer(data){
     $('#id_dashboardTableRowCustomer').html(html)
 }
 //---------------------------------- Debtor Customers List - End ----------------------------------------//
+
+//---------------------------------- Agenda Note Card - Start ----------------------------------------//
+function fncPaginationAgendaNoteCard(totalPage){
+    if(totalPage > 0){
+        $('#id_dashboardAgendaNoteCardPagination').twbsPagination({
+            totalPages: totalPage,
+            visiblePages: 5,
+            prev: ' ',
+            first: false,
+            last: false,
+            next: ' ',
+            startPage: 1,
+            onPageClick: function (event, page) {
+                fncAgendaNoteCard(page-1)
+                $('.pagination').find('li').addClass('page-item');
+                $('.pagination').find('a').addClass('page-link');
+            }
+        });
+    }
+}
+
+function fncAgendaNoteCard(pageNo){
+    var returnData
+    $.ajax({
+        url: './yonetim/infoAgendaNoteCard/' + pageNo,
+        type: 'GET',
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        success: function (data) {
+            if(data.status === true){
+                if(data.result.agendaList.length > 0){
+                    fncPaginationAgendaNoteCard(data.result.totalPage)
+                    fncCreateAgendaNoteCard(data.result.agendaList)
+                }
+            }
+
+            returnData = data.result
+        },
+        error: function (err) {
+            Swal.fire({
+                title: "Error!",
+                text: "An error occurred during the daily announcment listing operation!",
+                icon: "error",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+            console.log(err)
+        }
+    })
+    return returnData
+
+}
+fncAgendaNoteCard(0)
+
+function fncCreateAgendaNoteCard(data){
+    let date = new Date(data[0].reminderDate)
+    let formatDate = fncConvertDate(data[0].reminderDate)
+    let html = ``
+    if(data.length > 0){
+        html = `<div class="meetup-header d-flex align-items-center">
+                <div class="meetup-day">
+                    <h6 class="mb-0">${days[date.getDay()]}</h6>
+                    <h3 class="mb-0">${date.getDate()}</h3>
+                </div>
+                <div class="my-auto">
+                    <h4 class="card-title mb-25">${data[0].title}</h4>
+                </div>
+            </div>
+            <div class="media">
+                <div class="media-body">
+                    <p class="card-text mb-0">${data[0].note}</p>
+                </div>
+            </div>
+            <div class="media">
+                <div class="avatar bg-light-primary rounded mr-1">
+                    <div class="avatar-content">
+                        <i class="fas fa-calendar-week avatar-icon font-medium-3"></i>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <h6 class="mb-0">${formatDate.split("-")[0]} ${months[date.getMonth()]} ${days[date.getDay()]}, ${formatDate.split("-")[2]}</h6>
+                </div>
+            </div>`
+        $("#id_dashboardAgendaNoteCardContent").html(html)
+    }
+}
+//---------------------------------- Agenda Note Card - End ------------------------------------------//
 
 //---------------------------------- Monthly Goal Overview Chart - Start --------------------------------------//
 function fncInfoMonthlyGoalOverview(){
@@ -427,3 +582,11 @@ function fncDrawMonthlyGoalOverviewChart(){
 }
 fncDrawMonthlyGoalOverviewChart()
 //---------------------------------- Monthly Goal Overview Chart - End ----------------------------------------//
+
+//-------------------------------------- Date Convert - Start ------------------------------------------//
+function fncConvertDate(date){
+    let arr = date.split("-")
+    return arr[2] + "-" + arr[1] + "-" + arr[0]
+}
+//-------------------------------------- Date Convert - End --------------------------------------------//
+

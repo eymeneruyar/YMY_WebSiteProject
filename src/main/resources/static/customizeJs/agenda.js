@@ -8,8 +8,8 @@ const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 
 //--------------------------------------- Definition of Days and Months - End -----------------------------------------//
 
 //---------------------------------- Agenda Note Save - Start ----------------------------------//
-var globalArr = []
-var selected_id = 0
+let globalArr = [];
+let select_id = 0;
 $('#id_agendaSaveForm').submit((event) => {
 
     event.preventDefault()
@@ -254,6 +254,7 @@ function fncSweetAlert(data){
 //-------------------------------------- Reset Form - Start ------------------------------------------//
 function resetForm(){
 
+    select_id = 0
     $('#id_agendaSaveForm').trigger('reset')
     fncListNotes()
 

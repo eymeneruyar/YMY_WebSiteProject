@@ -310,6 +310,7 @@ function fncListAllCompany(){
         contentType : 'application/json; charset=utf-8',
         //async:false,
         success: function (data) {
+            console.log(data)
             fncOptionCompany(data)
         },
         error: function (err) {
@@ -390,15 +391,14 @@ function codeGenerator() {
 function resetForm(){
     select_id = 0
     fncListCustomer()
-    $("#id_customerName").val(" ")
-    $("#id_customerSurname").val(" ")
-    $("#id_customerPhone").val(" ")
-    $("#id_customerEmail").val(" ")
-    $("#id_customerBrand").val(" ")
-    $("#id_customerModel").val(" ")
-    $("#id_customerPlate").val(" ")
-    $("#id_customerNote").val(" ")
-
+    $("#id_customerName").val("")
+    $("#id_customerSurname").val("")
+    $("#id_customerPhone").val("")
+    $("#id_customerEmail").val("")
+    $("#id_customerBrand").val("")
+    $("#id_customerModel").val("")
+    $("#id_customerPlate").val("")
+    $("#id_customerNote").val("")
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//
 

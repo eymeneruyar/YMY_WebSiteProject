@@ -57,7 +57,7 @@ public class CustomerController {
 
     @ResponseBody
     @GetMapping("/listAllCompany")
-    @Cacheable("customerCompanyList")
+    //@Cacheable("customerCompanyList")
     public Map<Check,Object> listAllCompany(){
         return customerDto.listAllCompany();
     }
