@@ -29,6 +29,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
     //List of invoice by company id
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsAndCompany_IdEquals(boolean status, int userId, boolean paidStatus, Integer id);
 
+    //List of invoice for total paid selected company
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndCompany_IdEquals(boolean status, int userId, Integer id);
+
     //Number of total work
     int countByStatusEqualsAndUserId(boolean status, int userId);
 

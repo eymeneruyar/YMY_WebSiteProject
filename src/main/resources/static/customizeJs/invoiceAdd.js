@@ -78,6 +78,7 @@ dataTable()
 //-------------------------------------- Data Table Configuration - End ----------------------------------------//
 let select_id = 0
 let globalArr = []
+let workArr = []
 //-------------------------------------- Save or Update Dispatch Note Information - Start --------------------------------------//
 function fncSaveButton(){
 
@@ -90,6 +91,20 @@ function fncSaveButton(){
     const invoiceVat = $("#id_invoiceAddVat").val()
     const invoiceDiscount = $("#id_invoiceAddDiscount").val()
     const invoiceNote = $("#id_invoiceAddNote").val()
+    const invoiceWork = $('.source-item').repeaterVal()["list_data"]
+
+    for (let i = 0; i < invoiceWork.length; i++) {
+        var temp = invoiceWork[i]
+        //console.log(temp)
+        if(temp.quantity == "" || temp.work == "" || temp.unitPrice == ""){
+            delete invoiceWork[i]
+        }else{
+            workArr.push(temp)
+        }
+    }
+
+    //console.log(invoiceWork)
+    //console.log(workArr)
 
     const obj = {
         company: {id: invoiceCompany},
@@ -99,7 +114,7 @@ function fncSaveButton(){
         invoiceCode: invoiceCode,
         billingStatus: invoiceBilling,
         note: invoiceNote,
-        workses: $('.source-item').repeaterVal()["list_data"]
+        workses: workArr
     }
 
     $.ajax({
@@ -110,7 +125,7 @@ function fncSaveButton(){
         contentType: "application/json; charset=utf-8",
         success: function (data){
             fncSweetAlert(data)
-            //resetForm()
+            resetForm()
             console.log(data)
         },
         error: function (err){
@@ -442,6 +457,7 @@ codeGenerator()
 //-------------------------------------- Reset Form - Start ------------------------------------------//
 function resetForm(){
     select_id = 0
+    workArr = [] // Must be reset, otherwise it can stay past data.
     //fncListCustomer()
     $("#id_invoiceAddInvoiceNo").val(codeGenerator())
 
@@ -453,6 +469,7 @@ function resetForm(){
 
     $("#id_invoiceAddDiscount").val("")
     $("#id_invoiceAddNote").val("")
+    //resetForm2($('#form_repeater'))
 
     //Filtreleme seçenekleri dolu ise
     const date = $("#id_invoiceListFilterDate").val()
@@ -464,6 +481,10 @@ function resetForm(){
         fncListInvoiceThisMonth()
     }
 
+}
+
+function resetForm2($form) {
+    $form.find('input:text, input:password, input:number, select, textarea').val('');
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//
 

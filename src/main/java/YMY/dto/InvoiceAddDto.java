@@ -50,14 +50,16 @@ public class InvoiceAddDto {
                 if(user.getId() != null){
                     //Works save process
                     invoice.getWorkses().forEach(it ->{
-                        Integer quantity = it.getQuantity();
-                        Float unitPrice = it.getUnitPrice();
-                        Float total = quantity * unitPrice;
-                        result.add(total);
-                        it.setStatus(true);
-                        it.setDate(Util.generateDate());
-                        it.setUserId(user.getId());
-                        it.setTotal(total);
+                        if(it.getQuantity() != null && it.getUnitPrice() != null && it.getWork() != null){
+                            Integer quantity = it.getQuantity();
+                            Float unitPrice = it.getUnitPrice();
+                            Float total = quantity * unitPrice;
+                            result.add(total);
+                            it.setStatus(true);
+                            it.setDate(Util.generateDate());
+                            it.setUserId(user.getId());
+                            it.setTotal(total);
+                        }
                     });
                     //Works save process
                     debt = (float) result.stream().mapToDouble(Float::floatValue).sum();
