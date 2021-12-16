@@ -1,5 +1,6 @@
 package YMY.dto;
 
+import YMY.entities.BoxActions;
 import YMY.entities.Company;
 import YMY.entities.Invoice;
 import YMY.entities.User;
@@ -79,28 +80,68 @@ public class StatisticsDto {
         DecimalFormat df = new DecimalFormat();
         Map<String,Object> goalOverview = new LinkedHashMap<>();
         User user = userService.userInfo();
+        List<Float> earningList = new ArrayList<>();
+        List<Float> expenseList = new ArrayList<>();
+        float earning = 0;
+        float expense = 0;
         float profit = 0;
         float percentage = 0;
+        String startYear = Util.generateDate().split("-")[0];
+        String endYear = String.valueOf(Integer.parseInt(startYear) + 1);
         try{
             if(user.getId() != null){
-                percentage = (profit/Util.monthlyGoal) * 100;
+                List<BoxActions> boxActionsListEarning = boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetween(true,user.getId(),1,startYear,endYear); //Kasa girişi
+                List<BoxActions> boxActionsListExpense = boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetween(true,user.getId(),0,startYear,endYear); //Kasa çıkışı
+                boxActionsListEarning.forEach(item->{
+                    earningList.add(item.getAmount());
+                });
+                boxActionsListExpense.forEach(item -> {
+                    expenseList.add(item.getAmount());
+                });
+                earning = (float) earningList.stream().mapToDouble(Float::floatValue).sum();
+                expense = (float) expenseList.stream().mapToDouble(Float::floatValue).sum();
+                profit = earning - expense;
+                percentage = (profit/Util.yearlyGoal) * 100;
                 df.setMinimumFractionDigits(2);
-                goalOverview.put("monthlyGoal",Util.monthlyGoal);
+                goalOverview.put("yearlyGoal",Util.yearlyGoal);
                 goalOverview.put("profit",profit);
                 goalOverview.put("percentage",df.format(percentage));
 
                 hm.put(Check.status,true);
-                hm.put(Check.message,"Aylık hedef bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.message,"Yıllık hedef bilgileri başarılı bir şekilde getirildi!");
                 hm.put(Check.result,goalOverview);
             }else{
                 hm.put(Check.status,false);
                 hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
             }
         }catch (Exception e){
-            String error = "Aylık hedef bilgileri getirilirken bir hata oluştu!";
+            String error = "Yıllık hedef bilgileri getirilirken bir hata oluştu!";
             hm.put(Check.status,false);
             hm.put(Check.message,error);
-            Util.logger(error + " " + e,DashboardDto.class);
+            Util.logger(error + " " + e,StatisticsDto.class);
+        }
+        return hm;
+    }
+
+    //Revenue Report
+    public Map<Check,Object> infoRevenueReport(String startYear){
+        Map<Check,Object> hm = new LinkedHashMap<>();
+        User user = userService.userInfo();
+        String endYear = String.valueOf(Integer.parseInt(startYear) + 1);
+        try{
+            if(user.getId() != null){
+                hm.put(Check.status,true);
+                hm.put(Check.message,"Hasılat bilgileri başarılı bir şekilde getirildi!");
+                hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDateBetween(true, user.getId(),startYear,endYear));
+            }else{
+                hm.put(Check.status,false);
+                hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");
+            }
+        }catch (Exception e){
+            String error = "Hasılat bilgileri getirilirken bir hata oluştu!";
+            hm.put(Check.status,false);
+            hm.put(Check.message,error);
+            Util.logger(error + " " + e,StatisticsDto.class);
         }
         return hm;
     }

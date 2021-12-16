@@ -40,14 +40,8 @@
                         <!-- Medal Card -->
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="card card-congratulation-medal">
-                                <div class="card-body">
-                                    <h5>Congratulations 🎉 John!</h5>
-                                    <p class="card-text font-small-3">You have won gold medal</p>
-                                    <h3 class="mb-75 mt-2 pt-50">
-                                        <a href="javascript:void(0);">$48.9k</a>
-                                    </h3>
-                                    <button type="button" class="btn btn-primary">View Sales</button>
-                                    <img src="/dashboardPage/app-assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />
+                                <div class="card-body" id="id_statisticsTopPayingCard">
+
                                 </div>
                             </div>
                         </div>
@@ -138,11 +132,11 @@
                                 <div class="row border-top text-center mx-0">
                                     <div class="col-6 border-right py-1">
                                         <p class="card-text text-muted mb-0">Tamamlanan</p>
-                                        <h3 class="font-weight-bolder mb-0">786,617</h3>
+                                        <h3 class="font-weight-bolder mb-0" id="id_statisticsYearlyGoalOverviewFinished"></h3>
                                     </div>
                                     <div class="col-6 py-1">
                                         <p class="card-text text-muted mb-0">Hedeflenen</p>
-                                        <h3 class="font-weight-bolder mb-0">13,561</h3>
+                                        <h3 class="font-weight-bolder mb-0" id="id_statisticsYearlyGoalOverviewGoal"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -234,7 +228,7 @@
 
 <th:block layout:fragment="contentJs">
     <script th:src="@{/dashboardPage/app-assets/vendors/js/charts/apexcharts.min.js}"></script>
-    <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/dashboard-ecommerce.js}"></script>
+    <script th:src="@{/customizeJs/statistics.js}"></script>
 </th:block>
 
 </body>

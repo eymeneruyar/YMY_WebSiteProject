@@ -83,6 +83,10 @@ public class BoxActionsDto {
                         boxActions.setUserId(user.getId());
                         boxActions.setStatus(true);
                         boxActions.setDate(Util.generateDate());
+                        //Çıkış işlemi olduğu için customer, company ve invoice değerleri null'a set edilmelidir.
+                        boxActions.setCompany(null);
+                        boxActions.setCustomer(null);
+                        boxActions.setInvoice(null);
                         boxActionsRepository.saveAndFlush(boxActions);
                         hm.put(Check.status,true);
                         hm.put(Check.message,"Kasa çıkışı ödeme kayıt işlemi başarıyla tamamlandı!");

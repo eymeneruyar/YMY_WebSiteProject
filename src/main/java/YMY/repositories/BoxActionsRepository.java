@@ -12,6 +12,9 @@ import java.util.Optional;
 
 public interface BoxActionsRepository extends JpaRepository<BoxActions,Integer> {
 
+    //List of box actions by status and user id
+    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDateBetween(boolean status, int userId, String dateStart, String dateEnd);
+
     //Verilen invoice id değerinin daha önce kayıtlı olup olmadığına bakar.
     boolean existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(boolean status, int userId, Integer id);
 
@@ -30,15 +33,13 @@ public interface BoxActionsRepository extends JpaRepository<BoxActions,Integer> 
     //List of box actions by description,date and company
     List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetweenAndCompany_IdEquals(boolean status, int userId, Integer description, String transactionDateStart, String transactionDateEnd, Integer id);
 
+    //Ödemelerin verilen tarih aralığı ve kasa tanımına göre getirilmesi
+    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetween(boolean status, int userId, Integer description, String transactionDateStart, String transactionDateEnd);
+
     //Yapılan ödemenin geri alınmasıyla boxActions'da bulunan status değerinin false yapılması
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "update box_actions set status = false where id = :id and user_id = :userId and status = true",nativeQuery = true)
     void updateStatusBoxActions(@Param("id") int id,@Param("userId") int userId);
-
-    //Ödemelerin verilen tarih aralığı ve kasa tanımına göre getirilmesi
-    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDescriptionEqualsAndTransactionDateBetween(boolean status, int userId, Integer description, String transactionDateStart, String transactionDateEnd);
-
-
 
 }
