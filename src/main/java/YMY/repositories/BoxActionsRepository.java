@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface BoxActionsRepository extends JpaRepository<BoxActions,Integer> {
 
     //List of box actions by status and user id
-    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndDateBetween(boolean status, int userId, String dateStart, String dateEnd);
+    List<BoxActions> findByStatusEqualsAndUserIdEqualsAndTransactionDateBetween(boolean status, int userId, String transactionDateStart, String transactionDateEnd);
 
     //Verilen invoice id değerinin daha önce kayıtlı olup olmadığına bakar.
     boolean existsByStatusEqualsAndUserIdEqualsAndInvoice_IdEquals(boolean status, int userId, Integer id);

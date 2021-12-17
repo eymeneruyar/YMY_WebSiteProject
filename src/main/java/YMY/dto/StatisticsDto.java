@@ -132,7 +132,7 @@ public class StatisticsDto {
             if(user.getId() != null){
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Hasılat bilgileri başarılı bir şekilde getirildi!");
-                hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndDateBetween(true, user.getId(),startYear,endYear));
+                hm.put(Check.result,boxActionsRepository.findByStatusEqualsAndUserIdEqualsAndTransactionDateBetween(true, user.getId(),startYear,endYear));
             }else{
                 hm.put(Check.status,false);
                 hm.put(Check.message,"Lütfen hesabınıza giriş yapınız!");

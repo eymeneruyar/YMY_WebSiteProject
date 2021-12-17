@@ -1,3 +1,10 @@
+//---------------------------------- Parameter Definition - Start ----------------------------------//
+var $textMutedColor = '#b9b9c3'
+var $revenueReportChart = document.querySelector('#revenue-report-chart');
+var revenueReportChartOptions;
+var revenueReportChart;
+//---------------------------------- Parameter Definition - End ------------------------------------//
+
 //---------------------------------- Number One Company Card - Start ----------------------------------//
 function fncInfoTopPayingCompany(){
     $.ajax({
@@ -132,23 +139,112 @@ fncDrawYearlyGoalOverviewCard()
 //---------------------------------- Yearly Goal Overview - End --------------------------------------//
 
 //---------------------------------- Revenue Report Card - Start ------------------------------------//
-function fncInfoRevenueReport(){
-
+function fncOptionRevenueReportYears(){
+    $("#id_statisticsListYear").empty()
+    for (let i = 0; i < 10; i++) {
+        $("#id_statisticsListYear").append('<option value='+(2021+i)+'>'+(2021+i)+'</option>')
+    }
 }
+fncOptionRevenueReportYears()
 
-function fncCreateRevenueReportCard(){
+$("#id_statisticsListYear").change(function (){
+    revenueReportChart.destroy();
+    fncInfoRevenueReport($(this).val())
+})
 
-    var $textMutedColor = '#b9b9c3'
-    var $revenueReportChart = document.querySelector('#revenue-report-chart');
-    var revenueReportChartOptions;
-    var revenueReportChart;
+function fncInfoRevenueReport(year){
+    $.ajax({
+        url: "./istatistikler/infoRevenueReport/" + year,
+        type: "GET",
+        dataType: "JSON",
+        contentType : 'application/json; charset=utf-8',
+        //async:false,
+        success: function (data) {
+            fncCreateRevenueReportCard(data)
+            console.log(data)
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+fncInfoRevenueReport($("#id_statisticsListYear").val())
+
+function fncCreateRevenueReportCard(data){
+
+    //Earning,expense and profit variable definition
+    let year = $("#id_statisticsListYear").val()
+    let earningArr = [0,0,0,0,0,0,0,0,0,0,0,0]
+    let expenseArr = [0,0,0,0,0,0,0,0,0,0,0,0]
+    let profit = 0
+    let total = 0
+
+    data.result.forEach(it => {
+        //Box actions input
+        if(it.description == 1){
+            if(it.transactionDate.startsWith(year + '-01')){
+                earningArr[0] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-02')){
+                earningArr[1] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-03')){
+                earningArr[2] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-04')){
+                earningArr[3] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-05')){
+                earningArr[4] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-06')){
+                earningArr[5] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-07')){
+                earningArr[6] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-08')){
+                earningArr[7] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-09')){
+                earningArr[8] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-10')){
+                earningArr[9] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-11')){
+                earningArr[10] += it.amount
+            }else if(it.transactionDate.startsWith(year + '-12')){
+                earningArr[11] += it.amount
+            }
+        }else{
+            if(it.transactionDate.startsWith(year + '-01')){
+                expenseArr[0] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-02')){
+                expenseArr[1] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-03')){
+                expenseArr[2] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-04')){
+                expenseArr[3] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-05')){
+                expenseArr[4] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-06')){
+                expenseArr[5] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-07')){
+                expenseArr[6] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-08')){
+                expenseArr[7] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-09')){
+                expenseArr[8] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-10')){
+                expenseArr[9] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-11')){
+                expenseArr[10] -= it.amount
+            }else if(it.transactionDate.startsWith(year + '-12')){
+                expenseArr[11] -= it.amount
+            }
+        }
+    })
+
+    console.log(earningArr)
+    console.log(expenseArr)
 
     revenueReportChartOptions = {
         chart: {
             height: 230,
             stacked: true,
             type: 'bar',
-            toolbar: { show: false }
+            toolbar: { show: true }
         },
         plotOptions: {
             bar: {
@@ -161,11 +257,11 @@ function fncCreateRevenueReportCard(){
         series: [
             {
                 name: 'Earning',
-                data: [95, 177, 284, 256, 105, 63, 168, 218, 72]
+                data: earningArr
             },
             {
                 name: 'Expense',
-                data: [-145, -80, -60, -180, -100, -60, -85, -75, -100]
+                data: expenseArr
             }
         ],
         dataLabels: {
@@ -184,7 +280,7 @@ function fncCreateRevenueReportCard(){
             }
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            categories: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl','Eki','Kas','Ara'],
             labels: {
                 style: {
                     colors: $textMutedColor,
@@ -210,7 +306,6 @@ function fncCreateRevenueReportCard(){
     revenueReportChart = new ApexCharts($revenueReportChart, revenueReportChartOptions);
     revenueReportChart.render();
 }
-fncCreateRevenueReportCard()
 //---------------------------------- Revenue Report Card - End --------------------------------------//
 
 
