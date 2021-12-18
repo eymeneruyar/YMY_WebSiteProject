@@ -6,6 +6,7 @@ function dataTable() {
         dom:
             '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 5,
+        bInfo: false,
         lengthMenu: [5, 10, 25, 50, 75, 100],
         buttons: [
             {
@@ -142,7 +143,11 @@ $("#id_boxActionsCustomer").change(function (){
 //-------------------------------------- Create Row Datatable - Start ----------------------------------------//
 function fncCreateRowDataTable(data){
     let html = ``
+    let htmlFoot = ``
     let billingStatus = ""
+    let totalInput = 0
+    let totalOutput = 0
+    let profit = 0
     data.result.forEach( item => {
         globalArr.push(item)
         formatDate =  fncConvertDate(item.transactionDate)
@@ -157,9 +162,23 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncUndo(${item.id})" type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:fncUndo(${item.id})">
+                                    <i class="fas fa-undo-alt"></i>
+                                    <span>Geri Al</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:fncDetail(${item.id})">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Detay</span>
+                                </a>
+                            </div>
+                        </div>
                     </td>`
+            totalOutput += item.amount
         }else{ //Kasa giriş
             html += `<tr style="background-color: #e3f6e3;" role="row" class="odd">
                     <td>${item.description == 1 ? "Giriş" : "Çıkış"}</td>
@@ -171,13 +190,41 @@ function fncCreateRowDataTable(data){
                     <td>${item.amount}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncUndo(${item.id})"  type="button" class="btn btn-icon btn-outline-primary"><i class="fas fa-undo-alt"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:fncUndo(${item.id})">
+                                    <i class="fas fa-undo-alt"></i>
+                                    <span>Geri Al</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:fncDetail(${item.id})">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Detay</span>
+                                </a>
+                            </div>
+                        </div>
                     </td>`
+            totalInput += item.amount
         }
 
     })
+    profit = totalInput - totalOutput
+    htmlFoot += `<tr>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th style="text-align: right">Net Kar:</th>
+                     <th style="text-align: left">${profit}₺</th>
+                 </tr>`
+
     $("#id_boxActionsTableRow").html(html)
+    $("#id_boxActionsTableRowFoot").html(htmlFoot)
 }
 //-------------------------------------- Create Row Datatable - End ----------------------------------------//
 
@@ -398,7 +445,8 @@ function fncFilterApply(){
                     $("#id_boxActionsTable").DataTable().destroy()
                 }
                 fncCreateRowDataTable(data)
-                dataTable()            },
+                dataTable()
+            },
             error: function (err) {
                 console.log(err)
             }
@@ -415,7 +463,8 @@ function fncFilterApply(){
                     $("#id_boxActionsTable").DataTable().destroy()
                 }
                 fncCreateRowDataTable(data)
-                dataTable()            },
+                dataTable()
+            },
             error: function (err) {
                 console.log(err)
             }

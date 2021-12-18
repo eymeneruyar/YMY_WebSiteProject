@@ -28,9 +28,9 @@ function fncCreateTopPayingCompanyCard(data){
     let html = `<h5>Tebrikler 🎉 ${data.result.company.name}!</h5>
                 <p class="card-text font-small-3">Altın madalyayı kazandınız!</p>
                 <h3 class="mb-75 mt-2 pt-50">
-                    <a href="javascript:void(0);">${data.result.total}₺</a>
+                    <a href="/firma_detay/${data.result.company.id}">${data.result.total}₺</a>
                 </h3>
-                <button type="button" class="btn btn-primary">Detay</button>
+                <a href="/firma_detay/${data.result.company.id}" class="btn btn-primary">Detay</a>
                 <img src="/dashboardPage/app-assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />`
     $('#id_statisticsTopPayingCard').html(html)
 }
@@ -177,7 +177,8 @@ function fncCreateRevenueReportCard(data){
     let earningArr = [0,0,0,0,0,0,0,0,0,0,0,0]
     let expenseArr = [0,0,0,0,0,0,0,0,0,0,0,0]
     let profit = 0
-    let total = 0
+    let earning = 0
+    let expense = 0
 
     data.result.forEach(it => {
         //Box actions input
@@ -236,8 +237,13 @@ function fncCreateRevenueReportCard(data){
         }
     })
 
-    console.log(earningArr)
-    console.log(expenseArr)
+    earning = earningArr.reduce((sum,a) => sum + a, 0)
+    expense = expenseArr.reduce((sum,a) => sum + a, 0)
+    profit = earning + expense //Expense is negative number
+
+    $('#id_statisticsEarningRevenueReport').text(earning + '₺')
+    $('#id_statisticsExpenseRevenueReport').text(expense*-1 + '₺')
+    $('#id_statisticsProfitRevenueReport').text(profit + '₺')
 
     revenueReportChartOptions = {
         chart: {
@@ -256,11 +262,11 @@ function fncCreateRevenueReportCard(data){
         colors: [window.colors.solid.primary, window.colors.solid.warning],
         series: [
             {
-                name: 'Earning',
+                name: 'Gelir',
                 data: earningArr
             },
             {
-                name: 'Expense',
+                name: 'Gider',
                 data: expenseArr
             }
         ],

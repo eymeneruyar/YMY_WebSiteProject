@@ -32,6 +32,21 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
     //List of invoice for total paid selected company
     List<Invoice> findByStatusEqualsAndUserIdEqualsAndCompany_IdEquals(boolean status, int userId, Integer id);
 
+    //List of invoice by selected company id
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndCompany_IdEqualsOrderByIdDesc(boolean status, int userId, Integer id);
+
+    //List of invoice by filtered company id,date,paid status and billing status
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsAndBillingStatusEqualsAndCompany_IdEqualsAndDateBetweenOrderByIdDesc(boolean status, int userId, boolean paidStatus, String billingStatus, Integer id, String dateStart, String dateEnd);
+
+    //List of invoice by filtered date and company id
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndCompany_IdEqualsAndDateBetweenOrderByIdDesc(boolean status, int userId, Integer id, String dateStart, String dateEnd);
+
+    //List of invoice by filtered date, company id and billing status
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndBillingStatusEqualsAndCompany_IdEqualsAndDateBetweenOrderByIdDesc(boolean status, int userId, String billingStatus, Integer id, String dateStart, String dateEnd);
+
+    //List of invoice by filtered date, company id and paid status
+    List<Invoice> findByStatusEqualsAndUserIdEqualsAndPaidStatusEqualsAndCompany_IdEqualsAndDateBetweenOrderByIdDesc(boolean status, int userId, boolean paidStatus, Integer id, String dateStart, String dateEnd);
+
     //Number of total work
     int countByStatusEqualsAndUserId(boolean status, int userId);
 

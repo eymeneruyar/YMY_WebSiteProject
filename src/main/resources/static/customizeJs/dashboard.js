@@ -15,8 +15,8 @@ function dataTableCompany(){
         dom:
             '<"card-header border-bottom p-1"<"head-label-company"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 3,
-        "bInfo": false, //Closed show total data
-        "bLengthChange": false, //Closed show entries
+        bInfo: false, //Closed show total data
+        bLengthChange: false, //Closed show entries
         buttons: [
             {
                 extend: 'collection',
@@ -309,7 +309,7 @@ function fncCreateRowDataTableCompany(data){
     data.result.companyList.forEach(item => {
         totalDebt = data.result[item.id]
         html += `<tr role="row" class="odd">
-                    <td><a href="/fatura/${item.id}">${item.name}</a></td>
+                    <td><a href="/firma_detay/${item.id}">${item.name}</a></td>
                     <td>${item.authorisedPerson}</td>
                     <td>${item.phone}</td>
                     <td>${totalDebt}</td>

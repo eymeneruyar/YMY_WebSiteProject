@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+      class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr">
+
+<!-- BEGIN: Head-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    <title>Firma Detayı</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/plugins/forms/pickers/form-flat-pickr.css}">
+
+</head>
+<!-- END: Head-->
+<body>
+
+<th:block layout:fragment="content">
+
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header border-bottom p-1">
+                                <h2>Filtrele</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-12 mt-1">
+                                        <label for="id_companyDetailListFilterDate">Tarih</label>
+                                        <input type="text" id="id_companyDetailListFilterDate" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 col-12 mt-1">
+                                        <label for="id_companyDetailListFilterPaidStatus">Borç Durumu</label>
+                                        <select class="form-control" id="id_companyDetailListFilterPaidStatus">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 col-12 mt-1">
+                                        <label for="id_companyDetailListFilterBillingStatus">Fatura Kesim</label>
+                                        <select class="form-control" id="id_companyDetailListFilterBillingStatus">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <button onclick="fncFilterApply()" type="button" class="btn btn-primary mr-1">Uygula</button>
+                                        <button onclick="fncFilterReset()" type="button" class="btn btn-outline-secondary">Temizle</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card">
+                            <table class="datatables-basic table display nowrap" id="id_companyDetailTable">
+                                <thead>
+                                <tr>
+                                    <th>İş Emri No</th>
+                                    <th>Plaka</th>
+                                    <th>Fatura Kesim</th>
+                                    <th>Toplam Tutar (₺)</th>
+                                    <th>Ödenen Miktar (₺)</th>
+                                    <th>Borç (₺)</th>
+                                    <th>Kayıt Tarihi</th>
+                                    <th>Yönetim</th>
+                                </tr>
+                                </thead>
+                                <tbody id="id_companyDetailTableRow">
+
+                                </tbody>
+                                <tfoot id="id_companyDetailTableRowFoot">
+
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+</th:block>
+
+<th:block layout:fragment="contentJs">
+
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.date.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.time.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/pickers/form-pickers.js}"></script>
+    <script th:src="@{/customizeJs/companyDetail.js}"></script>
+
+</th:block>
+
+</body>
+</html>

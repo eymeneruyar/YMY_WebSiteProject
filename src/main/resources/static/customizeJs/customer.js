@@ -6,6 +6,7 @@ function dataTable() {
         dom:
             '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 10,
+        bInfo: false, //Closed show total data
         lengthMenu: [5, 10, 25, 50, 75, 100],
         buttons: [
             {
@@ -150,6 +151,7 @@ function fncListCustomer(){
             if($.fn.DataTable.isDataTable("#id_customerTable")){
                 $("#id_customerTable").DataTable().destroy()
             }
+            globalArr = []
             fncCreateRowDataTable(data)
             dataTable()
         },
@@ -176,9 +178,25 @@ function fncCreateRowDataTable(data){
                     <td>${item.plate}</td>
                     <td>${formatDate}</td>
                     <td class="text-left">
-                        <button onclick="fncDelete(${item.id})" type="button" class="companyDelete btn btn-icon btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                        <button onclick="fncUpdate(${item.id})" type="button" class="companyUpdate btn btn-icon btn-outline-primary"><i class="far fa-edit"></i></button>
-                        <button onclick="fncDetail(${item.id})" type="button" class="companyInfo btn btn-icon btn-outline-warning"><i class="fas fa-info-circle"></i></button>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:fncDelete(${item.id})">
+                                    <i class="far fa-trash-alt"></i>
+                                    <span>Sil</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:fncUpdate(${item.id})">
+                                    <i class="far fa-edit"></i>
+                                    <span>Düzenle</span>
+                                </a>
+                                <a class="dropdown-item" href="javascript:fncDetail(${item.id})">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Detay</span>
+                                </a>
+                            </div>
+                        </div>
                     </td>`
     })
     $("#id_customerTableRow").html(html)
