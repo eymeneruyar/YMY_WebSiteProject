@@ -1,9 +1,6 @@
 package YMY.dto;
 
-import YMY.entities.BoxActions;
-import YMY.entities.Company;
-import YMY.entities.Invoice;
-import YMY.entities.User;
+import YMY.entities.*;
 import YMY.repositories.*;
 import YMY.services.UserService;
 import YMY.utils.Check;
@@ -20,12 +17,14 @@ public class StatisticsDto {
     final CustomerRepository customerRepository;
     final InvoiceRepository invoiceRepository;
     final BoxActionsRepository boxActionsRepository;
+    final YearlyGoalRepository yearlyGoalRepository;
     final UserService userService;
-    public StatisticsDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, BoxActionsRepository boxActionsRepository, UserService userService) {
+    public StatisticsDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, BoxActionsRepository boxActionsRepository, YearlyGoalRepository yearlyGoalRepository, UserService userService) {
         this.companyRepository = companyRepository;
         this.customerRepository = customerRepository;
         this.invoiceRepository = invoiceRepository;
         this.boxActionsRepository = boxActionsRepository;
+        this.yearlyGoalRepository = yearlyGoalRepository;
         this.userService = userService;
     }
 
@@ -77,7 +76,6 @@ public class StatisticsDto {
     //Yearly Goal Overview
     public Map<Check,Object> infoYearlyGoalOverview(){
         Map<Check,Object> hm = new LinkedHashMap<>();
-        DecimalFormat df = new DecimalFormat();
         Map<String,Object> goalOverview = new LinkedHashMap<>();
         User user = userService.userInfo();
         List<Float> earningList = new ArrayList<>();
@@ -86,6 +84,7 @@ public class StatisticsDto {
         float expense = 0;
         float profit = 0;
         float percentage = 0;
+        float yearlyGoal = 0;
         String startYear = Util.generateDate().split("-")[0];
         String endYear = String.valueOf(Integer.parseInt(startYear) + 1);
         try{
@@ -101,11 +100,20 @@ public class StatisticsDto {
                 earning = (float) earningList.stream().mapToDouble(Float::floatValue).sum();
                 expense = (float) expenseList.stream().mapToDouble(Float::floatValue).sum();
                 profit = earning - expense;
-                percentage = (profit/Util.yearlyGoal) * 100;
-                df.setMinimumFractionDigits(2);
-                goalOverview.put("yearlyGoal",Util.yearlyGoal);
+
+                //Yearly Goal Calculation
+                Optional<YearlyGoal> optionalYearlyGoal = yearlyGoalRepository.findByStatusEqualsAndUserIdEqualsAndKeyEquals(true, user.getId(), Util.generateDate().split("-")[0]);
+                if(optionalYearlyGoal.isPresent()){
+                    YearlyGoal goal = optionalYearlyGoal.get();
+                    yearlyGoal = goal.getGoal();
+                }else{
+                    yearlyGoal = 750000; //Default value
+                }
+
+                percentage = (profit/yearlyGoal) * 100;
+                goalOverview.put("yearlyGoal",yearlyGoal);
                 goalOverview.put("profit",profit);
-                goalOverview.put("percentage",df.format(percentage));
+                goalOverview.put("percentage",Math.ceil(percentage));
 
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Yıllık hedef bilgileri başarılı bir şekilde getirildi!");

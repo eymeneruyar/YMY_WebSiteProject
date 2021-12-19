@@ -11,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DashboardDto {
@@ -24,13 +21,15 @@ public class DashboardDto {
     final InvoiceRepository invoiceRepository;
     final BoxActionsRepository boxActionsRepository;
     final AgendaRepository agendaRepository;
+    final MonthlyGoalRepository monthlyGoalRepository;
     final UserService userService;
-    public DashboardDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, BoxActionsRepository boxActionsRepository, AgendaRepository agendaRepository, UserService userService) {
+    public DashboardDto(CompanyRepository companyRepository, CustomerRepository customerRepository, InvoiceRepository invoiceRepository, BoxActionsRepository boxActionsRepository, AgendaRepository agendaRepository, MonthlyGoalRepository monthlyGoalRepository, UserService userService) {
         this.companyRepository = companyRepository;
         this.customerRepository = customerRepository;
         this.invoiceRepository = invoiceRepository;
         this.boxActionsRepository = boxActionsRepository;
         this.agendaRepository = agendaRepository;
+        this.monthlyGoalRepository = monthlyGoalRepository;
         this.userService = userService;
     }
 
@@ -207,21 +206,28 @@ public class DashboardDto {
     //Monthly Goal Overview
     public Map<Check,Object> infoMonthlyGoalOverview(){
         Map<Check,Object> hm = new LinkedHashMap<>();
-        DecimalFormat df = new DecimalFormat();
         Map<Check,Object> infoMontlyEarning = infoMontlyEarning();
         Map<String,Object> goalOverview = new LinkedHashMap<>();
         User user = userService.userInfo();
         float profit = 0;
         float percentage = 0;
+        float monthlyGoal = 0;
         try{
             if(user.getId() != null){
+                Optional<MonthlyGoal> optionalMonthlyGoal = monthlyGoalRepository.findByStatusEqualsAndUserIdEqualsAndKeyEquals(true, user.getId(), Util.generateDate().split("-")[1]);
+                if(optionalMonthlyGoal.isPresent()){
+                    MonthlyGoal goal = optionalMonthlyGoal.get();
+                    monthlyGoal = goal.getGoal();
+                }else{
+                    monthlyGoal = 75000; //Default value
+                }
+
                 Map<String,Object> map = (Map<String, Object>) infoMontlyEarning.get(Check.result);
                 profit = (float) map.get("profit");
-                percentage = (profit/Util.monthlyGoal) * 100;
-                df.setMinimumFractionDigits(2);
-                goalOverview.put("monthlyGoal",Util.monthlyGoal);
+                percentage = (profit/monthlyGoal) * 100;
+                goalOverview.put("monthlyGoal",monthlyGoal);
                 goalOverview.put("profit",profit);
-                goalOverview.put("percentage",df.format(percentage));
+                goalOverview.put("percentage",Math.ceil(percentage));
 
                 hm.put(Check.status,true);
                 hm.put(Check.message,"Aylık hedef bilgileri başarılı bir şekilde getirildi!");

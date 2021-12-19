@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+      class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    <title>Ayarlar</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/homePage/assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+
+    <!------------------------------------------------------- Other CSS Vendors Folder - Start ---------------------------------------------------------->
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dashboardPage/app-assets/css/plugins/forms/pickers/form-flat-pickr.css}">
+    <!------------------------------------------------------- Other CSS Vendors Folder - End ------------------------------------------------------------>
+
+</head>
+<!-- END: Head-->
+<body>
+
+<th:block layout:fragment="content">
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+
+                <section id="page-account-settings">
+                    <div class="row">
+                        <!-- left menu section -->
+                        <div class="col-md-3 mb-2 mb-md-0">
+                            <ul class="nav nav-pills flex-column nav-left">
+                                <!-- general -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="account-pill-general" data-toggle="pill" href="#account-vertical-general" aria-expanded="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user font-medium-3 mr-1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="font-weight-bold">Kullanıcı Bilgileri</span>
+                                    </a>
+                                </li>
+                                <!-- change password -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="account-pill-password" data-toggle="pill" href="#account-vertical-password" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock font-medium-3 mr-1"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                        <span class="font-weight-bold">Şifre Değiştir</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="account-pill-goal" data-toggle="pill" href="#account-vertical-goal" aria-expanded="false">
+                                        <i class="fas fa-bullseye"></i>
+                                        <span class="font-weight-bold">Hedef Belirle</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--/ left menu section -->
+
+                        <!-- right content section -->
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <!-- general tab -->
+                                        <div role="tabpanel" class="tab-pane active" id="account-vertical-general" aria-labelledby="account-pill-general" aria-expanded="true">
+                                            <!-- header media -->
+                                            <div class="media">
+                                                <p id="id_settingsProfileImageWarning" class="mr-2" style="color: red"></p>
+                                                <img id="id_settingsProfileImage" class="rounded mr-50" height="80" width="80" />
+                                                <!-- upload and reset button -->
+                                                <form id="id_settingsUploadImageSaveForm">
+                                                    <div class="media-body mt-75 ml-1">
+                                                        <label for="id_settingsUploadImage" class="btn btn-sm btn-primary mb-75 mr-75">Yükle</label>
+                                                        <input type="file" id="id_settingsUploadImage" hidden accept="image/*" />
+                                                        <button type="submit" class="btn btn-sm btn-outline-success mb-75" >Kaydet</button>
+                                                    </div>
+                                                </form>
+                                                <!--/ upload and reset button -->
+                                            </div>
+                                            <!--/ header media -->
+
+                                            <!-- form -->
+                                            <form class="validate-form mt-2" novalidate="novalidate" id="id_settingsUserInfoSaveForm">
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsName">İsim</label>
+                                                            <input type="text" class="form-control" id="id_settingsName" th:value="${user.name}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsSurname">Soyisim</label>
+                                                            <input type="text" class="form-control" id="id_settingsSurname" th:value="${user.surname}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsEmail">E-mail</label>
+                                                            <input type="email" class="form-control" id="id_settingsEmail" th:value="${user.email}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsCompany">Firma</label>
+                                                            <input type="text" class="form-control" id="id_settingsCompany" th:value="${user.companyName}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary mt-2 mr-1 waves-effect waves-float waves-light">Kaydet</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <!--/ form -->
+                                        </div>
+                                        <!--/ general tab -->
+
+                                        <!-- change password -->
+                                        <div class="tab-pane fade" id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
+                                            <!-- form -->
+                                            <form class="validate-form" novalidate="novalidate" id="id_settingsChangePasswordSaveForm">
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsOldPassword">Eski Şifre</label>
+                                                            <div class="input-group form-password-toggle input-group-merge">
+                                                                <input type="password" class="form-control" id="id_settingsOldPassword" placeholder="Eski Şifre" required>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text cursor-pointer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsNewPassword">Yeni Şifre</label>
+                                                            <div class="input-group form-password-toggle input-group-merge">
+                                                                <input type="password" id="id_settingsNewPassword" class="form-control" placeholder="Yeni Şifre" required>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text cursor-pointer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="id_settingsReNewPassword">Yeni Şifre (Tekrar)</label>
+                                                            <div class="input-group form-password-toggle input-group-merge">
+                                                                <input type="password" class="form-control" id="id_settingsReNewPassword" placeholder="Yeni Şifre (Tekrar)" required>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary mr-1 mt-1 waves-effect waves-float waves-light">Kaydet</button>
+                                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect">Temizle</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <!--/ form -->
+                                        </div>
+                                        <!--/ change password -->
+
+                                        <div role="tabpanel" class="tab-pane" id="account-vertical-goal" aria-labelledby="account-pill-goal" aria-expanded="false">
+                                            <form id="id_settingsMonthlyGoalSaveForm">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-12">
+                                                        <label for="id_settingsMonth">Ay</label>
+                                                        <select class="form-control mb-1" id="id_settingsMonth">
+                                                            <option value="01">Ocak</option>
+                                                            <option value="02">Şubat</option>
+                                                            <option value="03">Mart</option>
+                                                            <option value="04">Nisan</option>
+                                                            <option value="05">Mayıs</option>
+                                                            <option value="06">Haziran</option>
+                                                            <option value="07">Temmuz</option>
+                                                            <option value="08">Ağustos</option>
+                                                            <option value="09">Eylül</option>
+                                                            <option value="10">Ekim</option>
+                                                            <option value="11">Kasım</option>
+                                                            <option value="12">Aralık</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6 col-12">
+                                                        <label for="id_settingsMonthGoal">Aylık Hedef</label>
+                                                        <input id="id_settingsMonthGoal" class="form-control" type="number" step="0.01" placeholder="Aylık Hedef">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary mr-1 mt-1 waves-effect waves-float waves-light">Kaydet</button>
+                                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect">Temizle</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <hr>
+                                            <form id="id_settingsYearlyGoalSaveForm">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-12">
+                                                        <label for="id_settingsYear">Yıl</label>
+                                                        <select class="form-control mb-1" id="id_settingsYear">
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6 col-12">
+                                                        <label for="id_settingsYearGoal">Yıllık Hedef</label>
+                                                        <input id="id_settingsYearGoal" class="form-control" type="number" step="0.01" placeholder="Yıllık Hedef">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary mr-1 mt-1 waves-effect waves-float waves-light">Kaydet</button>
+                                                        <button type="reset" class="btn btn-outline-secondary mt-1 waves-effect">Temizle</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ right content section -->
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+
+</th:block>
+
+
+<th:block layout:fragment="contentJs">
+    <!------------------------------------------------------- Other JS Folder - Start ---------------------------------------------------------->
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.date.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.time.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
+    <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/pickers/form-pickers.js}"></script>
+    <script th:src="@{/customizeJs/settings.js}"></script>
+    <!------------------------------------------------------- Other JS Folder - End ------------------------------------------------------------>
+</th:block>
+
+</body>
+</html>
