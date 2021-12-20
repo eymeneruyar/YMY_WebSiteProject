@@ -40,6 +40,7 @@ public class InvoiceEditDto {
         float debt = 0;
         float discount = 0;
         float kdv = 0;
+        float remainigDebt = 0;
         try{
             if(!bindingResult.hasErrors()){
                 if(invoice.getId() != null){
@@ -61,6 +62,7 @@ public class InvoiceEditDto {
                         result.add(total);
                     });
                     debt = (float) result.stream().mapToDouble(Float::floatValue).sum();
+                    remainigDebt = debt - mainInvoice.getPaid();
                     discount = mainInvoice.getDiscount();
                     kdv = mainInvoice.getVat();
                     if(kdv == 18 && discount > 0){
@@ -78,6 +80,7 @@ public class InvoiceEditDto {
                     }
                     //Ödeme Kısımlarının güncellenmesi - End
                     mainInvoice.setDebt(debt);
+                    mainInvoice.setRemainingDebt(remainigDebt);
                     worksRepository.saveAndFlush(mainWorks);
                     invoiceRepository.saveAndFlush(mainInvoice);
                     hm.put(Check.status,true);

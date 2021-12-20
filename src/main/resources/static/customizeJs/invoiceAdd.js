@@ -64,6 +64,28 @@ dataTable()
 let select_id = 0
 let globalArr = []
 let workArr = []
+//-------------------------------------- Repeater Form Data - Start --------------------------------------//
+function fncInitRepeaterForm(){
+
+    var sourceItem = $('.source-item')
+
+    if (sourceItem.length) {
+        sourceItem.on('submit', function (e) {
+            e.preventDefault();
+        });
+        sourceItem.repeater({
+            show: function () {
+                $(this).slideDown();
+            },
+            hide: function (deleteElement) {
+                $(this).slideUp(deleteElement);
+            }
+        });
+    }
+}
+fncInitRepeaterForm()
+//-------------------------------------- Repeater Form Data - End ----------------------------------------//
+
 //-------------------------------------- Save or Update Dispatch Note Information - Start --------------------------------------//
 function fncSaveButton(){
 
@@ -468,7 +490,9 @@ function resetForm(){
 
     $("#id_invoiceAddDiscount").val("")
     $("#id_invoiceAddNote").val("")
-    //resetForm2($('#form_repeater'))
+    //$('.source-item').destroy()
+    //fncInitRepeaterForm()
+    $('form input:text').val("")
 
     //Filtreleme seçenekleri dolu ise
     const date = $("#id_invoiceListFilterDate").val()
@@ -480,10 +504,6 @@ function resetForm(){
         fncListInvoiceThisMonth()
     }
 
-}
-
-function resetForm2($form) {
-    $form.find('input:text, input:password, input:number, select, textarea').val('');
 }
 //-------------------------------------- Reset Form - End --------------------------------------------//
 

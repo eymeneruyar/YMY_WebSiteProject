@@ -150,15 +150,15 @@
                                                                 <div class="row w-100 pr-lg-0 pr-1 py-2">
                                                                     <div class="col-lg-7 col-12 mb-lg-0 mb-2 mt-lg-0 mt-2">
                                                                         <p class="card-text col-title mb-md-50 mb-0">Yapılan İş</p>
-                                                                        <textarea id="id_invoiceAddWork" name="work" class="form-control" rows="1"></textarea>
+                                                                        <input id="id_invoiceAddWork" name="work" type="text" class="form-control" rows="1" value=""></input>
                                                                     </div>
                                                                     <div class="col-lg-1 col-12 my-lg-0 my-2">
                                                                         <p class="card-text col-title mb-md-2 mb-0">Miktar</p>
-                                                                        <input id="id_invoiceAddQuantity" name="quantity" type="text" class="form-control"/>
+                                                                        <input id="id_invoiceAddQuantity" name="quantity" type="text" class="form-control" value=""/>
                                                                     </div>
                                                                     <div class="col-lg-2 col-12 my-lg-0 my-2">
                                                                         <p class="card-text col-title mb-md-2 mb-0">Birim Fiyat</p>
-                                                                        <input id="id_invoiceAddPrice" name="unitPrice" type="text" class="form-control"/>
+                                                                        <input id="id_invoiceAddPrice" name="unitPrice" type="text" class="form-control" value=""/>
                                                                     </div>
                                                                     <div class="col-lg-2 col-12 mt-lg-0 mt-2">
                                                                         <p class="card-text col-title mb-md-50 mb-0">Toplam</p>
@@ -318,13 +318,11 @@
     <script th:src="@{/dashboardPage/app-assets/vendors/js/forms/select/select2.full.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/form-select2.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/extensions/moment.min.js}"></script>
-    <script th:src="@{/dashboardPage/app-assets/js/scripts/pages/app-invoice.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.date.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/pickadate/picker.time.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js}"></script>
     <script th:src="@{/dashboardPage/app-assets/js/scripts/forms/pickers/form-pickers.js}"></script>
-    <!-- <script th:src="@{/customizeJs/invoiceList.js}"></script> -->
     <script th:src="@{/customizeJs/invoiceAdd.js}"></script>
 
 </th:block>
