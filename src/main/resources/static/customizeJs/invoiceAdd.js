@@ -86,7 +86,7 @@ function fncInitRepeaterForm(){
 fncInitRepeaterForm()
 //-------------------------------------- Repeater Form Data - End ----------------------------------------//
 
-//-------------------------------------- Save or Update Dispatch Note Information - Start --------------------------------------//
+//-------------------------------------- Save or Update Invoice Information - Start --------------------------------------//
 function fncSaveButton(){
 
     const invoiceCode = $("#id_invoiceAddInvoiceNo").val()
@@ -100,7 +100,7 @@ function fncSaveButton(){
 
     for (let i = 0; i < invoiceWork.length; i++) {
         var temp = invoiceWork[i]
-        //console.log(temp)
+        console.log(temp)
         if(temp.quantity == "" || temp.work == "" || temp.unitPrice == ""){
             delete invoiceWork[i]
         }else{
@@ -130,16 +130,70 @@ function fncSaveButton(){
         contentType: "application/json; charset=utf-8",
         success: function (data){
             fncSweetAlert(data)
-            resetForm()
-            console.log(data)
+            //resetForm()
+            //console.log(data)
         },
         error: function (err){
             console.log(err)
         }
     })
 
+    //fncCalculationAmount()
+
 }
-//-------------------------------------- Save or Update Dispatch Note Information - End ----------------------------------------//
+//-------------------------------------- Save or Update Invoice Information - End ----------------------------------------//
+
+//-------------------------------------- Write of total price area - Start --------------------------------------//
+function fncCalculationAmount(){
+    var elemArray = $('.source-item').repeaterVal()["list_data"]
+    var result = 0
+    var billingStatus = 0
+    var discount = 0
+    var KDV = 0
+
+    /*for (let i = 0; i < elemArray.length; i++) {
+        var quantity = elemArray[i]['quantity']
+        var unitPrice = elemArray[i]['unitPrice']
+        var subTotal = quantity * unitPrice
+        $('[name="list_data['+i+'][total]"]' ).text(subTotal +' ₺')
+        //["list_data"][i]['total']
+        result += subTotal
+    }*/
+    //console.log(quantity)
+    //console.log(unitPrice)
+    //console.log(subTotal)
+    console.log(result)
+    console.log(elemArray.length)
+    console.log("girdi")
+}
+
+$('#form_repeater').keyup(function (){
+    var elemArray = $('.source-item').repeaterVal()["list_data"]
+    var result = 0
+    var billingStatus = 0
+    var discount = 0
+    var KDV = 0
+
+    for (let i = 0; i < elemArray.length; i++) {
+        var quantity = elemArray[i]['quantity']
+        var unitPrice = elemArray[i]['unitPrice']
+        var subTotal = quantity * unitPrice
+        $('[name="list_data['+i+'][total]"]' ).text(subTotal +' ₺')
+        //["list_data"][i]['total']
+        result += subTotal
+    }
+    //console.log(quantity)
+    //console.log(unitPrice)
+    //console.log(subTotal)
+    //console.log(result)
+    //console.log(elemArray.length)
+    //console.log("girdi")
+})
+
+document.getElementById("idp_invoiceAddLineButton").addEventListener("click", function() {
+    console.log("girdi")
+});
+//-------------------------------------- Write of total price area - End ----------------------------------------//
 
 //-------------------------------------- List of Invoice (Start of Month - Today) - Start ----------------------------------------//
 function fncListInvoiceThisMonth(){
@@ -490,9 +544,8 @@ function resetForm(){
 
     $("#id_invoiceAddDiscount").val("")
     $("#id_invoiceAddNote").val("")
-    //$('.source-item').destroy()
-    //fncInitRepeaterForm()
-    $('form input:text').val("")
+    //Repeater form clear
+    $('.source-item').inputClear()
 
     //Filtreleme seçenekleri dolu ise
     const date = $("#id_invoiceListFilterDate").val()

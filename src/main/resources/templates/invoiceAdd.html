@@ -162,7 +162,7 @@
                                                                     </div>
                                                                     <div class="col-lg-2 col-12 mt-lg-0 mt-2">
                                                                         <p class="card-text col-title mb-md-50 mb-0">Toplam</p>
-                                                                        <p id="idp_invoiceAddTotal" class="card-text mb-0">0 ₺</p>
+                                                                        <p id="idp_invoiceAddTotal" name="total" class="card-text mb-0">0 ₺</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex flex-column align-items-center justify-content-between border-left invoice-product-actions py-50 px-25">
@@ -174,7 +174,7 @@
                                                 </div>
                                                 <div class="row mt-1">
                                                     <div class="col-12 px-0">
-                                                        <button type="button" class="btn btn-primary btn-sm btn-add-new" data-repeater-create>
+                                                        <button id="idp_invoiceAddLineButton" type="button" class="btn btn-primary btn-sm btn-add-new" data-repeater-create>
                                                             <i data-feather="plus" class="mr-25"></i>
                                                             <span class="align-middle">Satır Ekle</span>
                                                         </button>
@@ -191,21 +191,26 @@
                                                 <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
                                                     <div class="invoice-total-wrapper">
                                                         <div class="invoice-total-item">
-                                                            <p class="invoice-total-title">Ara Toplam:</p>
-                                                            <p id="idp_invoiceAddSubtotal" class="invoice-total-amount">$1800</p>
+                                                            <p class="invoice-total-title">Toplam:</p>
+                                                            <p id="idp_invoiceAddTotalValue" class="invoice-total-amount"></p>
                                                         </div>
                                                         <div class="invoice-total-item">
                                                             <p class="invoice-total-title">İskonto:</p>
-                                                            <p id="idp_invoiceAddDiscount" class="invoice-total-amount">$28</p>
+                                                            <p id="idp_invoiceAddDiscount" class="invoice-total-amount"></p>
+                                                        </div>
+                                                        <hr class="my-50" />
+                                                        <div class="invoice-total-item">
+                                                            <p class="invoice-total-title">Ara Toplam:</p>
+                                                            <p id="idp_invoiceAddSubtotal" class="invoice-total-amount"></p>
                                                         </div>
                                                         <div class="invoice-total-item">
                                                             <p class="invoice-total-title">KDV:</p>
-                                                            <p id="idp_invoiceAddVat" class="invoice-total-amount">21%</p>
+                                                            <p id="idp_invoiceAddVat" class="invoice-total-amount"></p>
                                                         </div>
                                                         <hr class="my-50" />
                                                         <div class="invoice-total-item">
                                                             <p class="invoice-total-title">Ödenecek Tutar:</p>
-                                                            <p id="idp_invoiceAddDebt" class="invoice-total-amount">$1690</p>
+                                                            <p id="idp_invoiceAddDebt" class="invoice-total-amount"></p>
                                                         </div>
                                                     </div>
                                                 </div>
