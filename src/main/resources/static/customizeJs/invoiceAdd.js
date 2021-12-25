@@ -144,55 +144,59 @@ function fncSaveButton(){
 //-------------------------------------- Save or Update Invoice Information - End ----------------------------------------//
 
 //-------------------------------------- Write of total price area - Start --------------------------------------//
-function fncCalculationAmount(){
-    var elemArray = $('.source-item').repeaterVal()["list_data"]
-    var result = 0
-    var billingStatus = 0
-    var discount = 0
-    var KDV = 0
+function fncCalculationAmount(discount,kdv,sum){
 
-    /*for (let i = 0; i < elemArray.length; i++) {
-        var quantity = elemArray[i]['quantity']
-        var unitPrice = elemArray[i]['unitPrice']
-        var subTotal = quantity * unitPrice
-        $('[name="list_data['+i+'][total]"]' ).text(subTotal +' ₺')
-        //["list_data"][i]['total']
-        result += subTotal
-    }*/
-    //console.log(quantity)
-    //console.log(unitPrice)
-    //console.log(subTotal)
-    console.log(result)
-    console.log(elemArray.length)
-    console.log("girdi")
+    var debt = 0
+    var subTotal = 0
+    var calculatedKdv = 0
+    var amountPayable = 0
+
+    $('#idp_invoiceAddTotalValue').text(sum.toFixed(2)  +' ₺')
+    $('#idp_invoiceAddDiscount').text((sum*(discount/100)).toFixed(2)  +' ₺')
+
+    if(kdv == 18 && discount > 0){
+        subTotal = sum - (sum*(discount/100));
+        calculatedKdv = (subTotal * (kdv/100));
+        amountPayable = subTotal + calculatedKdv;
+        console.log("KDV ve iskonto var: " + debt);
+    }
+    else if(kdv == 18 && discount <= 0){
+        subTotal = sum - (sum*(discount/100));
+        calculatedKdv = (subTotal * (kdv/100));
+        amountPayable = subTotal + calculatedKdv;
+        console.log("KDV var ama iskonto yok: " + debt);
+    }
+    else if(kdv == 0 && discount > 0){
+        subTotal = sum - (sum*(discount/100));
+        calculatedKdv = (subTotal * (kdv/100));
+        amountPayable = subTotal + calculatedKdv;
+        console.log("KDV yok ama iskonto var: " + debt);
+    }
+
+    $('#idp_invoiceAddSubtotal').text(subTotal.toFixed(2)  +' ₺')
+    $('#idp_invoiceAddVat').text(calculatedKdv.toFixed(2)  +' ₺')
+    $('#idp_invoiceAddDebt').text(amountPayable.toFixed(2) +' ₺')
+
 }
 
 $('#form_repeater').keyup(function (){
+
     var elemArray = $('.source-item').repeaterVal()["list_data"]
-    var result = 0
-    var billingStatus = 0
-    var discount = 0
-    var KDV = 0
+    var discount = $('#id_invoiceAddDiscount').val()
+    var kdv = $('#id_invoiceAddVat').val()
+    var sum = 0
 
     for (let i = 0; i < elemArray.length; i++) {
         var quantity = elemArray[i]['quantity']
         var unitPrice = elemArray[i]['unitPrice']
-        var subTotal = quantity * unitPrice
-        $('[name="list_data['+i+'][total]"]' ).text(subTotal +' ₺')
-        //["list_data"][i]['total']
-        result += subTotal
+        var result = quantity * unitPrice
+        $('[name="list_data['+i+'][total]"]' ).text(result +' ₺')
+        sum += result
     }
-    //console.log(quantity)
-    //console.log(unitPrice)
-    //console.log(subTotal)
-    //console.log(result)
-    //console.log(elemArray.length)
-    //console.log("girdi")
+    fncCalculationAmount(discount,kdv,sum)
+    //console.log(sum)
 })
 
-document.getElementById("idp_invoiceAddLineButton").addEventListener("click", function() {
-    console.log("girdi")
-});
 //-------------------------------------- Write of total price area - End ----------------------------------------//
 
 //-------------------------------------- List of Invoice (Start of Month - Today) - Start ----------------------------------------//

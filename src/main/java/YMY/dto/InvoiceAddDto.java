@@ -44,8 +44,6 @@ public class InvoiceAddDto {
         float discount = 0;
         float kdv = 0;
         try {
-            //System.out.println("workses " + invoice.getWorkses());
-            //System.out.println("workses size " + invoice.getWorkses().size());
             if(!bindingResult.hasErrors()){
                 if(user.getId() != null){
                     //Works save process

@@ -70,15 +70,15 @@ public class InvoicePrintDto {
         Row row2 = sheet.createRow(6);
         Row row3 = sheet.createRow(7);
         Row row4 = sheet.createRow(8);
-        Row row7 = sheet.createRow(10);
+        Row row7 = sheet.createRow(9);
         Row row9 = sheet.createRow(12);
         Row row10 = sheet.createRow(13);
         Row row11 = sheet.createRow(14);
-        Row row33 = sheet.createRow(36);
-        Row row34 = sheet.createRow(37);
-        Row row36 = sheet.createRow(39);
-        Row row37 = sheet.createRow(40);
-        Row row39 = sheet.createRow(42);
+        Row row33 = sheet.createRow(35);
+        Row row34 = sheet.createRow(36);
+        Row row36 = sheet.createRow(38);
+        Row row37 = sheet.createRow(39);
+        Row row39 = sheet.createRow(41);
 
         //Normal Yazı
         CellStyle style = workbook.createCellStyle();
@@ -114,14 +114,14 @@ public class InvoicePrintDto {
         createCell(row2,0,"                    " + invoice.getCompany().getName(),style); //Şirket isminin yazdırılması
         createCell(row3,0,"                    " + invoice.getCompany().getAddress(),style); //Şirket adresinin yazdırılması
         createCell(row4,0,"                    " + invoice.getCustomer().getPlate() + " " + invoice.getCustomer().getBrand() + " " + invoice.getCustomer().getModel(),style); // Araç plaka, marka, model yazdırılması
-        createCell(row7,0,invoice.getCompany().getTown() + "/" + cities.getName(),style3); //Şirket ilçe/il yazdırılması
+        createCell(row7,0,invoice.getCompany().getTown() + "/" + cities.getName(),style4); //Şirket ilçe/il yazdırılması
         createCell(row9,0,"Müş.V.D        :  " + invoice.getCompany().getTaxOffice(),style); // Müş.V.D başlığı
         //createCell(row9,1,invoice.getCompany().getTaxOffice(),style); // Müş.V.D değeri
         createCell(row9,4,"Düz. Tarih          :",style); // Düz Tarih başlığı
         createCell(row10,4,"İrs. Tarih            :",style); // İrs Tarih başlığı
         createCell(row11,0,"Vergi/Tc.No   :  " + invoice.getCompany().getTaxNumber(),style); // Vergi/Tc.No: başlığı
         //createCell(row11,1,invoice.getCompany().getTaxNumber(),style); // Vergi/Tc.No: değeri
-        createCell(row11,4,"İrs. No                 :",style); // İrs No: başlığı
+        createCell(row11,4,"İrs. No                :",style); // İrs No: başlığı
 
         for (Works works : worksList) {
             Row row = sheet.createRow(rowCount++);
@@ -129,7 +129,7 @@ public class InvoicePrintDto {
             createCell(row, 0, works.getWork(), style);
             createCell(row, 3, works.getQuantity(), style4);
             createCell(row, 4, String.valueOf(works.getUnitPrice()), style4);
-            createCell(row, 5, String.valueOf(works.getTotal()), style3);
+            createCell(row, 5, "               " + String.valueOf(works.getTotal()), style3);
 
             result += works.getTotal();
 

@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/istatistikler/**").hasRole("ADMIN")
                 .antMatchers("/notlarım/**").hasRole("ADMIN")
                 .antMatchers("/ana_sayfa/**").permitAll()
+                .antMatchers("/hizmetlerimiz/**").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/templates/**").permitAll()
                 .antMatchers("/dashboardPage/**").permitAll()
